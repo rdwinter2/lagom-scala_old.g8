@@ -1,7 +1,7 @@
 package $package$.api.request
 
-import $organization;format="lower,word"$.common.regex.Matchers
-import $organization;format="lower,word"$.common.validation.ValidationViolationKeys._
+import $organization;format="lower,package"$.common.regex.Matchers
+import $organization;format="lower,package"$.common.validation.ValidationViolationKeys._
 import play.api.libs.json.{Format, Json}
 import com.wix.accord.dsl._
 
