@@ -1,4 +1,4 @@
-package $package$.api
+package $package$.api.service
 
 import akka.{Done, NotUsed}
 import com.lightbend.lagom.scaladsl.api.broker.Topic
