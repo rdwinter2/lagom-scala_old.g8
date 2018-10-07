@@ -29,11 +29,11 @@ trait $name;format="Camel"$Service extends Service {
     // @formatter:off
     named("$name;format="norm"$")
       .withCalls(
-        restCall(Method.GET, "/api/$plural_name;format="packaged"$/:$name;format="camel"$Id", get$name;format="Camel"$ _),
-        restCall(Method.GET, "/api/$plural_name;format="packaged"$", getAll$plural_name;format="Camel"$ _),
-        restCall(Method.POST, "/api/$plural_name;format="packaged"$", create$name;format="Camel"$ _)
+        restCall(Method.GET, "/api/$plural_name;format="camel"$/:$name;format="camel"$Id", get$name;format="Camel"$ _),
+        restCall(Method.GET, "/api/$plural_name;format="camel"$", getAll$plural_name;format="Camel"$ _),
+        restCall(Method.POST, "/api/$plural_name;format="camel"$", create$name;format="Camel"$ _)
         // POST restCall for other domain commands = post to a REST respource
-        // restCall(Method.POST, "/api/$plural_name;format="packaged"$"/:$name;format="camel"$Id/startAuction, startAuction _)
+        // restCall(Method.POST, "/api/$plural_name;format="camel"$"/:$name;format="camel"$Id/startAuction, startAuction _)
       )
       .withTopics(
         topic($name;format="Camel"$Service.TOPIC_NAME, $name;format="camel"$)

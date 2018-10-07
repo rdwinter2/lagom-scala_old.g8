@@ -10,12 +10,12 @@ case class ValidationException[A](
 extends TransportException(TransportErrorCode.BadRequest, ValidationException.generateMessage(message, errors), null)
 object ValidationException {
   def generateMessage(message: String, errors: Set[ValidationError]) = {
-    val details = s"$message\n" + generateErrors(errors)
+    val details = s"\$message\\n" + generateErrors(errors)
 
     new ExceptionMessage("ValidationException", details)
   }
   private def generateErrors(errors: Set[ValidationError]) = {
-    errors.map(error => s"${error.key}: ${error.message}\n").mkString("- ", "- ", "")
+    errors.map(error => s"\${error.key}: \${error.message}\\n").mkString("- ", "- ", "")
   }
 }
 
