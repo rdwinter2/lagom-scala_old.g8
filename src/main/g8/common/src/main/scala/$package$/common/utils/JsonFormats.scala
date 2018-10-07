@@ -16,7 +16,7 @@ object JsonFormats {
         JsSuccess(enum.withName(s).asInstanceOf[E#Value])
       } catch {
         case _: NoSuchElementException =>
-          JsError(s"Enumeration expected of type: '${enum.getClass}', but it does not contain '$s'")
+          JsError(s"Enumeration expected of type: '\${enum.getClass}', but it does not contain '\$s'")
       }
     case _ => JsError("String value expected")
   }
@@ -27,7 +27,7 @@ object JsonFormats {
 
   def singletonReads[O](singleton: O): Reads[O] = {
     (__ \ "value").read[String].collect(
-      JsonValidationError(s"Expected a JSON object with a single field with key 'value' and value '${singleton.getClass.getSimpleName}'")
+      JsonValidationError(s"Expected a JSON object with a single field with key 'value' and value '\${singleton.getClass.getSimpleName}'")
     ) {
       case s if s == singleton.getClass.getSimpleName => singleton
     }
