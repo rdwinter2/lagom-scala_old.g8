@@ -1,0 +1,1 @@
+//A command may cause changes to the entity state, and those changes are stored as events. EVENTS are the immutable facts of things that have happened.

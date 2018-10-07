@@ -1,13 +1,19 @@
 package $package$.api.service
 
+import $package$.api.aggregate.$name;format="Camel"$
+import $package$.api.request._
+import $package$.api.response._
+
 import akka.{Done, NotUsed}
 import com.lightbend.lagom.scaladsl.api.broker.Topic
 import com.lightbend.lagom.scaladsl.api.broker.kafka.{KafkaProperties, PartitionKeyStrategy}
+import com.lightbend.lagom.scaladsl.api.transport.Method
 import com.lightbend.lagom.scaladsl.api.{Service, ServiceCall}
+import java.util.UUID
 import play.api.libs.json.{Format, Json}
 
 object $name;format="Camel"$Service  {
-  val TOPIC_NAME = "greetings"
+  val TOPIC_NAME = "$name;format="camel"$"
 }
 
 /**
@@ -17,6 +23,33 @@ object $name;format="Camel"$Service  {
   * consume the $name;format="Camel"$Service.
   */
 trait $name;format="Camel"$Service extends Service {
+
+  override final def descriptor = {
+    import Service._
+    // @formatter:off
+    named("$name;format="norm"$")
+      .withCalls(
+        restCall(Method.GET, "/api/$plural_name;format="packaged"$/:$name;format="camel"$Id", get$name;format="Camel"$ _),
+        restCall(Method.GET, "/api/$plural_name;format="packaged"$", getAll$plural_name;format="Camel"$ _),
+        restCall(Method.POST, "/api/$plural_name;format="packaged"$", create$name;format="Camel"$ _)
+        // POST restCall for other domain commands = post to a REST respource
+        // restCall(Method.POST, "/api/$plural_name;format="packaged"$"/:$name;format="camel"$Id/startAuction, startAuction _)
+      )
+      .withTopics(
+        topic($name;format="Camel"$Service.TOPIC_NAME, $name;format="camel"$)
+          // Kafka partitions messages, messages within the same partition will
+          // be delivered in order, to ensure that all messages for the same user
+          // go to the same partition (and hence are delivered in order with respect
+          // to that user), we configure a partition key strategy that extracts the
+          // name as the partition key.
+          .addProperty(
+            KafkaProperties.partitionKeyStrategy,
+            PartitionKeyStrategy[GreetingMessageChanged](_.name)
+          )
+      )
+      .withAutoAcl(true)
+    // @formatter:on
+  }
 
   /**
     * Example: curl http://localhost:9000/api/hello/Alice
@@ -35,29 +68,6 @@ trait $name;format="Camel"$Service extends Service {
     */
   def greetingsTopic(): Topic[GreetingMessageChanged]
 
-  override final def descriptor = {
-    import Service._
-    // @formatter:off
-    named("$name;format="norm"$")
-      .withCalls(
-        pathCall("/api/hello/:id", hello _),
-        pathCall("/api/hello/:id", useGreeting _)
-      )
-      .withTopics(
-        topic($name;format="Camel"$Service.TOPIC_NAME, greetingsTopic)
-          // Kafka partitions messages, messages within the same partition will
-          // be delivered in order, to ensure that all messages for the same user
-          // go to the same partition (and hence are delivered in order with respect
-          // to that user), we configure a partition key strategy that extracts the
-          // name as the partition key.
-          .addProperty(
-            KafkaProperties.partitionKeyStrategy,
-            PartitionKeyStrategy[GreetingMessageChanged](_.name)
-          )
-      )
-      .withAutoAcl(true)
-    // @formatter:on
-  }
 }
 
 /**

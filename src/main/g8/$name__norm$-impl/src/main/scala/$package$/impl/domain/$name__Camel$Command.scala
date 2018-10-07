@@ -1,0 +1,1 @@
+//You can interact with PersistentEntity by sending command messages to it. COMMANDS are instructions to do something.

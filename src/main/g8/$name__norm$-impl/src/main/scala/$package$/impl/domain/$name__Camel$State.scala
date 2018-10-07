@@ -1,0 +1,1 @@
+//STATE is the condition that entity is in at specific instance. Events are replayed to recreate the current state of an entity.

@@ -42,6 +42,8 @@ val accord = "com.wix" %% "accord-core" % "0.6.1"
 lazy val `$name;format="norm"$` = (project in file("."))
   .aggregate(`$name;format="norm"$-api`, `$name;format="norm"$-impl`, `$name;format="normalize"$-stream-api`, `$name;format="normalize"$-stream-impl`)
 
+libraryDependencies += lagomScaladslPersistenceCassandra
+
 lazy val `$name;format="norm"$-api` = (project in file("$name;format="norm"$-api"))
   .settings(
     libraryDependencies ++= Seq(
@@ -80,3 +82,6 @@ lazy val `$name;format="norm"$-stream-impl` = (project in file("$name;format="no
     )
   )
   .dependsOn(`$name;format="norm"$-stream-api`, `$name;format="norm"$-api`)
+
+////lagomCassandraEnabled in ThisBuild := false
+////lagomUnmanagedServices in ThisBuild := Map("cas_native" -> "http://localhost:9042")

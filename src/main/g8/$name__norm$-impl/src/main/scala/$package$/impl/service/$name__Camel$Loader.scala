@@ -1,5 +1,6 @@
-package $package$.impl
+package $package$.impl.service
 
+import $package$.api.{$name;format="Camel"$Service}
 import com.lightbend.lagom.scaladsl.api.ServiceLocator
 import com.lightbend.lagom.scaladsl.api.ServiceLocator.NoServiceLocator
 import com.lightbend.lagom.scaladsl.persistence.cassandra.CassandraPersistenceComponents
