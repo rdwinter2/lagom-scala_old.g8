@@ -29,9 +29,9 @@ trait $name;format="Camel"$Service extends Service {
     // @formatter:off
     named("$name;format="norm"$")
       .withCalls(
-        restCall(Method.GET, "/api/$plural_name;format="camel"$/:$name;format="camel"$Id", get$name;format="Camel"$ _),
-        restCall(Method.GET, "/api/$plural_name;format="camel"$", getAll$plural_name;format="Camel"$ _),
-        restCall(Method.POST, "/api/$plural_name;format="camel"$", create$name;format="Camel"$ _)
+        restCall(Method.GET, "/api/$plural_name;format="snake"$/:$name;format="camel"$Id", get$name;format="Camel"$ _),
+        restCall(Method.GET, "/api/$plural_name;format="lower,hyphen"$", getAll$plural_name;format="Camel"$ _),
+        restCall(Method.POST, "/api/$plural_name;format="lower,hyphen"$", create$name;format="Camel"$ _)
         // POST restCall for other domain commands = post to a REST respource
         // restCall(Method.POST, "/api/$plural_name;format="camel"$"/:$name;format="camel"$Id/startAuction, startAuction _)
       )
