@@ -16,7 +16,7 @@ import com.lightbend.lagom.scaladsl.playjson.{JsonSerializerRegistry, JsonSerial
   * The serializers are registered here, and then provided to Lagom in the
   * application loader.
   */
-object name;format="Camel"$SerializerRegistry extends JsonSerializerRegistry {
+object $name;format="Camel"$SerializerRegistry extends JsonSerializerRegistry {
   override def serializers = List(
     // Aggregates
     JsonSerializer[$name;format="Camel"$],
