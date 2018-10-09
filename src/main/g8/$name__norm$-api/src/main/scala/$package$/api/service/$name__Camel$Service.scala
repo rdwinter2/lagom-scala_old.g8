@@ -12,9 +12,9 @@ import com.lightbend.lagom.scaladsl.api.{Service, ServiceCall}
 import java.util.UUID
 import play.api.libs.json.{Format, Json}
 
-object $name;format="Camel"$Service  {
-  val TOPIC_NAME = "agg.event.$name;format="lower,snake"$"
-}
+//object $name;format="Camel"$Service  {
+//  val TOPIC_NAME = "agg.event.$name;format="lower,snake"$"
+//}
 
 /**
   * The $name$ service interface.
@@ -29,30 +29,30 @@ trait $name;format="Camel"$Service extends Service {
     // @formatter:off
     named("$name;format="norm"$")
       .withCalls(
-        restCall(Method.POST, "/api/$plural_name;format="lower,hyphen"$", create$name;format="Camel"$ _),
-        restCall(Method.GET, "/api/$plural_name;format="lower,hyphen"$/:id", get$name;format="Camel"$ _),
-        restCall(Method.GET, "/api/$plural_name;format="lower,hyphen"$?page", getAll$plural_name;format="Camel"$ _),
+        restCall(Method.POST, "/api/$plural_name;format="lower,hyphen"$", create$name;format="Camel"$),
+        restCall(Method.GET, "/api/$plural_name;format="lower,hyphen"$/:id", get$name;format="Camel"$ _)
+//        restCall(Method.GET, "/api/$plural_name;format="lower,hyphen"$?page", getAll$plural_name;format="Camel"$ _),
         // POST restCall for other domain commands = post to a REST respource
         // restCall(Method.POST, "/api/$plural_name;format="camel"$"/:id/startAuction, startAuction _)
       )
-      .withTopics(
-        topic($name;format="Camel"$Service.TOPIC_NAME, $name;format="lower,snake"$)
+//      .withTopics(
+//        topic($name;format="Camel"$Service.TOPIC_NAME, $name;format="lower,snake"$)
           // Kafka partitions messages, messages within the same partition will
           // be delivered in order, to ensure that all messages for the same user
           // go to the same partition (and hence are delivered in order with respect
           // to that user), we configure a partition key strategy that extracts the
           // name as the partition key.
-          .addProperty(
-            KafkaProperties.partitionKeyStrategy,
-            PartitionKeyStrategy[GreetingMessageChanged](_.name)
-          )
-      )
+//          .addProperty(
+//            KafkaProperties.partitionKeyStrategy,
+//            PartitionKeyStrategy[GreetingMessageChanged](_.name)
+//          )
+//      )
       .withAutoAcl(true)
     // @formatter:on
   }
 
   /**
-    * Create an $name;format="camel"$.
+    * Create a $name;format="camel"$.
     *
     * @return The created $name;format="camel"$ with its ID populated.
     *
@@ -81,54 +81,6 @@ trait $name;format="Camel"$Service extends Service {
     * Example:
     * curl http://localhost:9000/api/$plural_name;format="lower,hyphen"$
     */
-  def getAll$plural_name;format="Camel"$(page: Option[String]): ServiceCall[NotUsed, utils.PagingState[$name;format="Camel"$Summary]]
+//  def getAll$plural_name;format="Camel"$(page: Option[String]): ServiceCall[NotUsed, utils.PagingState[$name;format="Camel"$Summary]]
 
-  /**
-    * Example: curl http://localhost:9000/api/hello/Alice
-    */
-  def hello(id: String): ServiceCall[NotUsed, String]
-
-  /**
-    * Example: curl -H "Content-Type: application/json" -X POST -d '{"message":
-    * "Hi"}' http://localhost:9000/api/hello/Alice
-    */
-  def useGreeting(id: String): ServiceCall[GreetingMessage, Done]
-
-
-  /**
-    * This gets published to Kafka.
-    */
-  def greetingsTopic(): Topic[GreetingMessageChanged]
-
-}
-
-/**
-  * The greeting message class.
-  */
-case class GreetingMessage(message: String)
-
-object GreetingMessage {
-  /**
-    * Format for converting greeting messages to and from JSON.$name;format="camel"$
-    *
-    * This will be picked up by a Lagom implicit conversion from Play's JSON format to Lagom's message serializer.
-    */
-  implicit val format: Format[GreetingMessage] = Json.format[GreetingMessage]
-}
-
-
-
-/**
-  * The greeting message class used by the topic stream.
-  * Different than [[GreetingMessage]], this message includes the name (id).
-  */
-case class GreetingMessageChanged(name: String, message: String)
-
-object GreetingMessageChanged {
-  /**
-    * Format for converting greeting messages to and from JSON.
-    *
-    * This will be picked up by a Lagom implicit conversion from Play's JSON format to Lagom's message serializer.
-    */
-  implicit val format: Format[GreetingMessageChanged] = Json.format[GreetingMessageChanged]
 }

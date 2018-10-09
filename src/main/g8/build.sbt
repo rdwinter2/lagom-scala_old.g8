@@ -24,7 +24,6 @@ val playJsonDerivedCodecs = "org.julienrf" %% "play-json-derived-codecs" % "4.0.
 val cuid = "cool.graph" % "cuid-java" % "0.1.1"
 val jwt = "com.pauldijou" %% "jwt-play-json" % "0.12.1"
 val accord = "com.wix" %% "accord-core" % "0.6.1"
-val cuid = "cool.graph" % "cuid-java" % "0.1.1"
 
 libraryDependencies += lagomScaladslPersistenceCassandra
 
