@@ -10,7 +10,8 @@ import akka.Done
 import com.lightbend.lagom.scaladsl.persistence.{AggregateEvent, AggregateEventTag, PersistentEntity}
 import com.lightbend.lagom.scaladsl.persistence.PersistentEntity.ReplyType
 import com.lightbend.lagom.scaladsl.playjson.{JsonSerializer, JsonSerializerRegistry}
-import java.time.LocalDateTime
+import java.time.{Duration, Instant, LocalDateTime}
+import java.util.UUID
 import play.api.libs.json.{Format, Json}
 import scala.collection.immutable.Seq
 //A command may cause changes to the entity state, and those changes are stored as events. EVENTS are the immutable facts of things that have happened.

@@ -1,6 +1,6 @@
 package $package$.impl.service
 
-import $package$.api.aggregate._
+//import $package$.api.aggregate._
 import $package$.api.request._
 import $package$.api.response._
 import $package$.impl.domain._

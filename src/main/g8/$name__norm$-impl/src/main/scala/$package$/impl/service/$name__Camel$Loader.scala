@@ -1,6 +1,7 @@
 package $package$.impl.service
 
 import $package$.api.service.{$name;format="Camel"$Service}
+import $package$.impl.domain._
 
 import com.lightbend.lagom.scaladsl.api.ServiceLocator
 import com.lightbend.lagom.scaladsl.api.ServiceLocator.NoServiceLocator

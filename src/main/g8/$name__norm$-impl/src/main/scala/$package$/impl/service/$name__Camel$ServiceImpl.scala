@@ -2,8 +2,9 @@ package $package$.impl.service
 
 import $organization$.common.authentication.AuthenticationServiceComposition._
 import $organization$.common.authentication.TokenContent
+import $organization$.common.utils.JsonFormats._
 import $organization$.common.validation.ValidationUtil._
-import $package$.api.aggregate._
+//import $package$.api.aggregate._
 import $package$.api.request._
 import $package$.api.response._
 import $package$.api.service.{$name;format="Camel"$Service}
@@ -25,11 +26,11 @@ import scala.concurrent.{ExecutionContext, Future}
   */
 class $name;format="Camel"$ServiceImpl(
   persistentEntityRegistry: PersistentEntityRegistry,
-  $name;format="camel"$Repository: name;format="Camel"Repository
+  $name;format="camel"$Repository: $name;format="Camel"$Repository
   )(implicit ec: ExecutionContext)
   extends $name;format="Camel"$Service {
 
-  override create$name;format="Camel"$: ServerServiceCall { $name;format="camel"$ =>
+  override def create$name;format="Camel"$: ServiceCall[create$name;format="Camel"$, create$name;format="Camel"$] =  ServerServiceCall { $name;format="camel"$ =>
     val $name;format="camel"$Id = UUIDs.timeBased()
     val p$name;format="Camel"$ = $name;format="Camel"$($name;format="camel"$Id, $name;format="camel"$.creator, $name;format="camel"$.title, $name;format="camel"$.description, $name;format="camel"$.currencyId, $name;format="camel"$.increment,
       $name;format="camel"$.reservePrice, None, $name;format="Camel"$Status.Created, $name;format="camel"$.auctionDuration, None, None, None)
@@ -45,37 +46,11 @@ class $name;format="Camel"$ServiceImpl(
     }
   }
 
-  override def getAll$plural_name;format="Camel"$(page: Option[String]): ServiceCall[NotUsed, utils.PagingState[$name;format="Camel"$Summary]] = ServiceCall { _ =>
-    $name;format="camel"$Repository.getItemsForUser(id, status, page, DefaultFetchSize)
-  }
+//  override def getAll$plural_name;format="Camel"$(page: Option[String]): ServiceCall[NotUsed, utils.PagingState[$name;format="Camel"$Summary]] = ServiceCall { _ =>
+//    $name;format="camel"$Repository.getItemsForUser(id, status, page, DefaultFetchSize)
+//  }
 
-  override def hello(id: String) = ServiceCall { _ =>
-    // Look up the $name$ entity for the given ID.
-    val ref = persistentEntityRegistry.refFor[$name;format="Camel"$Entity](id)
+  private def entityRef(itemId: UUID) = entityRefString(itemId.toString)
 
-    // Ask the entity the Hello command.
-    ref.ask(Hello(id))
-  }
-
-  override def useGreeting(id: String) = ServiceCall { request =>
-    // Look up the $name$ entity for the given ID.
-    val ref = persistentEntityRegistry.refFor[$name;format="Camel"$Entity](id)
-
-    // Tell the entity to use the greeting message specified.
-    ref.ask(UseGreetingMessage(request.message))
-  }
-
-
-  override def greetingsTopic(): Topic[api.GreetingMessageChanged] =
-    TopicProducer.singleStreamWithOffset {
-      fromOffset =>
-        persistentEntityRegistry.eventStream($name;format="Camel"$Event.Tag, fromOffset)
-          .map(ev => (convertEvent(ev), ev.offset))
-    }
-
-  private def convertEvent(helloEvent: EventStreamElement[$name;format="Camel"$Event]): api.GreetingMessageChanged = {
-    helloEvent.event match {
-      case GreetingMessageChanged(msg) => api.GreetingMessageChanged(helloEvent.entityId, msg)
-    }
-  }
+  private def entityRefString(itemId: String) = persistentEntityRegistry.refFor[ItemEntity](itemId)
 }

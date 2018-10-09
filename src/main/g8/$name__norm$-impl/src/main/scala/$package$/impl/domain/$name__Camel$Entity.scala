@@ -7,13 +7,13 @@ import akka.Done
 import com.lightbend.lagom.scaladsl.persistence.{AggregateEvent, AggregateEventTag, PersistentEntity}
 import com.lightbend.lagom.scaladsl.persistence.PersistentEntity.ReplyType
 import com.lightbend.lagom.scaladsl.playjson.{JsonSerializer, JsonSerializerRegistry}
-import java.time.LocalDateTime
+import java.time.{Duration, Instant, LocalDateTime}
 import play.api.libs.json.{Format, Json}
 import scala.collection.immutable.Seq
 
 class $name;format="Camel"$Entity extends PersistentEntity {
 
-  override type Command = $name;format="Camel"$Command[_]
+  override type Command = $name;format="Camel"$Command
   override type Event = $name;format="Camel"$Event
   override type State = Option[$name;format="Camel"$]
 
