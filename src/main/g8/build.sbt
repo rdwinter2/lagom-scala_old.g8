@@ -7,9 +7,10 @@ lazy val root = (project in file("."))
   .aggregate(
 //    `common`,
     $name;format="camel"$Api,
-    $name;format="camel"$Impl,
-    $name;format="camel"$StreamApi,
-    $name;format="camel"$StreamImpl)
+    $name;format="camel"$Impl
+//    $name;format="camel"$StreamApi,
+//    $name;format="camel"$StreamImpl
+  )
   .settings(commonSettings: _*)
 
 organization in ThisBuild := "$organization$"

@@ -25,7 +25,7 @@ import scala.concurrent.{ExecutionContext, Future}
   */
 class $name;format="Camel"$ServiceImpl(
   persistentEntityRegistry: PersistentEntityRegistry,
-  name;format="camel"Repository: name;format="Camel"Repository
+  $name;format="camel"$Repository: name;format="Camel"Repository
   )(implicit ec: ExecutionContext)
   extends $name;format="Camel"$Service {
 
@@ -47,7 +47,7 @@ class $name;format="Camel"$ServiceImpl(
 
   override def getAll$plural_name;format="Camel"$(page: Option[String]): ServiceCall[NotUsed, utils.PagingState[$name;format="Camel"$Summary]] = ServiceCall { _ =>
     $name;format="camel"$Repository.getItemsForUser(id, status, page, DefaultFetchSize)
-  } 
+  }
 
   override def hello(id: String) = ServiceCall { _ =>
     // Look up the $name$ entity for the given ID.
