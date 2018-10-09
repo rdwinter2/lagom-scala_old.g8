@@ -1,6 +1,16 @@
 import org.ensime.EnsimeKeys._
 import org.ensime.EnsimePlugin
 
+lazy val root = (project in file("."))
+  .settings(name := "$name;format="norm"$")
+  .aggregate(
+    `common`,
+    $name;format="camel"$Api,
+    $name;format="camel"$Impl,
+    $name;format="camel"$StreamApi,
+    $name;format="camel"$StreamImpl)
+  .settings(commonSettings: _*)
+
 organization in ThisBuild := "$organization$"
 version in ThisBuild := "$version$"
 
@@ -39,19 +49,18 @@ val cuid = "cool.graph" % "cuid-java" % "0.1.1"
 val jwt = "com.pauldijou" %% "jwt-play-json" % "0.12.1"
 val accord = "com.wix" %% "accord-core" % "0.6.1"
 
-lazy val `$name;format="norm"$` = (project in file("."))
-  .aggregate(`$name;format="norm"$-api`, `$name;format="norm"$-impl`, `$name;format="normalize"$-stream-api`, `$name;format="normalize"$-stream-impl`)
-
 libraryDependencies += lagomScaladslPersistenceCassandra
 
-lazy val `$name;format="norm"$-api` = (project in file("$name;format="norm"$-api"))
+lazy val $name;format="camel"$Api = (project in file("$name;format="norm"$-api"))
+  .settings(commonSettings: _*)
   .settings(
     libraryDependencies ++= Seq(
       lagomScaladslApi
     )
   )
 
-lazy val `$name;format="norm"$-impl` = (project in file("$name;format="norm"$-impl"))
+lazy val $name;format="camel"$Impl` = (project in file("$name;format="norm"$-impl"))
+  .settings(commonSettings: _*)
   .enablePlugins(LagomScala)
   .settings(
     libraryDependencies ++= Seq(
@@ -63,16 +72,18 @@ lazy val `$name;format="norm"$-impl` = (project in file("$name;format="norm"$-im
     )
   )
   .settings(lagomForkedTestSettings: _*)
-  .dependsOn(`$name;format="norm"$-api`)
+  .dependsOn($name;format="camel"$Api)
 
-lazy val `$name;format="norm"$-stream-api` = (project in file("$name;format="norm"$-stream-api"))
+lazy val $name;format="camel"$StreamApi = (project in file("$name;format="norm"$-stream-api"))
+  .settings(commonSettings: _*)
   .settings(
     libraryDependencies ++= Seq(
       lagomScaladslApi
     )
   )
 
-lazy val `$name;format="norm"$-stream-impl` = (project in file("$name;format="norm"$-stream-impl"))
+lazy val $name;format="camel"$StreamImpl = (project in file("$name;format="norm"$-stream-impl"))
+  .settings(commonSettings: _*)
   .enablePlugins(LagomScala)
   .settings(
     libraryDependencies ++= Seq(
@@ -81,7 +92,11 @@ lazy val `$name;format="norm"$-stream-impl` = (project in file("$name;format="no
       scalaTest
     )
   )
-  .dependsOn(`$name;format="norm"$-stream-api`, `$name;format="norm"$-api`)
+  .dependsOn($name;format="camel"$StreamApi, $name;format="camel"$Api)
 
+def commonSettings: Seq[Setting[_]] = Seq(
+)
+
+lagomCassandraCleanOnStart in ThisBuild := true
 ////lagomCassandraEnabled in ThisBuild := false
 ////lagomUnmanagedServices in ThisBuild := Map("cas_native" -> "http://localhost:9042")
