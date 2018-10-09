@@ -13,7 +13,7 @@ import java.util.UUID
 import play.api.libs.json.{Format, Json}
 
 object $name;format="Camel"$Service  {
-  val TOPIC_NAME = "$name;format="camel"$"
+  val TOPIC_NAME = "agg.event.$name;format="lower,snake"$"
 }
 
 /**
@@ -29,14 +29,14 @@ trait $name;format="Camel"$Service extends Service {
     // @formatter:off
     named("$name;format="norm"$")
       .withCalls(
-        restCall(Method.GET, "/api/$plural_name;format="snake"$/:$name;format="camel"$Id", get$name;format="Camel"$ _),
-        restCall(Method.GET, "/api/$plural_name;format="lower,hyphen"$", getAll$plural_name;format="Camel"$ _),
-        restCall(Method.POST, "/api/$plural_name;format="lower,hyphen"$", create$name;format="Camel"$ _)
+        restCall(Method.POST, "/api/$plural_name;format="lower,hyphen"$", create$name;format="Camel"$ _),
+        restCall(Method.GET, "/api/$plural_name;format="lower,hyphen"$/:id", get$name;format="Camel"$ _),
+        restCall(Method.GET, "/api/$plural_name;format="lower,hyphen"$?page", getAll$plural_name;format="Camel"$ _),
         // POST restCall for other domain commands = post to a REST respource
-        // restCall(Method.POST, "/api/$plural_name;format="camel"$"/:$name;format="camel"$Id/startAuction, startAuction _)
+        // restCall(Method.POST, "/api/$plural_name;format="camel"$"/:id/startAuction, startAuction _)
       )
       .withTopics(
-        topic($name;format="Camel"$Service.TOPIC_NAME, $name;format="camel"$)
+        topic($name;format="Camel"$Service.TOPIC_NAME, $name;format="lower,snake"$)
           // Kafka partitions messages, messages within the same partition will
           // be delivered in order, to ensure that all messages for the same user
           // go to the same partition (and hence are delivered in order with respect
@@ -50,6 +50,38 @@ trait $name;format="Camel"$Service extends Service {
       .withAutoAcl(true)
     // @formatter:on
   }
+
+  /**
+    * Create an $name;format="camel"$.
+    *
+    * @return The created $name;format="camel"$ with its ID populated.
+    *
+    * Example:
+    * curl -H "Content-Type: application/json" -X POST -d '{"data1": "123", "data2": "xyz"}' http://localhost:9000/api/$plural_name;format="lower,hyphen"$
+    */
+  def create$name;format="Camel"$: ServiceCall[$name;format="Camel"$, $name;format="Camel"$]
+
+  /**
+    * Get a $name;format="camel"$ with the given ID.
+    *
+    * @param id The ID of the $name;format="camel"$ to get.
+    * @return The $name;format="camel"$.
+    *
+    * Example:
+    * curl http://localhost:9000/api/$plural_name;format="lower,hyphen"$/123e4567-e89b-12d3-a456-426655440000
+    */
+  def get$name;format="Camel"$(id: UUID): ServiceCall[NotUsed, $name;format="Camel"$]
+
+  /**
+    * Get a $name;format="camel"$ with the given ID.
+    *
+    * @param id The ID of the $name;format="camel"$ to get.
+    * @return The $name;format="camel"$.
+    *
+    * Example:
+    * curl http://localhost:9000/api/$plural_name;format="lower,hyphen"$
+    */
+  def getAll$plural_name;format="Camel"$(page: Option[String]): ServiceCall[NotUsed, utils.PagingState[$name;format="Camel"$Summary]]
 
   /**
     * Example: curl http://localhost:9000/api/hello/Alice
@@ -77,7 +109,7 @@ case class GreetingMessage(message: String)
 
 object GreetingMessage {
   /**
-    * Format for converting greeting messages to and from JSON.
+    * Format for converting greeting messages to and from JSON.$name;format="camel"$
     *
     * This will be picked up by a Lagom implicit conversion from Play's JSON format to Lagom's message serializer.
     */

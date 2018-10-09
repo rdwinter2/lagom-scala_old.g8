@@ -1,6 +1,6 @@
 package $package$.api.aggregate
 
-import $package$.common.utils.JsonFormats._
+import $organization$.common.utils.JsonFormats._
 
 import com.lightbend.lagom.scaladsl.api.deser.PathParamSerializer
 import java.time.{Duration, Instant}
