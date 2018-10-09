@@ -1,4 +1,4 @@
-package $package$.common.utils
+package $organization$.common.utils
 
 import java.time.Duration
 import java.util.UUID

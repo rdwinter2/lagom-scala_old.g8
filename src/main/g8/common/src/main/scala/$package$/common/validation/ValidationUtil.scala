@@ -1,6 +1,6 @@
-package $package$.common.validation
+package $organization$.common.validation
 
-import $package$.common.exception.{ValidationError, ValidationException}
+import $organization$.common.exception.{ValidationError, ValidationException}
 import com.wix.accord.transform.ValidationTransform
 import com.wix.accord.{Descriptions, Failure, Violation, validate => accordValidate}
 

@@ -1,4 +1,4 @@
-package $package$.common.exception
+package $organization$.common.exception
 
 import com.lightbend.lagom.scaladsl.api.transport.{ExceptionMessage, TransportErrorCode, TransportException}
 

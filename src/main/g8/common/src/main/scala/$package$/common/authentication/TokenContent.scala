@@ -1,4 +1,4 @@
-package $package$.common.authentication
+package $organization$.common.authentication
 
 import java.util.UUID
 

@@ -1,12 +1,12 @@
-package $package$.common.exception.handling
+package $organization$.common.exception.handling
 
-import $package$.common.exception.ValidationException
+import $organization$.common.exception.ValidationException
+
 import akka.util.ByteString
 import com.lightbend.lagom.scaladsl.api.deser.{DefaultExceptionSerializer, RawExceptionMessage}
 import com.lightbend.lagom.scaladsl.api.transport.{ExceptionMessage, MessageProtocol}
 import play.api.Environment
 import play.api.libs.json.Json
-
 import scala.collection.immutable.Seq
 import scala.util.control.NonFatal
 

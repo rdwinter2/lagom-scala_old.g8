@@ -1,4 +1,4 @@
-package $package$.common.validation
+package $organization$.common.validation
 
 object ValidationViolationKeys {
   def notEmptyKey(field: String) = s"\$field.empty"

@@ -1,4 +1,4 @@
-package $package$.common.date
+package $organization$.common.date
 
 import org.joda.time.{DateTime, DateTimeZone}
 

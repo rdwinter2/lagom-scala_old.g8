@@ -1,4 +1,4 @@
-package $package$.common.authentication
+package $organization$.common.authentication
 
 import com.lightbend.lagom.scaladsl.api.transport.{Forbidden, RequestHeader}
 import com.lightbend.lagom.scaladsl.server.ServerServiceCall
