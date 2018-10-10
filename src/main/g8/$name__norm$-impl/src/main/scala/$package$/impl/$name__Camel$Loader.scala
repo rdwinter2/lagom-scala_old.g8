@@ -1,7 +1,6 @@
-package $package$.impl.service
+package $package$.impl
 
-import $package$.api.service.{$name;format="Camel"$Service}
-import $package$.impl.domain._
+import $package$.api._
 
 import akka.stream.Materializer
 import com.lightbend.lagom.scaladsl.api.ServiceLocator

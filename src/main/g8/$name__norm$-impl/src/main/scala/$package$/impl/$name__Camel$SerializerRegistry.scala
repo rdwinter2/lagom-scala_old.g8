@@ -1,9 +1,6 @@
-package $package$.impl.service
+package $package$.impl
 
-//import $package$.api.aggregate._
-import $package$.api.request._
-import $package$.api.response._
-import $package$.impl.domain._
+import $package$.api._
 
 import com.lightbend.lagom.scaladsl.playjson.{JsonSerializerRegistry, JsonSerializer}
 

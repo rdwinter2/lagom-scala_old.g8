@@ -1,4 +1,4 @@
-package $package$.api.request
+package $package$.api
 
 import $organization;format="lower,package"$.common.regex.Matchers
 import $organization;format="lower,package"$.common.validation.ValidationViolationKeys._

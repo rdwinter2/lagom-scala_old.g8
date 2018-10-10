@@ -1,8 +1,6 @@
-package $package$.impl.domain
+package $package$.impl
 
-import $package$.api.request._
-import $package$.api.response._
-import $package$.api.service.$name;format="Camel"$Service
+import $package$.api._
 import $organization$.common.utils.JsonFormats._
 
 import akka.Done

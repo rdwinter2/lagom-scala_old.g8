@@ -1,4 +1,4 @@
-package $package$.api.request
+package $package$.api
 
 trait WithUserCreationFields {
   val firstName: String

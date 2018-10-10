@@ -1,6 +1,6 @@
-package $package$.impl.domain
+package $package$.impl
 
-import $package$.api.response._
+import $package$.api._
 import $organization$.common.utils.JsonFormats._
 
 import akka.Done
@@ -19,7 +19,7 @@ object $name;format="Camel"$Status extends Enumeration {
   implicit val format: Format[Status] = enumFormat($name;format="Camel"$Status)
 }
 
-case class $name;format="Camel"$(
+case class $name;format="Camel"$Aggregate(
   id: UUID,
   creator: UUID,
   title: String,
@@ -67,6 +67,6 @@ case class $name;format="Camel"$(
   }
 }
 
-object $name;format="Camel"$ {
-  implicit val format: Format[$name;format="Camel"$] = Json.format
+object $name;format="Camel"$Aggregate {
+  implicit val format: Format[$name;format="Camel"$Aggregate] = Json.format[$name;format="Camel"$Aggregate]
 }

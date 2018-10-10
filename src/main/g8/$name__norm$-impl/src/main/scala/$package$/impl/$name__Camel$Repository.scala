@@ -1,6 +1,6 @@
-package $package$.impl.domain
+package $package$.impl
 
-import $package$.api
+import $package$.api._
 
 import akka.Done
 import akka.persistence.cassandra.ListenableFutureConverter

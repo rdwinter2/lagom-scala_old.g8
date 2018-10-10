@@ -1,6 +1,6 @@
-package $package$.impl.domain
+package $package$.impl
 
-import $package$.api.response._
+import $package$.api._
 
 import akka.Done
 import com.lightbend.lagom.scaladsl.persistence.{AggregateEvent, AggregateEventTag, PersistentEntity}
