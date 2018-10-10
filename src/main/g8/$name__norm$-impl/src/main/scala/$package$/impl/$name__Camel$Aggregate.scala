@@ -1,5 +1,41 @@
 package $package$.impl
 
+import java.util.UUID
+
+import $organization$.common.utils.JsonFormats._
+import $package$.impl.$name;format="Camel"$Status.$name;format="Camel"$Status
+import play.api.libs.json.{Format, Json}
+
+case class $name;format="Camel"$Aggregate(status: $name;format="Camel"$Status = $name;format="Camel"$Status.UNVERIFIED,
+                         id: UUID,
+                         $name;format="camel"$name: String,
+                         email: String,
+                         hashed_salted_pwd: String,
+                         currentSession: Option[$name;format="Camel"$Session] = None)
+object $name;format="Camel"$Aggregate {
+  implicit val format: Format[$name;format="Camel"$Aggregate] = Json.format[$name;format="Camel"$Aggregate]
+}
+
+
+object $name;format="Camel"$Status extends Enumeration {
+  type $name;format="Camel"$Status = Value
+  val VERIFIED,
+  UNVERIFIED = Value
+
+  implicit val format: Format[$name;format="Camel"$Status] = enumFormat($name;format="Camel"$Status)
+}
+
+case class $name;format="Camel"$Session(access_token: UUID,
+                       createdOn: Long,
+                       expiry: Long,
+                       refresh_token: UUID)
+object $name;format="Camel"$Session {
+  final val EXPIRY: Long = 3600000
+  def apply(): $name;format="Camel"$Session = $name;format="Camel"$Session(UUID.randomUUID(), System.currentTimeMillis(), EXPIRY, UUID.randomUUID())
+  implicit val format: Format[$name;format="Camel"$Session] = Json.format[$name;format="Camel"$Session]
+}
+
+/*
 import $package$.api._
 import $organization$.common.utils.JsonFormats._
 
@@ -70,3 +106,4 @@ case class $name;format="Camel"$Aggregate(
 object $name;format="Camel"$Aggregate {
   implicit val format: Format[$name;format="Camel"$Aggregate] = Json.format[$name;format="Camel"$Aggregate]
 }
+*/

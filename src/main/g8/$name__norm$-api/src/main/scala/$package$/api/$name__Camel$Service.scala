@@ -96,10 +96,10 @@ object $name;format="Camel"$Response {
   implicit val format: Format[$name;format="Camel"$Response] = Json.format
 }
 
-case class Create$name;format="Camel"$($name;format="camel"$name: String, email: String, password: String)
+case class Create$name;format="Camel"$Request($name;format="camel"$Name: String, email: String, password: String)
 
-object Create$name;format="Camel"$ {
-  implicit val format: Format[Create$name;format="Camel"$] = Json.format
+object Create$name;format="Camel"$Request {
+  implicit val format: Format[Create$name;format="Camel"$Request] = Json.format
 }
 
 case class AuthRequest($name;format="camel"$name: String, password: String)

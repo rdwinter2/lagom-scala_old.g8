@@ -1,5 +1,44 @@
 package $package$.impl
 
+import java.util.UUID
+
+import akka.Done
+import $organization$.common.utils.JsonFormats.singletonFormat
+import $organization$.common.utils.ErrorResponse
+import com.lightbend.lagom.scaladsl.persistence.PersistentEntity.ReplyType
+import play.api.libs.json.{Format, Json}
+
+trait $name;format="Camel"$Command[R] extends ReplyType[R]
+
+case class GrantAccessToken(password: String) extends $name;format="Camel"$Command[Either[ErrorResponse, $name;format="Camel"$Session]]
+object GrantAccessToken {
+  implicit val format: Format[GrantAccessToken] = Json.format[GrantAccessToken]
+}
+case object RevokeAccessToken extends $name;format="Camel"$Command[Done] {
+  implicit val format: Format[RevokeAccessToken.type] = singletonFormat(RevokeAccessToken)
+}
+case class ExtendAccessToken(refresh_token: UUID) extends $name;format="Camel"$Command[Either[ErrorResponse, $name;format="Camel"$Session]]
+object ExtendAccessToken {
+  implicit val format: Format[ExtendAccessToken] = Json.format[ExtendAccessToken]
+}
+case class Create$name;format="Camel"$(id: UUID, $name;format="camel"$name: String, password: String, email: String) extends $name;format="Camel"$Command[Either[ErrorResponse, String]]
+object Create$name;format="Camel"$ {
+  implicit val format: Format[Create$name;format="Camel"$] = Json.format[Create$name;format="Camel"$]
+}
+case object Verify$name;format="Camel"$ extends $name;format="Camel"$Command[Done] {
+  implicit val format: Format[Verify$name;format="Camel"$.type] = singletonFormat(Verify$name;format="Camel"$)
+}
+case object UnVerify$name;format="Camel"$ extends $name;format="Camel"$Command[Done] {
+  implicit val format: Format[UnVerify$name;format="Camel"$.type] = singletonFormat(UnVerify$name;format="Camel"$)
+}
+case object IsSessionExpired extends $name;format="Camel"$Command[Boolean] {
+  implicit val format: Format[IsSessionExpired.type] = singletonFormat(IsSessionExpired)
+}
+case object Delete$name;format="Camel"$ extends $name;format="Camel"$Command[Done] {
+  implicit val format: Format[Delete$name;format="Camel"$.type] = singletonFormat(Delete$name;format="Camel"$)
+}
+
+/*
 import $package$.api._
 import $organization$.common.utils.JsonFormats._
 
@@ -36,7 +75,7 @@ import scala.collection.immutable.Seq
 /**
   * This interface defines all the commands that the HelloWorld entity supports.
   */
-
+/*
 sealed trait $name;format="Camel"$Command
 
 case object Get$name;format="Camel"$ extends $name;format="Camel"$Command with ReplyType[Option[$name;format="Camel"$]] {
@@ -49,7 +88,7 @@ object Create$name;format="Camel"$ {
   implicit val format: Format[Create$name;format="Camel"$] = Json.format
 }
 
-case class StartAuction(userId: UUID) extends $name;format="Camel"$Command with ReplyType[Done]
+case class StartAuction($name;format="camel"$Id: UUID) extends $name;format="Camel"$Command with ReplyType[Done]
 
 object StartAuction {
   implicit val format: Format[StartAuction] = Json.format
@@ -68,3 +107,4 @@ object FinishAuction {
 }
 
 //sealed trait $name;format="Camel"$Command[R] extends ReplyType[R]
+*/

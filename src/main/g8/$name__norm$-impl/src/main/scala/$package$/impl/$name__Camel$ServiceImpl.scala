@@ -120,7 +120,7 @@ class $name;format="Camel"$ServiceImpl(registry: PersistentEntityRegistry,
   override def verify$name;format="Camel"$($name;format="camel"$Id: UUID): ServiceCall[NotUsed, Done] =
     ServiceCall(_ => refFor($name;format="camel"$Id).ask(Verify$name;format="Camel"$))
 
-  override def create$name;format="Camel"$: ServiceCall[$name;format="camel"$.api.Create$name;format="Camel"$, Either[ErrorResponse, $name;format="Camel"$Response]] =
+  override def create$name;format="Camel"$: ServiceCall[Create$name;format="Camel"$Request, Either[ErrorResponse, $name;format="Camel"$Response]] =
     ServerServiceCall((_, req) =>
       readSideConnector
         .get$name;format="Camel"$IdFrom$name;format="Camel"$name(req.$name;format="camel"$name)

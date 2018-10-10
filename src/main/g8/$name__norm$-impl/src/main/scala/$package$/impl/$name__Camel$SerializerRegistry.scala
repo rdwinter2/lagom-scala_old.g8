@@ -1,8 +1,10 @@
 package $package$.impl
 
-import $package$.api._
+import $package$.impl.$name;format="Camel"$Status.$name;format="Camel"$Status
 
-import com.lightbend.lagom.scaladsl.playjson.{JsonSerializerRegistry, JsonSerializer}
+import $organization$.common.utils.JsonFormats._
+import com.lightbend.lagom.scaladsl.playjson.{JsonMigration, JsonSerializerRegistry, JsonSerializer}
+import play.api.libs.json.{JsObject, JsString}
 
 /**
   * Akka serialization, used by both persistence and remoting, needs to have
@@ -15,22 +17,46 @@ import com.lightbend.lagom.scaladsl.playjson.{JsonSerializerRegistry, JsonSerial
   */
 object $name;format="Camel"$SerializerRegistry extends JsonSerializerRegistry {
   override def serializers = List(
-    // Aggregates
-    JsonSerializer[$name;format="Camel"$],
+    // models
+    JsonSerializer[$name;format="Camel"$Aggregate],
+    JsonSerializer[$name;format="Camel"$Session],
+    JsonSerializer[$name;format="Camel"$Status],
 
     // Commands
     JsonSerializer[Create$name;format="Camel"$],
-    JsonSerializer[StartAuction],
-    JsonSerializer[UpdatePrice],
-    JsonSerializer[FinishAuction],
+    JsonSerializer[Verify$name;format="Camel"$.type],
+    JsonSerializer[GrantAccessToken],
+    JsonSerializer[ExtendAccessToken],
+    JsonSerializer[RevokeAccessToken.type],
+    JsonSerializer[IsSessionExpired.type],
+    JsonSerializer[UnVerify$name;format="Camel"$.type],
+    JsonSerializer[Delete$name;format="Camel"$.type],
 
     //Queries
     JsonSerializer[Get$name;format="Camel"$.type],
 
     // Events
+    JsonSerializer[$name;format="Camel"$Verified],
+    JsonSerializer[$name;format="Camel"$UnVerified],
+    JsonSerializer[AccessTokenGranted],
+    JsonSerializer[AccessTokenRevoked],
     JsonSerializer[$name;format="Camel"$Created],
-    JsonSerializer[AuctionStarted],
-    JsonSerializer[PriceUpdated],
-    JsonSerializer[AuctionFinished]
+    JsonSerializer[$name;format="Camel"$Deleted]
+  )
+
+  private val emailAdded = new JsonMigration(2) {
+    override def transform(fromVersion: Int, json: JsObject): JsObject = {
+      if (fromVersion < 2) {
+        json + ("email" -> JsString("example@company.ca"))
+      } else {
+        json
+      }
+    }
+  }
+
+  override def migrations = Map[String, JsonMigration](
+    classOf[Create$name;format="Camel"$].getName -> emailAdded,
+    classOf[$name;format="Camel"$Created].getName -> emailAdded,
+    classOf[$name;format="Camel"$Aggregate].getName -> emailAdded
   )
 }
