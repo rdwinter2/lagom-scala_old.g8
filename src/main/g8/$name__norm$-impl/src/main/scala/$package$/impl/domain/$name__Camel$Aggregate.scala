@@ -12,7 +12,6 @@ import java.util.UUID
 import play.api.libs.json.{Format, Json}
 import scala.collection.immutable.Seq
 
-
 object $name;format="Camel"$Status extends Enumeration {
   val Created, Auction, Completed, Cancelled = Value
   type Status = Value
@@ -30,7 +29,6 @@ case class $name;format="Camel"$(
   reservePrice: Int,
   price: Option[Int],
   status: $name;format="Camel"$Status.Status,
-  auctionDuration: Duration,
   auctionStart: Option[Instant],
   auctionEnd: Option[Instant],
   auctionWinner: Option[UUID]
@@ -41,7 +39,7 @@ case class $name;format="Camel"$(
     copy(
       status = $name;format="Camel"$Status.Auction,
       auctionStart = Some(startTime),
-      auctionEnd = Some(startTime.plus(auctionDuration))
+      auctionEnd = Some(startTime)
     )
   }
 

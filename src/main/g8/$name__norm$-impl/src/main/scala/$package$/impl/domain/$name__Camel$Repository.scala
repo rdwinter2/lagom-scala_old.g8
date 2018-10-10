@@ -15,7 +15,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 private[impl] class $name;format="Camel"$Repository(session: CassandraSession)(implicit ec: ExecutionContext, mat: Materializer) {
 
-  def get$name;format="Camel"$sForUser(creatorId: UUID, status: api.$name;format="Camel"$Status.Status, page: Option[String], fetchSize: Int): Future[utils.PagingState[api.$name;format="Camel"$Summary]] = {
+  def get$name;format="Camel"$sForUser(creatorId: UUID, status: $name;format="Camel"$Status.Status, page: Option[String], fetchSize: Int): Future[utils.PagingState[api.$name;format="Camel"$Summary]] = {
     for {
       count <- count$name;format="Camel"$sByCreatorInStatus(creatorId, status)
       $name;format="camel"$sWithNextPage <- select$name;format="Camel"$sByCreatorInStatusWithPaging(creatorId, status, page, fetchSize)
@@ -26,7 +26,7 @@ private[impl] class $name;format="Camel"$Repository(session: CassandraSession)(i
     }
   }
 
-  private def count$name;format="Camel"$sByCreatorInStatus(creatorId: UUID, status: api.$name;format="Camel"$Status.Status) = {
+  private def count$name;format="Camel"$sByCreatorInStatus(creatorId: UUID, status: $name;format="Camel"$Status.Status) = {
     session.selectOne("""
       SELECT COUNT(*) FROM $name;format="camel"$SummaryByCreatorAndStatus
       WHERE creatorId = ? AND status = ?

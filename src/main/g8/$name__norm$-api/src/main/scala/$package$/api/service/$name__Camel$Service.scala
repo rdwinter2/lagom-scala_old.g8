@@ -57,7 +57,7 @@ trait $name;format="Camel"$Service extends Service {
     * @return The created $name;format="camel"$ with its ID populated.
     *
     * Example:
-    * curl -H "Content-Type: application/json" -X POST -d '{"data1": "123", "data2": "xyz"}' http://localhost:9000/api/$plural_name;format="lower,hyphen"$
+    * curl -H "Content-Type: application/json" -X POST -d '{"creator": "71247ae7-81a2-478d-8895-484e35e75c95", "title": "xyz", "description": "abc", "currencyId": "USD", "increment": 2, "reservePrice": 4, "auctionDuration": 5}' http://localhost:9000/api/$plural_name;format="lower,hyphen"$
     */
   def create$name;format="Camel"$: ServiceCall[$name;format="Camel"$, $name;format="Camel"$]
 

@@ -17,7 +17,6 @@ case class $name;format="Camel"$(
   reservePrice: Int,
   price: Option[Int],
   status: $name;format="Camel"$Status.Status,
-  auctionDuration: Duration,
   auctionStart: Option[Instant],
   auctionEnd: Option[Instant],
   auctionWinner: Option[UUID]
@@ -34,9 +33,8 @@ object $name;format="Camel"$ {
     description: String,
     currencyId: String,
     increment: Int,
-    reservePrice: Int,
-    auctionDuration: Duration
-  ) = $name;format="Camel"$(None, creator, title, description, currencyId, increment, reservePrice, None, $name;format="Camel"$Status.Created, auctionDuration,
+    reservePrice: Int
+  ) = $name;format="Camel"$(None, creator, title, description, currencyId, increment, reservePrice, None, $name;format="Camel"$Status.Created,
     None, None, None)
 }
 

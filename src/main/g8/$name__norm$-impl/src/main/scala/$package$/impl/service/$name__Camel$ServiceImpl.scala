@@ -33,7 +33,7 @@ class $name;format="Camel"$ServiceImpl(
   override def create$name;format="Camel"$: ServiceCall[$name;format="Camel"$, $name;format="Camel"$] =  ServerServiceCall { $name;format="camel"$ =>
     val $name;format="camel"$Id = UUIDs.timeBased()
     val p$name;format="Camel"$ = $name;format="Camel"$($name;format="camel"$Id, $name;format="camel"$.creator, $name;format="camel"$.title, $name;format="camel"$.description, $name;format="camel"$.currencyId, $name;format="camel"$.increment,
-      $name;format="camel"$.reservePrice, None, $name;format="Camel"$Status.Created, $name;format="camel"$.auctionDuration, None, None, None)
+      $name;format="camel"$.reservePrice, None, $name;format="Camel"$Status.Created, None, None, None)
     entityRef($name;format="camel"$Id).ask(Create$name;format="Camel"$(p$name;format="Camel"$)).map { _ =>
       convert$name;format="Camel"$(p$name;format="Camel"$)
     }
@@ -50,9 +50,9 @@ class $name;format="Camel"$ServiceImpl(
 //    $name;format="camel"$Repository.get$name;format="Camel"$sForUser(id, status, page, DefaultFetchSize)
 //  }
 
-  private def convert$name;format="Camel"$($name;format="camel"$: api.$name;format="Camel"$): $name;format="Camel"$ = {
+  private def convert$name;format="Camel"$($name;format="camel"$: $name;format="Camel"$): api.$name;format="Camel"$ = {
     api.$name;format="Camel"$(Some($name;format="camel"$.id), $name;format="camel"$.creator, $name;format="camel"$.title, $name;format="camel"$.description, $name;format="camel"$.currencyId, $name;format="camel"$.increment,
-      $name;format="camel"$.reservePrice, $name;format="camel"$.price, convertStatus($name;format="camel"$.status), $name;format="camel"$.auctionDuration, $name;format="camel"$.auctionStart, $name;format="camel"$.auctionEnd,
+      $name;format="camel"$.reservePrice, $name;format="camel"$.price, convertStatus($name;format="camel"$.status), $name;format="camel"$.auctionStart, $name;format="camel"$.auctionEnd,
       $name;format="camel"$.auctionWinner)
   }
 
