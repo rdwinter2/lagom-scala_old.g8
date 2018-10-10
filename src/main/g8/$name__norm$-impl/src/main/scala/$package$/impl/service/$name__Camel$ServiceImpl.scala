@@ -30,7 +30,7 @@ class $name;format="Camel"$ServiceImpl(
   )(implicit ec: ExecutionContext)
   extends $name;format="Camel"$Service {
 
-  override def create$name;format="Camel"$: ServiceCall[$name;format="Camel"$, $name;format="Camel"$] =  ServerServiceCall { $name;format="camel"$ =>
+  override def create$name;format="Camel"$: ServiceCall[api.$name;format="Camel"$, api.$name;format="Camel"$] =  ServerServiceCall { $name;format="camel"$ =>
     val $name;format="camel"$Id = UUIDs.timeBased()
     val p$name;format="Camel"$ = $name;format="Camel"$($name;format="camel"$Id, $name;format="camel"$.creator, $name;format="camel"$.title, $name;format="camel"$.description, $name;format="camel"$.currencyId, $name;format="camel"$.increment,
       $name;format="camel"$.reservePrice, None, $name;format="Camel"$Status.Created, None, None, None)
@@ -39,7 +39,7 @@ class $name;format="Camel"$ServiceImpl(
     }
   }
 
-  override def get$name;format="Camel"$(id: UUID): ServiceCall[NotUsed, $name;format="Camel"$] = ServerServiceCall { _ =>
+  override def get$name;format="Camel"$(id: UUID): ServiceCall[NotUsed, api.$name;format="Camel"$] = ServerServiceCall { _ =>
     entityRef(id).ask(Get$name;format="Camel"$).map {
       case Some($name;format="camel"$) => convert$name;format="Camel"$($name;format="camel"$)
       case None => throw NotFound("$name$ " + id + " not found");
