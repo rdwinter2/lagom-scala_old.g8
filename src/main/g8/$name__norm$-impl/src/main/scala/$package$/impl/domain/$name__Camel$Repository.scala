@@ -5,9 +5,9 @@ import java.util.UUID
 import akka.Done
 import akka.stream.Materializer
 import com.datastax.driver.core._
-import com.example.auction.$name;format="camel"$.api.$name;format="Camel"$Summary
+import com.example.auction.$name;format="camel"$.api.aggregate.$name;format="Camel"$Summary
 import com.example.auction.$name;format="camel"$.api
-import com.example.auction.utils
+import com.example.auction.common.utils
 import com.lightbend.lagom.scaladsl.persistence.ReadSideProcessor
 import com.lightbend.lagom.scaladsl.persistence.cassandra.{CassandraReadSide, CassandraSession}
 import akka.persistence.cassandra.ListenableFutureConverter
