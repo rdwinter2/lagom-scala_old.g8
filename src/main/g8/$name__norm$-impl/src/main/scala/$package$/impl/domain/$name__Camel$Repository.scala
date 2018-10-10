@@ -17,7 +17,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 private[impl] class $name;format="Camel"$Repository(session: CassandraSession)(implicit ec: ExecutionContext, mat: Materializer) {
 
-  def get$name;format="Camel"$sForUser(creatorId: UUID, status: api.$name;format="Camel"$Status.Status, page: Option[String], fetchSize: Int): Future[utils.PagingState[$name;format="Camel"$Summary]] = {
+  def get$name;format="Camel"$sForUser(creatorId: UUID, status: $name;format="Camel"$Status.Status, page: Option[String], fetchSize: Int): Future[utils.PagingState[$name;format="Camel"$Summary]] = {
     for {
       count <- count$name;format="Camel"$sByCreatorInStatus(creatorId, status)
       $name;format="camel"$sWithNextPage <- select$name;format="Camel"$sByCreatorInStatusWithPaging(creatorId, status, page, fetchSize)
@@ -28,7 +28,7 @@ private[impl] class $name;format="Camel"$Repository(session: CassandraSession)(i
     }
   }
 
-  private def count$name;format="Camel"$sByCreatorInStatus(creatorId: UUID, status: api.$name;format="Camel"$Status.Status) = {
+  private def count$name;format="Camel"$sByCreatorInStatus(creatorId: UUID, status: $name;format="Camel"$Status.Status) = {
     session.selectOne("""
       SELECT COUNT(*) FROM $name;format="camel"$SummaryByCreatorAndStatus
       WHERE creatorId = ? AND status = ?
@@ -40,7 +40,7 @@ private[impl] class $name;format="Camel"$Repository(session: CassandraSession)(i
     }
   }
 
-  private def select$name;format="Camel"$sByCreatorInStatus(creatorId: UUID, status: api.$name;format="Camel"$Status.Status, offset: Int, limit: Int) = {
+  private def select$name;format="Camel"$sByCreatorInStatus(creatorId: UUID, status: $name;format="Camel"$Status.Status, offset: Int, limit: Int) = {
     session.selectAll("""
       SELECT * FROM $name;format="camel"$SummaryByCreatorAndStatus
       WHERE creatorId = ? AND status = ?
@@ -56,7 +56,7 @@ private[impl] class $name;format="Camel"$Repository(session: CassandraSession)(i
     * Motivation: https://discuss.lightbend.com/t/how-to-specify-pagination-for-select-query-read-side/870
     */
   private def select$name;format="Camel"$sByCreatorInStatusWithPaging(creatorId: UUID,
-                                                     status: api.$name;format="Camel"$Status.Status,
+                                                     status: $name;format="Camel"$Status.Status,
                                                      page: Option[String],
                                                      fetchSize: Int): Future[(Seq[$name;format="Camel"$Summary], Option[String])] = {
     val statement = new SimpleStatement(
@@ -94,7 +94,7 @@ private[impl] class $name;format="Camel"$Repository(session: CassandraSession)(i
       $name;format="camel"$.getString("title"),
       $name;format="camel"$.getString("currencyId"),
       $name;format="camel"$.getInt("reservePrice"),
-      api.$name;format="Camel"$Status.withName($name;format="camel"$.getString("status"))
+      $name;format="Camel"$Status.withName($name;format="camel"$.getString("status"))
     )
   }
 }
@@ -110,8 +110,8 @@ private[impl] class $name;format="Camel"$EventProcessor(session: CassandraSessio
       .setGlobalPrepare(createTables)
       .setPrepare(_ => prepareStatements())
       .setEventHandler[$name;format="Camel"$Created](e => insert$name;format="Camel"$(e.event.$name;format="camel"$))
-      .setEventHandler[AuctionStarted](e => update$name;format="Camel"$SummaryStatus(e.entityId, api.$name;format="Camel"$Status.Auction))
-      .setEventHandler[AuctionFinished](e => update$name;format="Camel"$SummaryStatus(e.entityId, api.$name;format="Camel"$Status.Completed))
+      .setEventHandler[AuctionStarted](e => update$name;format="Camel"$SummaryStatus(e.entityId, $name;format="Camel"$Status.Auction))
+      .setEventHandler[AuctionFinished](e => update$name;format="Camel"$SummaryStatus(e.entityId, $name;format="Camel"$Status.Completed))
       .build
   }
 
@@ -194,7 +194,7 @@ private[impl] class $name;format="Camel"$EventProcessor(session: CassandraSessio
     )
   }
 
-  private def update$name;format="Camel"$SummaryStatus($name;format="camel"$Id: String, status: api.$name;format="Camel"$Status.Status) = {
+  private def update$name;format="Camel"$SummaryStatus($name;format="camel"$Id: String, status: $name;format="Camel"$Status.Status) = {
     val $name;format="camel"$Uuid = UUID.fromString($name;format="camel"$Id)
     select$name;format="Camel"$Creator($name;format="camel"$Uuid).map {
       case None => throw new IllegalStateException("No $name;format="camel"$Creator found for $name;format="camel"$Id " + $name;format="camel"$Id)
