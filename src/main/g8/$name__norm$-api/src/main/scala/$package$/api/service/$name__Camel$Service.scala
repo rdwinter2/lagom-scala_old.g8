@@ -1,6 +1,6 @@
 package $package$.api.service
 
-import $package$.api.aggregate.$name;format="Camel"$
+import $package$.api._
 import $package$.api.request._
 import $package$.api.response._
 

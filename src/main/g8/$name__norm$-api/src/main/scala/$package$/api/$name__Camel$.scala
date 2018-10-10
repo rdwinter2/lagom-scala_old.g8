@@ -1,4 +1,4 @@
-package $package$.api.aggregate
+package $package$.api
 
 import $organization$.common.utils.JsonFormats._
 

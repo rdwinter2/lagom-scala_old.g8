@@ -4,7 +4,7 @@ import $organization$.common.authentication.AuthenticationServiceComposition._
 import $organization$.common.authentication.TokenContent
 import $organization$.common.utils.JsonFormats._
 import $organization$.common.validation.ValidationUtil._
-//import $package$.api.aggregate._
+import $package$.api
 import $package$.api.request._
 import $package$.api.response._
 import $package$.api.service.{$name;format="Camel"$Service}
@@ -41,16 +41,31 @@ class $name;format="Camel"$ServiceImpl(
 
   override def get$name;format="Camel"$(id: UUID): ServiceCall[NotUsed, $name;format="Camel"$] = ServerServiceCall { _ =>
     entityRef(id).ask(Get$name;format="Camel"$).map {
-      case Some(item) => convert$name;format="Camel"$(item)
+      case Some($name;format="camel"$) => convert$name;format="Camel"$($name;format="camel"$)
       case None => throw NotFound("$name$ " + id + " not found");
     }
   }
 
 //  override def getAll$plural_name;format="Camel"$(page: Option[String]): ServiceCall[NotUsed, utils.PagingState[$name;format="Camel"$Summary]] = ServiceCall { _ =>
-//    $name;format="camel"$Repository.getItemsForUser(id, status, page, DefaultFetchSize)
+//    $name;format="camel"$Repository.get$name;format="Camel"$sForUser(id, status, page, DefaultFetchSize)
 //  }
 
-  private def entityRef(itemId: UUID) = entityRefString(itemId.toString)
+  private def convert$name;format="Camel"$($name;format="camel"$: api.$name;format="Camel"$): $name;format="Camel"$ = {
+    api.$name;format="Camel"$(Some($name;format="camel"$.id), $name;format="camel"$.creator, $name;format="camel"$.title, $name;format="camel"$.description, $name;format="camel"$.currencyId, $name;format="camel"$.increment,
+      $name;format="camel"$.reservePrice, $name;format="camel"$.price, convertStatus($name;format="camel"$.status), $name;format="camel"$.auctionDuration, $name;format="camel"$.auctionStart, $name;format="camel"$.auctionEnd,
+      $name;format="camel"$.auctionWinner)
+  }
 
-  private def entityRefString(itemId: String) = persistentEntityRegistry.refFor[ItemEntity](itemId)
+  private def convertStatus(status: $name;format="Camel"$Status.Status): api.$name;format="Camel"$Status.Status = {
+    status match {
+      case $name;format="Camel"$Status.Created => api.$name;format="Camel"$Status.Created
+      case $name;format="Camel"$Status.Auction => api.$name;format="Camel"$Status.Auction
+      case $name;format="Camel"$Status.Completed => api.$name;format="Camel"$Status.Completed
+      case $name;format="Camel"$Status.Cancelled => api.$name;format="Camel"$Status.Cancelled
+    }
+  }
+
+  private def entityRef($name;format="camel"$Id: UUID) = entityRefString($name;format="camel"$Id.toString)
+
+  private def entityRefString($name;format="camel"$Id: String) = persistentEntityRegistry.refFor[$name;format="Camel"$Entity]($name;format="camel"$Id)
 }
