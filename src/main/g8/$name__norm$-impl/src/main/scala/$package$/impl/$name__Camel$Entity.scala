@@ -32,7 +32,7 @@ class $name;format="Camel"$Entity extends PersistentEntity {
       .onCommand[Create$name;format="Camel"$, Either[ErrorResponse, String]] {
       // Validate command
       case (Create$name;format="Camel"$(id, $name;format="camel"$name, password, email), ctx, _) =>
-        log.info(s"Entity $$name;format="camel"$name: Create$name;format="Camel"$ Command.")
+        log.info(s"Entity \$$name;format="camel"$name: Create$name;format="Camel"$ Command.")
         if (password.length >= 8) {
           // Persist Event and Publish Internal Event
           ctx.thenPersist($name;format="Camel"$Created(
@@ -57,7 +57,7 @@ class $name;format="Camel"$Entity extends PersistentEntity {
     }
       .onEvent {
         case ($name;format="Camel"$Created(id, $name;format="camel"$name, hash, status, email), _) =>
-          log.info(s"Entity $$name;format="camel"$name: $name;format="Camel"$Created Event.")
+          log.info(s"Entity \$$name;format="camel"$name: $name;format="Camel"$Created Event.")
           Some($name;format="Camel"$Aggregate(
             status,
             id,
