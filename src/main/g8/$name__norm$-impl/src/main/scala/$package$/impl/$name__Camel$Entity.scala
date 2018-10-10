@@ -84,7 +84,7 @@ class $name;format="Camel"$Entity extends PersistentEntity {
     }
       .onCommand[Delete$name;format="Camel"$.type , Done] {
       case (Delete$name;format="Camel"$, ctx, Some(u)) =>
-        log.info(s"Entity ${u.$name;format="camel"$name}: Delete$name;format="Camel"$ Command.")
+        log.info(s"Entity \${u.username}: Delete$name;format="Camel"$ Command.")
         u match {
           case $name;format="Camel"$Aggregate(_, id, _, _, _, None) =>
             ctx.thenPersist($name;format="Camel"$Deleted(id))(_ => ctx.reply(Done))
@@ -97,13 +97,13 @@ class $name;format="Camel"$Entity extends PersistentEntity {
     }
       .onEvent {
         case ($name;format="Camel"$Verified(_), state @ Some(u)) =>
-          log.info(s"Entity ${u.$name;format="camel"$name}: $name;format="Camel"$Verified Event.")
+          log.info(s"Entity \${u.$name;format="camel"$name}: $name;format="Camel"$Verified Event.")
           state.map($name;format="camel"$ => $name;format="camel"$.copy(status = $name;format="Camel"$Status.VERIFIED))
         case (AccessTokenRevoked(_), state @ Some(u)) =>
-          log.info(s"Entity ${u.$name;format="camel"$name}: AccessTokenRevoked Event.")
+          log.info(s"Entity \${u.$name;format="camel"$name}: AccessTokenRevoked Event.")
           state.map($name;format="camel"$ => $name;format="camel"$.copy(currentSession = None))
         case ($name;format="Camel"$Deleted(_), Some(u)) =>
-          log.info(s"Entity ${u.$name;format="camel"$name}: $name;format="Camel"$Deleted Event.")
+          log.info(s"Entity \${u.$name;format="camel"$name}: $name;format="Camel"$Deleted Event.")
           None
       }
 
@@ -111,13 +111,13 @@ class $name;format="Camel"$Entity extends PersistentEntity {
     Actions()
       .onCommand[Verify$name;format="Camel"$.type, Done] {
       case (Verify$name;format="Camel"$, ctx, Some(u)) =>
-        log.info(s"Entity ${u.$name;format="camel"$name}: Verify$name;format="Camel"$ Command.")
+        log.info(s"Entity \${u.$name;format="camel"$name}: Verify$name;format="Camel"$ Command.")
         ctx.reply(Done)
         ctx.done
     }
       .onCommand[GrantAccessToken, Either[ErrorResponse, $name;format="Camel"$Session]] {
       case (GrantAccessToken(password), ctx, state @ Some(u)) =>
-        log.info(s"Entity ${u.$name;format="camel"$name}: GrantAccessToken Command.")
+        log.info(s"Entity \${u.$name;format="camel"$name}: GrantAccessToken Command.")
         state match {
           case Some($name;format="Camel"$Aggregate(_, $name;format="camel"$Id, _, _, hash, Some(session))) if BCrypt.checkpw(password, hash) =>
             if (session.createdOn + $name;format="Camel"$Session.EXPIRY < System.currentTimeMillis()) {
@@ -140,7 +140,7 @@ class $name;format="Camel"$Entity extends PersistentEntity {
       }
     }.onCommand[ExtendAccessToken, Either[ErrorResponse, $name;format="Camel"$Session]] {
       case (ExtendAccessToken(refresh_token), ctx, state @ Some(u)) =>
-        log.info(s"Entity ${u.$name;format="camel"$name}: ExtendAccessToken Command.")
+        log.info(s"Entity \${u.$name;format="camel"$name}: ExtendAccessToken Command.")
         state match {
           case Some($name;format="Camel"$Aggregate(_, $name;format="camel"$Id, _, _, _, Some(session))) if session.refresh_token == refresh_token =>
             val newSession = $name;format="Camel"$Session()
@@ -154,7 +154,7 @@ class $name;format="Camel"$Entity extends PersistentEntity {
         }
     }.onCommand[RevokeAccessToken.type , Done] {
       case (RevokeAccessToken, ctx, state @ Some(u)) =>
-        log.info(s"Entity ${u.$name;format="camel"$name}: RevokeAccessToken Command.")
+        log.info(s"Entity \${u.$name;format="camel"$name}: RevokeAccessToken Command.")
         state match {
           case Some($name;format="Camel"$Aggregate(_, _, _, _, _, None)) =>
             ctx.reply(Done)
@@ -181,7 +181,7 @@ class $name;format="Camel"$Entity extends PersistentEntity {
         }
     }.onCommand[Delete$name;format="Camel"$.type , Done] {
       case (Delete$name;format="Camel"$, ctx, state @ Some(u)) =>
-        log.info(s"Entity ${u.$name;format="camel"$name}: Delete$name;format="Camel"$ Command.")
+        log.info(s"Entity \${u.$name;format="camel"$name}: Delete$name;format="Camel"$ Command.")
         state match {
           case Some($name;format="Camel"$Aggregate(_, id, _, _, _, None)) =>
             ctx.thenPersist($name;format="Camel"$Deleted(id))(_ => ctx.reply(Done))
@@ -193,7 +193,7 @@ class $name;format="Camel"$Entity extends PersistentEntity {
         }
     }.onCommand[UnVerify$name;format="Camel"$.type , Done] {
       case (UnVerify$name;format="Camel"$, ctx, state @ Some(u)) =>
-        log.info(s"Entity ${u.$name;format="camel"$name}: UnVerify$name;format="Camel"$ Command.")
+        log.info(s"Entity \${u.$name;format="camel"$name}: UnVerify$name;format="Camel"$ Command.")
         state match {
           case Some($name;format="Camel"$Aggregate(_, id, _, _, _, _)) =>
             ctx.thenPersist($name;format="Camel"$UnVerified(id))(_ => ctx.reply(Done))
@@ -204,16 +204,16 @@ class $name;format="Camel"$Entity extends PersistentEntity {
     }
       .onEvent {
         case (AccessTokenGranted(_, session), state @ Some(u)) =>
-          log.info(s"Entity ${u.$name;format="camel"$name}: AccessTokenGranted Event.")
+          log.info(s"Entity \${u.$name;format="camel"$name}: AccessTokenGranted Event.")
           state.map($name;format="camel"$ => $name;format="camel"$.copy(currentSession = Some(session)))
         case (AccessTokenRevoked(_), state @ Some(u)) =>
-          log.info(s"Entity ${u.$name;format="camel"$name}: AccessTokenRevoked Event.")
+          log.info(s"Entity \${u.$name;format="camel"$name}: AccessTokenRevoked Event.")
           state.map($name;format="camel"$ => $name;format="camel"$.copy(currentSession = None))
         case ($name;format="Camel"$Deleted(_), state @ Some(u)) =>
-          log.info(s"Entity ${u.$name;format="camel"$name}: $name;format="Camel"$Deleted Event.")
+          log.info(s"Entity \${u.$name;format="camel"$name}: $name;format="Camel"$Deleted Event.")
           None
         case ($name;format="Camel"$UnVerified(_), state @ Some(u)) =>
-          log.info(s"Entity ${u.$name;format="camel"$name}: $name;format="Camel"$UnVerified Event.")
+          log.info(s"Entity \${u.$name;format="camel"$name}: $name;format="Camel"$UnVerified Event.")
           state.map($name;format="camel"$ => $name;format="camel"$.copy(status = $name;format="Camel"$Status.UNVERIFIED))
       }
 }
