@@ -1,6 +1,5 @@
 package $package$.impl.domain
 
-import $package$.api.aggregate.{$name;format="Camel"$Summary}
 import $package$.api
 
 import akka.Done
@@ -16,7 +15,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 private[impl] class $name;format="Camel"$Repository(session: CassandraSession)(implicit ec: ExecutionContext, mat: Materializer) {
 
-  def get$name;format="Camel"$sForUser(creatorId: UUID, status: api.$name;format="Camel"$Status.Status, page: Option[String], fetchSize: Int): Future[utils.PagingState[$name;format="Camel"$Summary]] = {
+  def get$name;format="Camel"$sForUser(creatorId: UUID, status: api.$name;format="Camel"$Status.Status, page: Option[String], fetchSize: Int): Future[utils.PagingState[api.$name;format="Camel"$Summary]] = {
     for {
       count <- count$name;format="Camel"$sByCreatorInStatus(creatorId, status)
       $name;format="camel"$sWithNextPage <- select$name;format="Camel"$sByCreatorInStatusWithPaging(creatorId, status, page, fetchSize)
@@ -57,7 +56,7 @@ private[impl] class $name;format="Camel"$Repository(session: CassandraSession)(i
   private def select$name;format="Camel"$sByCreatorInStatusWithPaging(creatorId: UUID,
                                                      status: $name;format="Camel"$Status.Status,
                                                      page: Option[String],
-                                                     fetchSize: Int): Future[(Seq[$name;format="Camel"$Summary], Option[String])] = {
+                                                     fetchSize: Int): Future[(Seq[api.$name;format="Camel"$Summary], Option[String])] = {
     val statement = new SimpleStatement(
       """
           SELECT * FROM $name;format="camel"$SummaryByCreatorAndStatus
@@ -87,8 +86,8 @@ private[impl] class $name;format="Camel"$Repository(session: CassandraSession)(i
     })
   }
 
-  private def convert$name;format="Camel"$Summary($name;format="camel"$: Row): $name;format="Camel"$Summary = {
-    $name;format="Camel"$Summary(
+  private def convert$name;format="Camel"$Summary($name;format="camel"$: Row): api.$name;format="Camel"$Summary = {
+    api.$name;format="Camel"$Summary(
       $name;format="camel"$.getUUID("$name;format="camel"$Id"),
       $name;format="camel"$.getString("title"),
       $name;format="camel"$.getString("currencyId"),
