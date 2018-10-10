@@ -71,7 +71,7 @@ class $name;format="Camel"$Entity extends PersistentEntity {
     Actions()
       .onCommand[Verify$name;format="Camel"$.type, Done] {
       case (Verify$name;format="Camel"$, ctx, Some(u)) =>
-        log.info(s"Entity ${u.$name;format="camel"$name}: Verify$name;format="Camel"$ Command.")
+        log.info(s"Entity \${u.$name;format="camel"$name}: Verify$name;format="Camel"$ Command.")
         ctx.thenPersist($name;format="Camel"$Verified(u.id))(_ => ctx.reply(Done))
     }.onCommand[GrantAccessToken, Either[ErrorResponse, $name;format="Camel"$Session]] {
       case (GrantAccessToken(_), ctx, _) =>
