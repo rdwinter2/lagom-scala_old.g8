@@ -234,13 +234,13 @@ class $name;format="Camel"$Entity extends PersistentEntity {
   override type Command = $name;format="Camel"$Command
   override type Event = $name;format="Camel"$Event
   override type State = Option[$name;format="Camel"$]
-
+*/
   /**
     * The initial state. This is used if there is no snapshotted state to be found.
     */
 /*
   override def initialState: Option[$name;format="Camel"$] = None
-
+*/
   /**
     * An entity can define different behaviours for different states, so the behaviour
     * is a function of the current state to a set of actions.

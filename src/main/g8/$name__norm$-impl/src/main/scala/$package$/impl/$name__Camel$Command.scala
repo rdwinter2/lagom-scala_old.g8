@@ -50,7 +50,7 @@ import java.time.LocalDateTime
 import java.util.UUID
 import play.api.libs.json.{Format, Json}
 import scala.collection.immutable.Seq
-
+*/
 /**
   * This is an event sourced entity. It has a state, [[$name;format="Camel"$State]], which
   * stores what the greeting should be (eg, "Hello").
