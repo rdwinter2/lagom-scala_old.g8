@@ -1,18 +1,17 @@
 package $package$.impl.domain
 
-import java.util.UUID
+import $package$.api.aggregate.{$name;format="Camel"$Summary}
+import $package$.api
 
 import akka.Done
-import akka.stream.Materializer
-import com.datastax.driver.core._
-import com.example.auction.$name;format="camel"$.api.aggregate.$name;format="Camel"$Summary
-import com.example.auction.$name;format="camel"$.api
-import com.example.auction.common.utils
-import com.lightbend.lagom.scaladsl.persistence.ReadSideProcessor
-import com.lightbend.lagom.scaladsl.persistence.cassandra.{CassandraReadSide, CassandraSession}
 import akka.persistence.cassandra.ListenableFutureConverter
-
+import akka.stream.Materializer
 import collection.JavaConverters._
+import com.datastax.driver.core._
+import com.example.auction.common.utils
+import com.lightbend.lagom.scaladsl.persistence.cassandra.{CassandraReadSide, CassandraSession}
+import com.lightbend.lagom.scaladsl.persistence.ReadSideProcessor
+import java.util.UUID
 import scala.concurrent.{ExecutionContext, Future}
 
 private[impl] class $name;format="Camel"$Repository(session: CassandraSession)(implicit ec: ExecutionContext, mat: Materializer) {
