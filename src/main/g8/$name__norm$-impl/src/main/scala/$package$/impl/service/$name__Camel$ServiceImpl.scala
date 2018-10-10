@@ -30,7 +30,7 @@ class $name;format="Camel"$ServiceImpl(
   )(implicit ec: ExecutionContext)
   extends $name;format="Camel"$Service {
 
-  override def create$name;format="Camel"$: ServiceCall[create$name;format="Camel"$, create$name;format="Camel"$] =  ServerServiceCall { $name;format="camel"$ =>
+  override def create$name;format="Camel"$: ServiceCall[$name;format="Camel"$, $name;format="Camel"$] =  ServerServiceCall { $name;format="camel"$ =>
     val $name;format="camel"$Id = UUIDs.timeBased()
     val p$name;format="Camel"$ = $name;format="Camel"$($name;format="camel"$Id, $name;format="camel"$.creator, $name;format="camel"$.title, $name;format="camel"$.description, $name;format="camel"$.currencyId, $name;format="camel"$.increment,
       $name;format="camel"$.reservePrice, None, $name;format="Camel"$Status.Created, $name;format="camel"$.auctionDuration, None, None, None)

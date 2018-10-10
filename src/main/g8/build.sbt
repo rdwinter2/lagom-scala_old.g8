@@ -71,25 +71,25 @@ lazy val $name;format="camel"$Impl = (project in file("$name;format="norm"$-impl
   .settings(lagomForkedTestSettings: _*)
   .dependsOn($name;format="camel"$Api, `common`, `base64`)
 
-lazy val $name;format="camel"$StreamApi = (project in file("$name;format="norm"$-stream-api"))
-  .settings(commonSettings: _*)
-  .settings(
-    libraryDependencies ++= Seq(
-      lagomScaladslApi
-    )
-  )
-
-lazy val $name;format="camel"$StreamImpl = (project in file("$name;format="norm"$-stream-impl"))
-  .settings(commonSettings: _*)
-  .enablePlugins(LagomScala)
-  .settings(
-    libraryDependencies ++= Seq(
-      lagomScaladslTestKit,
-      macwire,
-      scalaTest
-    )
-  )
-  .dependsOn($name;format="camel"$StreamApi, $name;format="camel"$Api)
+//lazy val $name;format="camel"$StreamApi = (project in file("$name;format="norm"$-stream-api"))
+//  .settings(commonSettings: _*)
+//  .settings(
+//    libraryDependencies ++= Seq(
+//      lagomScaladslApi
+//    )
+//  )
+//
+//lazy val $name;format="camel"$StreamImpl = (project in file("$name;format="norm"$-stream-impl"))
+//  .settings(commonSettings: _*)
+//  .enablePlugins(LagomScala)
+//  .settings(
+//    libraryDependencies ++= Seq(
+//      lagomScaladslTestKit,
+//      macwire,
+//      scalaTest
+//    )
+//  )
+//  .dependsOn($name;format="camel"$StreamApi, $name;format="camel"$Api)
 
 def commonSettings: Seq[Setting[_]] = Seq(
 )
