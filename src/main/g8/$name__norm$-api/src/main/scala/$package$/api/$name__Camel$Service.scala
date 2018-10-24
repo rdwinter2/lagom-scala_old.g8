@@ -37,7 +37,7 @@ trait $name;format="Camel"$Service extends Service {
   def create$name;format="Camel"$: ServiceCall[Create$name;format="Camel"$Request, Either[ErrorResponse, Create$name;format="Camel"$Response]]
 
   /**
-    * Get a "$name"$" with the given surrogate key ($name;format="camel"$Id).
+    * Get a "$name$" with the given surrogate key ($name;format="camel"$Id).
     *
     * @param id The $name;format="camel"$Id of the "$name$" to get.
     * @return The "$name$" resource.
