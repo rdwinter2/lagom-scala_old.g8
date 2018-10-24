@@ -1,4 +1,4 @@
-package $package$.impl.service
+package $package$.impl
 
 import $organization$.common.authentication.AuthenticationServiceComposition._
 import $organization$.common.authentication.TokenContent

@@ -12,164 +12,96 @@ class $name;format="Camel"$ReadSideProcessor(readSide: CassandraReadSide, sessio
                            (implicit ec: ExecutionContext)
   extends ReadSideProcessor[$name;format="Camel"$Event] {
 
-  private val log = LoggerFactory.getLogger(classOf[$name;format="Camel"$ReadSideProcessor])
+//  private val log = LoggerFactory.getLogger(classOf[$name;format="Camel"$ReadSideProcessor])
 
   // Cassandra optimization: prepared statement
-  private var insert$name;format="Camel"$Statement: PreparedStatement = _
-  private var delete$name;format="Camel"$Statement: PreparedStatement = _
-  private var insertSessionStatement: PreparedStatement = _
-  private var deleteSessionStatement: PreparedStatement = _
-  private var update$name;format="Camel"$StatusStatement: PreparedStatement = _
+//  private var insert$name;format="Camel"$Statement: PreparedStatement = _
+//  private var delete$name;format="Camel"$Statement: PreparedStatement = _
+//  private var insertSessionStatement: PreparedStatement = _
+//  private var deleteSessionStatement: PreparedStatement = _
+//  private var update$name;format="Camel"$StatusStatement: PreparedStatement = _
 
 
   def buildHandler: ReadSideHandler[$name;format="Camel"$Event] = {
-    readSide.builder[$name;format="Camel"$Event]("$name;format="camel"$Offset")
-      .setGlobalPrepare(createTable)
-      .setPrepare { tag => prepareStatements()}
-      // React on listened Event "$name;format="Camel"$Created" and then call function $name;format="camel"$Created
-      .setEventHandler[$name;format="Camel"$Created]($name;format="camel"$Created)
-      .setEventHandler[$name;format="Camel"$Deleted]($name;format="camel"$Deleted)
-      .setEventHandler[AccessTokenGranted](accessTokenGranted)
-      .setEventHandler[AccessTokenRevoked](accessTokenRevoked)
-      .setEventHandler[$name;format="Camel"$Verified]($name;format="camel"$Verified)
-      .setEventHandler[$name;format="Camel"$UnVerified]($name;format="camel"$Unverified)
+    readSide.builder[$name;format="Camel"$Event]("$name;format="camel"$EventOffset")
+      .setGlobalPrepare( () => createTables() )
+      .setPrepare { _ => prepareStatements() }
+      .setEventHandler[$name;format="Camel"$CreatedEvent]($name;format="camel"$CreatedEventDML)
       .build()
   }
 
-  private def createTable(): Future[Done] = {
+  override def aggregateTags: Set[AggregateEventTag[$name;format="Camel"$Event]] =
+    $name;format="Camel"$Event.Tag.allTags
+
+  private def createTables(): Future[Done] = {
     for {
       _ <- session.executeCreateTable(
         """
-          |CREATE TABLE IF NOT EXISTS $name;format="camel"$s (
-          |   id text, $name;format="camel"$name text, email text, status text,
-          |   PRIMARY KEY (id)
-          |   )
+          |CREATE TABLE IF NOT EXISTS $name;format="snake,upper"$(
+          |  $name;format="snake,upper"$ID      varchar,
+          |  NATURAL_KEY                        varchar,
+          |  DATA                               varchar
+          |  PRIMARY KEY ($name;format="snake,upper"$ID)
+          |);
         """.stripMargin)
-
-      //_ <- session.executeWrite(
-      //  """
-      //    |ALTER TABLE $name;format="camel"$s ADD email text
-      //  """.stripMargin)
 
       _ <- session.executeCreateTable(
         """
-          |CREATE TABLE IF NOT EXISTS sessions (
-          |   access_token text, refresh_token text, $name;format="camel"$id text,
-          |   PRIMARY KEY (access_token)
-          |   )
-        """.stripMargin
-      )
+          |CREATE TABLE IF NOT EXISTS $name;format="snake,upper"$_BY_NATURAL_KEY(
+          |  NATURAL_KEY                        varchar,
+          |  $name;format="snake,upper"$ID      varchar
+          |  PRIMARY KEY (NATURAL_KEY)
+          |);
+        """.stripMargin)
     } yield Done
   }
 
+  private var $name;format="camel"$CreatedEventDMLStatement: PreparedStatement = _
+  private var $name;format="camel"$CreatedEventByNaturalKeyDMLStatement: PreparedStatement = _
   private def prepareStatements(): Future[Done] = {
     for {
-      insert$name;format="Camel"$ <- session.prepare(
+       insert$name;format="Camel"$ <- session.prepare(
+        """insert$name;format="Camel"$
+          |INSERT INTO $name;format="snake,upper"$(
+          |  $name;format="snake,upper"$ID,
+          |  NATURAL_KEY,
+          |  DATA
+          |  ) VALUES (
+          |  ?,
+          |  ?,
+          |  ?
+          |  );
+        """.stripMargin)
+       insert$name;format="Camel"$ByNaturalKey <- session.prepare(
         """
-          |INSERT INTO $name;format="camel"$s
-          |(id, $name;format="camel"$name, email, status)
-          |VALUES (?, ?, ?, ?)
-        """.stripMargin
-      )
-      verify$name;format="Camel"$ <- session.prepare(
-        """
-          |UPDATE $name;format="camel"$s
-          |SET status = ?
-          |WHERE id = ?
-        """.stripMargin
-      )
-      insertSession <- session.prepare(
-        """
-          |INSERT INTO sessions
-          |(access_token, refresh_token, $name;format="camel"$id)
-          |VALUES (?, ?, ?)
-        """.stripMargin
-      )
-      deleteSession <- session.prepare(
-        """
-          |DELETE
-          |FROM sessions
-          |WHERE access_token = ?
-        """.stripMargin
-      )
-      delete$name;format="Camel"$ <- session.prepare(
-        """
-          |DELETE
-          |FROM $name;format="camel"$s
-          |WHERE id = ?
-        """.stripMargin
-      )
+          |INSERT INTO $name;format="snake,upper"$_BY_NATURAL_KEY(
+          |  NATURAL_KEY,
+          |  $name;format="snake,upper"$ID
+          |  ) VALUES (
+          |  ?,
+          |  ?
+          |  );
+        """.stripMargin)
     } yield {
-      insert$name;format="Camel"$Statement = insert$name;format="Camel"$
-      delete$name;format="Camel"$Statement = delete$name;format="Camel"$
-      insertSessionStatement = insertSession
-      deleteSessionStatement = deleteSession
-      update$name;format="Camel"$StatusStatement = verify$name;format="Camel"$
+      $name;format="camel"$CreatedEventDMLStatement = insert$name;format="Camel"$
+      $name;format="camel"$CreatedEventByNaturalKeyDMLStatement = insert$name;format="Camel"$ByNaturalKey
       Done
     }
   }
 
-  private def $name;format="camel"$Created(e: EventStreamElement[$name;format="Camel"$Created]) = {
-    log.info("$name;format="Camel"$ReadSideProcessor received a $name;format="Camel"$CreatedEvent")
-    Future.successful {
-      val u = e.event
-      List(insert$name;format="Camel"$Statement.bind(
-        u.$name;format="camel"$Id.toString,
-        u.$name;format="camel"$name,
-        u.email,
-        u.status.toString
-      ))
-    }
+  private def $name;format="camel"$CreatedEventDML(eventElement: EventStreamElement[$name;format="Camel"$CreatedEvent]): Future[List[BoundStatement]] = {
+    Future.successful(
+      List(
+        $name;format="camel"$CreatedEventDMLStatement.bind(
+          eventElement.event.$name;format="camel"$Id,
+          eventElement.event.naturalKey,
+          eventElement.event.data
+       ),
+        $name;format="camel"$CreatedEventByNaturalKeyDMLStatement.bind(
+          eventElement.event.naturalKey,
+          eventElement.event.$name;format="camel"$Id
+        )
+      )
+    )
   }
-
-  private def accessTokenGranted(e: EventStreamElement[AccessTokenGranted]) = {
-    Future.successful {
-      val s = e.event.session
-      List(insertSessionStatement.bind(
-        s.access_token.toString,
-        s.refresh_token.toString,
-        e.event.$name;format="camel"$Id.toString
-      ))
-    }
-  }
-
-  private def accessTokenRevoked(e: EventStreamElement[AccessTokenRevoked]) = {
-    Future.successful {
-      val u = e.event
-      List(deleteSessionStatement.bind(
-        u.access_token.toString
-      ))
-    }
-  }
-
-  private def $name;format="camel"$Verified(e: EventStreamElement[$name;format="Camel"$Verified]) = {
-    Future.successful {
-      val u = e.event
-      List(update$name;format="Camel"$StatusStatement.bind(
-        $name;format="Camel"$Status.VERIFIED.toString,
-        u.$name;format="camel"$Id.toString
-      ))
-    }
-  }
-
-  private def $name;format="camel"$Unverified(e: EventStreamElement[$name;format="Camel"$UnVerified]) = {
-    Future.successful {
-      val u = e.event
-      List(update$name;format="Camel"$StatusStatement.bind(
-        $name;format="Camel"$Status.UNVERIFIED.toString,
-        u.$name;format="camel"$Id.toString
-      ))
-    }
-  }
-
-  private def $name;format="camel"$Deleted(e: EventStreamElement[$name;format="Camel"$Deleted]) = {
-    Future.successful {
-      val u = e.event
-      List(delete$name;format="Camel"$Statement.bind(
-        u.$name;format="camel"$Id.toString
-      ))
-    }
-  }
-
-  override def aggregateTags: Set[AggregateEventTag[$name;format="Camel"$Event]] = $name;format="Camel"$Event.Tag.allTags
 }

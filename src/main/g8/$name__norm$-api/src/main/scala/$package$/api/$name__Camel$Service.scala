@@ -27,9 +27,9 @@ import play.api.libs.json.{Format, Json}
 trait $name;format="Camel"$Service extends Service {
 
   /**
-    * Create a $name;format="camel"$.
+    * Create a "$name$".
     *
-    * @return The created $name;format="camel"$ with its ID populated.
+    * @return The created "$name$" with its surrogate key populated.
     *
     * Example:
     * curl -H "Content-Type: application/json" -X POST -d '{"creator": "71247ae7-81a2-478d-8895-484e35e75c95", "title": "xyz", "description": "abc", "currencyId": "USD", "increment": 2, "reservePrice": 4, "auctionDuration": 5}' http://localhost:9000/api/$plural_name;format="lower,hyphen"$
@@ -37,10 +37,10 @@ trait $name;format="Camel"$Service extends Service {
   def create$name;format="Camel"$: ServiceCall[Create$name;format="Camel"$Request, Either[ErrorResponse, Create$name;format="Camel"$Response]]
 
   /**
-    * Get a $name;format="camel"$ with the given ID.
+    * Get a "$name"$" with the given surrogate key ($name;format="camel"$Id).
     *
-    * @param id The ID of the $name;format="camel"$ to get.
-    * @return The $name;format="camel"$.
+    * @param id The $name;format="camel"$Id of the "$name$" to get.
+    * @return The "$name$" resource.
     *
     * Example:
     * curl http://localhost:9000/api/$plural_name;format="lower,hyphen"$/123e4567-e89b-12d3-a456-426655440000
@@ -48,15 +48,14 @@ trait $name;format="Camel"$Service extends Service {
   def get$name;format="Camel"$($name;format="camel"$Id: String): ServiceCall[NotUsed, Either[ErrorResponse, Get$name;format="Camel"$Response]]
 
   /**
-    * Get a $name;format="camel"$ with the given ID.
+    * Get all $name;format="camel"$.
     *
-    * @param id The ID of the $name;format="camel"$ to get.
-    * @return The $name;format="camel"$.
+    * @return A list of "$name$".
     *
     * Example:
     * curl http://localhost:9000/api/$plural_name;format="lower,hyphen"$
     */
-//  def getAll$plural_name;format="Camel"$(page: Option[String]): ServiceCall[NotUsed, utils.PagingState[$name;format="Camel"$Summary]]
+  def getAll$plural_name;format="Camel"$(page: Option[String]): ServiceCall[NotUsed, utils.PagingState[$name;format="Camel"$Summary]]
 
   def $name;format="camel"$Events: Topic[$name;format="Camel"$KafkaEvent]
 
