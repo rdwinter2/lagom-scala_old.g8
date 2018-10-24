@@ -5,7 +5,7 @@ import org.ensime.EnsimePlugin
 lazy val root = (project in file("."))
   .settings(name := "$name;format="norm"$")
   .aggregate(
-//    `common`,
+    `common`,
     $name;format="camel"$Api,
     $name;format="camel"$Impl
 //    $name;format="camel"$StreamApi,
@@ -22,6 +22,7 @@ scalaVersion in ThisBuild := "2.12.7"
 val macwire = "com.softwaremill.macwire" %% "macros" % "2.3.0" % "provided"
 val scalaTest = "org.scalatest" %% "scalatest" % "3.0.4" % Test
 val playJsonDerivedCodecs = "org.julienrf" %% "play-json-derived-codecs" % "4.0.0"
+val jbcrypt = "org.mindrot" % "jbcrypt" % "0.3m"
 val cuid = "cool.graph" % "cuid-java" % "0.1.1"
 val jwt = "com.pauldijou" %% "jwt-play-json" % "0.12.1"
 val accord = "com.wix" %% "accord-core" % "0.6.1"
@@ -43,7 +44,8 @@ lazy val `common` = (project in file("common"))
       lagomScaladslApi,
       lagomScaladslServer,
       jwt,
-      accord
+      accord,
+      playJsonDerivedCodecs
     )
   )
 
@@ -51,7 +53,8 @@ lazy val $name;format="camel"$Api = (project in file("$name;format="norm"$-api")
   .settings(commonSettings: _*)
   .settings(
     libraryDependencies ++= Seq(
-      lagomScaladslApi
+      lagomScaladslApi,
+      playJsonDerivedCodecs
     )
   )
   .dependsOn(`common`)
@@ -65,6 +68,7 @@ lazy val $name;format="camel"$Impl = (project in file("$name;format="norm"$-impl
       lagomScaladslKafkaBroker,
       lagomScaladslTestKit,
       macwire,
+      jbcrypt,
       scalaTest
     )
   )

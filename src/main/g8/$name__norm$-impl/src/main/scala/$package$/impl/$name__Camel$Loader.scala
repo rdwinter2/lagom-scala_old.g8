@@ -10,7 +10,7 @@ import com.lightbend.lagom.scaladsl.server._
 import com.softwaremill.macwire._
 import play.api.libs.ws.ahc.AhcWSComponents
 
-class $name;format="Camel"$ApplicationLoader extends LagomApplicationLoader {
+class $name;format="Camel"$Loader extends LagomApplicationLoader {
   override def load(context: LagomApplicationContext): $name;format="Camel"$Application =
     new $name;format="Camel"$Application(context) {
       override def serviceLocator: ServiceLocator = ServiceLocator.NoServiceLocator
