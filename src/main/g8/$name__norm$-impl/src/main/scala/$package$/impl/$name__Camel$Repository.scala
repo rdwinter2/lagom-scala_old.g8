@@ -43,7 +43,7 @@ class $name;format="Camel"$Repository(session: CassandraSession)(implicit ec: Ex
       """, $name;format="Camel"$Id).map {
       case None => throw new IllegalStateException("No $name$ found for surrogate key " + $name;format="Camel"$Id)
       case Some(row) =>
-        s"The $name$ for surrogate key: \$$name;format="Camel"$Id is natural key: ${row.getString("NATURAL_KEY")} and data: ${row.getString("DATA")}\n"
+        s"The $name$ for surrogate key: \$$name;format="Camel"$Id is natural key: \${row.getString("NATURAL_KEY")} and data: \${row.getString("DATA")}\n"
     }
   }
 }
