@@ -35,7 +35,8 @@ trait $name;format="Camel"$Service extends Service {
   /**
     * Create a "$name$".
     *
-    * @return The created "$name$" with its surrogate key populated.
+    * @return HTTP 200 status code if the "$name$" was created successfully.
+    *         HTTP 404 status code if one or more items in the [[Create$name;format="Camel"$Request]] failed vaildation.
     *
     * Example:
     * curl -H "Content-Type: application/json" -X POST -d '{"name": "test", "description": "test description"}' http://localhost:9000/api/$plural_name;format="lower,hyphen"$
@@ -46,7 +47,7 @@ trait $name;format="Camel"$Service extends Service {
     * Get a "$name$" with the given surrogate key ($name;format="camel"$Id).
     *
     * @param id The $name;format="camel"$Id of the "$name$" to get.
-    * @return The "$name$" resource.
+    * @return HTTP 200 status code with the current state of the "$name$" resource.
     *
     * Example:
     * curl http://localhost:9000/api/$plural_name;format="lower,hyphen"$/123e4567-e89b-12d3-a456-426655440000
