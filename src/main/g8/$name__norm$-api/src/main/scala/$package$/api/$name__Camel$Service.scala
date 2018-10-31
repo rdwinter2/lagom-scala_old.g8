@@ -32,43 +32,6 @@ import play.api.libs.json.{Format, Json}
   */
 trait $name;format="Camel"$Service extends Service {
 
-  /**
-    * Create a "$name$".
-    *
-    * @return HTTP 200 status code if the "$name$" was created successfully.
-    *         HTTP 404 status code if one or more items in the [[Create$name;format="Camel"$Request]] failed vaildation.
-    *
-    * Example:
-    * curl -H "Content-Type: application/json" -X POST -d '{"name": "test", "description": "test description"}' http://localhost:9000/api/$plural_name;format="lower,hyphen"$
-    */
-  def create$name;format="Camel"$: ServiceCall[Create$name;format="Camel"$Request, Either[ErrorResponse, Create$name;format="Camel"$Response]]
-
-  /**
-    * Get a "$name$" with the given surrogate key ID.
-    *
-    * @param id The ID of the "$name$" to get.
-    * @return HTTP 200 status code with the current state of the "$name$" resource.
-    *
-    * Example:
-    * curl http://localhost:9000/api/$plural_name;format="lower,hyphen"$/123e4567-e89b-12d3-a456-426655440000
-    */
-  def get$name;format="Camel"$(id: UUID): ServiceCall[NotUsed, Either[ErrorResponse, Get$name;format="Camel"$Response]]
-
-  /**
-    * Get all "$plural_name$".
-    *
-    * @return A list of "$name$" resources.
-    *
-    * Example:
-    * curl http://localhost:9000/api/$plural_name;format="lower,hyphen"$
-    */
-//  def getAll$plural_name;format="Camel"$(page: Option[String]): ServiceCall[NotUsed, utils.PagingState[GetAll$plural_name;format="Camel"$Response]]
-  def getAll$plural_name;format="Camel"$: ServiceCall[NotUsed, GetAll$plural_name;format="Camel"$Response]
-
-  def get$name;format="Camel"$Stream: ServiceCall[NotUsed, Source[$name;format="Camel"$Resource, NotUsed]]
-
-  def $name;format="camel"$MessageBrokerEvents: Topic[$name;format="Camel"$MessageBrokerEvent]
-
   override final def descriptor = {
     import Service._
     // @formatter:off
@@ -112,6 +75,47 @@ trait $name;format="Camel"$Service extends Service {
     // @formatter:on
   }
 
+// $name$ Service Call
+
+  /**
+    * Create a "$name$".
+    *
+    * @return HTTP 200 status code if the "$name$" was created successfully.
+    *         HTTP 404 status code if one or more items in the [[Create$name;format="Camel"$Request]] failed vaildation.
+    *
+    * Example:
+    * curl -H "Content-Type: application/json" -X POST -d '{"name": "test", "description": "test description"}' http://localhost:9000/api/$plural_name;format="lower,hyphen"$
+    */
+  def create$name;format="Camel"$: ServiceCall[Create$name;format="Camel"$Request, Either[ErrorResponse, Create$name;format="Camel"$Response]]
+
+  /**
+    * Get a "$name$" with the given surrogate key ID.
+    *
+    * @param id The ID of the "$name$" to get.
+    * @return HTTP 200 status code with the current state of the "$name$" resource.
+    *
+    * Example:
+    * curl http://localhost:9000/api/$plural_name;format="lower,hyphen"$/123e4567-e89b-12d3-a456-426655440000
+    */
+  def get$name;format="Camel"$(id: UUID): ServiceCall[NotUsed, Either[ErrorResponse, Get$name;format="Camel"$Response]]
+
+  /**
+    * Get all "$plural_name$".
+    *
+    * @return A list of "$name$" resources.
+    *
+    * Example:
+    * curl http://localhost:9000/api/$plural_name;format="lower,hyphen"$
+    */
+//  def getAll$plural_name;format="Camel"$(page: Option[String]): ServiceCall[NotUsed, utils.PagingState[GetAll$plural_name;format="Camel"$Response]]
+  def getAll$plural_name;format="Camel"$: ServiceCall[NotUsed, GetAll$plural_name;format="Camel"$Response]
+
+  def get$name;format="Camel"$Stream: ServiceCall[NotUsed, Source[$name;format="Camel"$Resource, NotUsed]]
+
+// $name$ Topic
+
+  def $name;format="camel"$MessageBrokerEvents: Topic[$name;format="Camel"$MessageBrokerEvent]
+
 }
 
 // Resource
@@ -130,6 +134,7 @@ object $name;format="Camel"$Resource {
 
 // Request
 
+// TODO: include span ID as the unique identity of a Create$name;format="Camel"$Request
 case class Create$name;format="Camel"$Request(
   name: String,
   description: String

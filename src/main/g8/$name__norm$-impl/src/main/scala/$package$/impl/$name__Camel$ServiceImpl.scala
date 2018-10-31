@@ -49,12 +49,12 @@ class $name;format="Camel"$ServiceImpl(
     logger.info(s"Creating '$name$' with input \$request...")
     validate(request)
     val id = UUIDs.timeBased()
-    val $name;format="camel"$ = $name;format="Camel"$Resource(id, request.name, request.description)
+    val $name;format="camel"$ = $name;format="Camel"$Aggregate(id, request.name, request.description)
     val $name;format="camel"$EntityRef = registry.refFor[$name;format="Camel"$Entity](id.toString)
     logger.info(s"Publishing event \$$name;format="camel"$")
     val topic = pubSubRegistry.refFor(TopicId[$name;format="Camel"$Resource])
     topic.publish(request)
-    $name;format="camel"$EntityRef.ask(Create$name;format="Camel"$($name;format="camel"$)).map { _ =>
+    $name;format="camel"$EntityRef.ask(Create$name;format="Camel"$Command($name;format="camel"$)).map { _ =>
       map$name;format="Camel"$($name;format="camel"$)
     }
   }
@@ -77,7 +77,7 @@ class $name;format="Camel"$ServiceImpl(
     $name;format="Camel"$Resource(Some($name;format="camel"$.id), $name;format="camel"$.name, $name;format="camel"$.description)
   }
 
-  override def $name;format="camel"$Events: Topic[$name;format="Camel"$MessageBrokerEvent] =
+  override def $name;format="camel"$MessageBrokerEvents: Topic[$name;format="Camel"$MessageBrokerEvent] =
     TopicProducer.taggedStreamWithOffset($name;format="Camel"$Event.Tag.allTags.toList) { (tag, offset) =>
       logger.info("Creating $name;format="Camel"$Event Topic...")
       registry.eventStream(tag, offset)
@@ -140,10 +140,10 @@ class $name;format="Camel"$Entity extends PersistentEntity {
   }
 }
 
-case class $name;format="Camel"$AggregateEntity(id: UUID, name: String, description: String)
+case class $name;format="Camel"$Aggregate(id: UUID, name: String, description: String)
 
-object $name;format="Camel"$AggregateEntity {
-  implicit val format: Format[$name;format="Camel"$AggregateEntity] = Json.format
+object $name;format="Camel"$Aggregate {
+  implicit val format: Format[$name;format="Camel"$Aggregate] = Json.format
 }
 
 sealed trait $name;format="Camel"$Command
