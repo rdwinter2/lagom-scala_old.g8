@@ -44,9 +44,9 @@ trait $name;format="Camel"$Service extends Service {
   def create$name;format="Camel"$: ServiceCall[Create$name;format="Camel"$Request, Either[ErrorResponse, Create$name;format="Camel"$Response]]
 
   /**
-    * Get a "$name$" with the given surrogate key ($name;format="camel"$Id).
+    * Get a "$name$" with the given surrogate key ID.
     *
-    * @param id The $name;format="camel"$Id of the "$name$" to get.
+    * @param id The ID of the "$name$" to get.
     * @return HTTP 200 status code with the current state of the "$name$" resource.
     *
     * Example:
@@ -55,18 +55,18 @@ trait $name;format="Camel"$Service extends Service {
   def get$name;format="Camel"$(id: UUID): ServiceCall[NotUsed, Either[ErrorResponse, Get$name;format="Camel"$Response]]
 
   /**
-    * Get all $name;format="camel"$.
+    * Get all "$plural_name$".
     *
-    * @return A list of "$name$".
+    * @return A list of "$name$" resources.
     *
     * Example:
     * curl http://localhost:9000/api/$plural_name;format="lower,hyphen"$
     */
   def getAll$plural_name;format="Camel"$(page: Option[String]): ServiceCall[NotUsed, utils.PagingState[GetAll$plural_name;format="Camel"$Response]]
 
-  def $name;format="camel"$Stream: ServiceCall[NotUsed, Source[$name;format="Camel"$Resource, NotUsed]]
+  def get$name;format="Camel"$Stream: ServiceCall[NotUsed, Source[$name;format="Camel"$Resource, NotUsed]]
 
-  def $name;format="camel"$Events: Topic[$name;format="Camel"$BrokerEvent]
+  def $name;format="camel"$MessageBrokerEvents: Topic[$name;format="Camel"$MessageBrokerEvent]
 
   override final def descriptor = {
     import Service._
@@ -86,7 +86,7 @@ trait $name;format="Camel"$Service extends Service {
         restCall(Method.POST, "/api/$plural_name;format="lower,hyphen"$/Create$name;format="Camel"$", create$name;format="Camel"$ _),
         restCall(Method.GET, "/api/$plural_name;format="lower,hyphen"$/:id", get$name;format="Camel"$ _)
         restCall(Method.GET, "/api/$plural_name;format="lower,hyphen"$?page", getAll$plural_name;format="Camel"$ _),
-        pathCall("/api/$plural_name;format="lower,hyphen"$/stream", $plural_name;format="lower,hyphen"$Stream _),
+        pathCall("/api/$plural_name;format="lower,hyphen"$/stream", get$name;format="Camel"$Stream _),
         // POST restCall for other domain commands = post to a REST resource
         // restCall(Method.POST, "/api/$plural_name;format="camel"$"/:id/startAuction, startAuction _)
       )
@@ -145,13 +145,13 @@ object Create$name;format="Camel"$Request {
 
 // Response
 
-case class Create$name;format="Camel"$Response(id: String)
+case class Create$name;format="Camel"$Response(id: UUID)
 
 object Create$name;format="Camel"$Response {
   implicit val format: Format[Create$name;format="Camel"$Response] = Json.format
 }
 
-case class Get$name;format="Camel"$Response(id: String)
+case class Get$name;format="Camel"$Response(id: UUID, name: String, description: String)
 
 object Get$name;format="Camel"$Response {
   implicit val format: Format[Get$name;format="Camel"$Response] = Json.format
@@ -166,22 +166,22 @@ object GetAll$plural_name;format="Camel"$Response {
 // Message Broker Event
 // One service to many other services
 
-sealed trait $name;format="Camel"$BrokerEvent {
+sealed trait $name;format="Camel"$MessageBrokerEvent {
   val id: UUID
 }
 
-case class $name;format="Camel"$CreatedEvent(id: UUID, name: String, description: String) extends $name;format="Camel"$BrokerEvent
+case class $name;format="Camel"$Created(id: UUID, name: String, description: String) extends $name;format="Camel"$MessageBrokerEvent
 
-object $name;format="Camel"$CreatedEvent {
-  implicit val format: Format[$name;format="Camel"$CreatedEvent] = Json.format
+object $name;format="Camel"$Created {
+  implicit val format: Format[$name;format="Camel"$Created] = Json.format
 }
 
 //case class $name;format="Camel"$BrokerEvent(event: $name;format="Camel"$EventType,
 //                          id: UUID,
 //                          data: Map[String, String] = Map.empty[String, String])
 
-object $name;format="Camel"$BrokerEvent {
-  implicit val format: Format[$name;format="Camel"$BrokerEvent] = derived.flat.oformat((__ \ "type").format[String])
+object $name;format="Camel"$MessageBrokerEvent {
+  implicit val format: Format[$name;format="Camel"$MessageBrokerEvent] = derived.flat.oformat((__ \ "type").format[String])
 }
 
 //object $name;format="Camel"$EventTypes extends Enumeration {

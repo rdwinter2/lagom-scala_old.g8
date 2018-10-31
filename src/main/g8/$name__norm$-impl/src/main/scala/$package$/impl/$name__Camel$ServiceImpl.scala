@@ -5,7 +5,6 @@ import $organization$.common.authentication.TokenContent
 import $organization$.common.utils.JsonFormats._
 import $organization$.common.utils.{ErrorResponse, Marshaller, ErrorResponses => ER}
 import $organization$.common.validation.ValidationUtil._
-import $package$.api
 import $package$.api._
 
 import akka.{Done, NotUsed}
@@ -37,6 +36,8 @@ import play.api.libs.ws.ahc.AhcWSComponents
 import scala.collection.immutable
 import scala.concurrent.{ExecutionContext, Future}
 
+// $name$ Service Implementation
+
 class $name;format="Camel"$ServiceImpl(
   registry: PersistentEntityRegistry,
   $name;format="camel"$Repository: $name;format="Camel"$Repository,
@@ -45,13 +46,13 @@ class $name;format="Camel"$ServiceImpl(
   private val logger = LoggerFactory.getLogger(classOf[$name;format="Camel"$ServiceImpl])
 
   override def create$name;format="Camel"$: ServiceCall[Create$name;format="Camel"$Request, Either[ErrorResponse, Create$name;format="Camel"$Response]] = ServerServiceCall { request =>
-    logger.info(s"Creating $name$ with input \$request...")
+    logger.info(s"Creating '$name$' with input \$request...")
     validate(request)
     val id = UUIDs.timeBased()
     val $name;format="camel"$ = $name;format="Camel"$Resource(id, request.name, request.description)
     val $name;format="camel"$EntityRef = registry.refFor[$name;format="Camel"$Entity](id.toString)
     logger.info(s"Publishing event \$$name;format="camel"$")
-    val topic = pubSubRegistry.refFor(TopicId[api.$name;format="Camel"$])
+    val topic = pubSubRegistry.refFor(TopicId[$name;format="Camel"$Resource])
     topic.publish(request)
     $name;format="camel"$EntityRef.ask(Create$name;format="Camel"$($name;format="camel"$)).map { _ =>
       map$name;format="Camel"$($name;format="camel"$)
@@ -59,7 +60,7 @@ class $name;format="Camel"$ServiceImpl(
   }
 
   override def get$name;format="Camel"$(id: UUID): ServiceCall[NotUsed, Either[ErrorResponse, Get$name;format="Camel"$Response]] = ServerServiceCall { _ =>
-    logger.info(s"Looking up $name$ with ID \$id...")
+    logger.info(s"Looking up '$name$' with ID \$id...")
     val $name;format="camel"$EntityRef = registry.refFor[$name;format="Camel"$Entity](id.toString)
     $name;format="camel"$EntityRef.ask(Get$name;format="Camel"$).map {
       case Some($name;format="camel"$) => map$name;format="Camel"$($name;format="camel"$)
@@ -68,15 +69,15 @@ class $name;format="Camel"$ServiceImpl(
   }
 
   override def getAll$plural_name;format="Camel"$: ServiceCall[NotUsed, GetAll$plural_name;format="Camel"$Response] = ServiceCall { _ =>
-    logger.info("Looking up all $plural_name$...")
+    logger.info("Looking up all '$plural_name$'...")
     $name;format="camel"$Repository.selectAll$name;format="Camel"$s.map($name;format="camel"$s => GetAll$plural_name;format="Camel"$Response($name;format="camel"$.map(map$name;format="Camel"$)))
   }
 
-  private def map$name;format="Camel"$($name;format="camel"$: $name;format="Camel"$): api.$name;format="Camel"$ = {
-    api.$name;format="Camel"$(Some($name;format="camel"$.id), $name;format="camel"$.name, $name;format="camel"$.description)
+  private def map$name;format="Camel"$($name;format="camel"$: $name;format="Camel"$): $name;format="Camel"$Resource = {
+    $name;format="Camel"$Resource(Some($name;format="camel"$.id), $name;format="camel"$.name, $name;format="camel"$.description)
   }
 
-  override def $name;format="camel"$Events: Topic[api.$name;format="Camel"$Event] =
+  override def $name;format="camel"$Events: Topic[$name;format="Camel"$MessageBrokerEvent] =
     TopicProducer.taggedStreamWithOffset($name;format="Camel"$Event.Tag.allTags.toList) { (tag, offset) =>
       logger.info("Creating $name;format="Camel"$Event Topic...")
       registry.eventStream(tag, offset)
@@ -88,11 +89,11 @@ class $name;format="Camel"$ServiceImpl(
         }.mapAsync(1)(convertEvent)
     }
 
-  private def convertEvent(eventStreamElement: EventStreamElement[$name;format="Camel"$Event]): Future[(api.$name;format="Camel"$Event, Offset)] = {
+  private def convertEvent(eventStreamElement: EventStreamElement[$name;format="Camel"$Event]): Future[($name;format="Camel"$MessageBrokerEvent, Offset)] = {
     eventStreamElement match {
-      case EventStreamElement(id, $name;format="Camel"$Created($name;format="camel"$), offset) =>
+      case EventStreamElement(id, $name;format="Camel"$CreatedEvent($name;format="camel"$), offset) =>
         Future.successful {
-          (api.$name;format="Camel"$Created(
+          ($name;format="Camel"$Created(
             id = $name;format="camel"$.id,
             name = $name;format="camel"$.name,
             description = $name;format="camel"$.description
@@ -101,8 +102,8 @@ class $name;format="Camel"$ServiceImpl(
     }
   }
 
-  override def $name;format="camel"$Stream: ServiceCall[NotUsed, Source[api.$name;format="Camel"$, NotUsed]] = ServiceCall { _ =>
-    val topic = pubSubRegistry.refFor(TopicId[api.$name;format="Camel"$])
+  override def get$name;format="Camel"$Stream: ServiceCall[NotUsed, Source[$name;format="Camel"$Resource, NotUsed]] = ServiceCall { _ =>
+    val topic = pubSubRegistry.refFor(TopicId[$name;format="Camel"$Resource])
     Future.successful(topic.subscriber)
   }
 }
@@ -225,7 +226,7 @@ private[impl] class $name;format="Camel"$Repository(session: CassandraSession)(i
   }
 
   def select$name;format="Camel"$(id: UUID) = {
-    logger.info(s"Querying $name$ with ID \$id...")
+    logger.info(s"Querying '$name$' with ID \$id...")
     session.selectOne("SELECT * FROM $name;format="camel"$ WHERE id = ?", id)
   }
 
