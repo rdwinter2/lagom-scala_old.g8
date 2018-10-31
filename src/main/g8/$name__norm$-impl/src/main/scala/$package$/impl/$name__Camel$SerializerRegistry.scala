@@ -1,10 +1,16 @@
 package $package$.impl
 
-import $package$.impl.$name;format="Camel"$Status.$name;format="Camel"$Status
-
+import $package$.api._
 import $organization$.common.utils.JsonFormats._
-import com.lightbend.lagom.scaladsl.playjson.{JsonMigration, JsonSerializerRegistry, JsonSerializer}
-import play.api.libs.json.{JsObject, JsString}
+
+import java.time.LocalDateTime
+import akka.Done
+import com.lightbend.lagom.scaladsl.persistence.{AggregateEvent, AggregateEventTag, PersistentEntity}
+import com.lightbend.lagom.scaladsl.persistence.PersistentEntity.ReplyType
+import com.lightbend.lagom.scaladsl.playjson.{JsonSerializer, JsonSerializerRegistry}
+import play.api.libs.json.{Format, Json}
+import java.util.UUID
+import scala.collection.immutable.Seq
 
 /**
   * Akka serialization, used by both persistence and remoting, needs to have
@@ -20,10 +26,10 @@ object $name;format="Camel"$SerializerRegistry extends JsonSerializerRegistry {
     // models
     JsonSerializer[$name;format="Camel"$Aggregate],
     JsonSerializer[$name;format="Camel"$Session],
-    JsonSerializer[$name;format="Camel"$Status],
+    JsonSerializer[$name;format="Camel"$State],
 
     // Commands
-    JsonSerializer[Create$name;format="Camel"$],
+    JsonSerializer[Create$name;format="Camel"$Command],
     JsonSerializer[Verify$name;format="Camel"$.type],
     JsonSerializer[GrantAccessToken],
     JsonSerializer[ExtendAccessToken],
