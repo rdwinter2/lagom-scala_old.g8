@@ -62,7 +62,8 @@ trait $name;format="Camel"$Service extends Service {
     * Example:
     * curl http://localhost:9000/api/$plural_name;format="lower,hyphen"$
     */
-  def getAll$plural_name;format="Camel"$(page: Option[String]): ServiceCall[NotUsed, utils.PagingState[GetAll$plural_name;format="Camel"$Response]]
+//  def getAll$plural_name;format="Camel"$(page: Option[String]): ServiceCall[NotUsed, utils.PagingState[GetAll$plural_name;format="Camel"$Response]]
+  def getAll$plural_name;format="Camel"$: ServiceCall[NotUsed, GetAll$plural_name;format="Camel"$Response]
 
   def get$name;format="Camel"$Stream: ServiceCall[NotUsed, Source[$name;format="Camel"$Resource, NotUsed]]
 
@@ -73,7 +74,7 @@ trait $name;format="Camel"$Service extends Service {
     // @formatter:off
     named("$name;format="norm"$")
       .withCalls(
-        // For REST calls with DDD/SQRS/ES only use GET and POST
+        // For REST calls with DDD/CQRS/ES only use GET and POST
         // GET for queries
         //   pagination and expand for large resources
         // POST for commands
@@ -85,7 +86,7 @@ trait $name;format="Camel"$Service extends Service {
         restCall(Method.POST, "/api/$plural_name;format="lower,hyphen"$", create$name;format="Camel"$ _),
         restCall(Method.POST, "/api/$plural_name;format="lower,hyphen"$/Create$name;format="Camel"$", create$name;format="Camel"$ _),
         restCall(Method.GET, "/api/$plural_name;format="lower,hyphen"$/:id", get$name;format="Camel"$ _)
-        restCall(Method.GET, "/api/$plural_name;format="lower,hyphen"$?page", getAll$plural_name;format="Camel"$ _),
+        restCall(Method.GET, "/api/$plural_name;format="lower,hyphen"$", getAll$plural_name;format="Camel"$ _),
         pathCall("/api/$plural_name;format="lower,hyphen"$/stream", get$name;format="Camel"$Stream _),
         // POST restCall for other domain commands = post to a REST resource
         // restCall(Method.POST, "/api/$plural_name;format="camel"$"/:id/startAuction, startAuction _)
@@ -105,7 +106,7 @@ trait $name;format="Camel"$Service extends Service {
       .withAutoAcl(true)
       .withExceptionSerializer(new DefaultExceptionSerializer(Environment.simple(mode = Mode.Prod)))
       .withTopics(
-        topic("$name;format="camel"$-$name;format="Camel"$BrokerEvent", this.$name;format="Camel"$BrokerEvent)
+        topic("$name;format="camel"$-$name;format="Camel"$MessageBrokerEvent", this.$name;format="Camel"$MessageBrokerEvent)
 //        topic("$name;format="Camel"$Events", $name;format="camel"$Events)
       )
     // @formatter:on
@@ -122,7 +123,7 @@ case class $name;format="Camel"$Resource(id: Option[UUID], name: String, descrip
 object $name;format="Camel"$Resource {
   implicit val format: Format[$name;format="Camel"$Resource] = Jsonx.formatCaseClass
 
-  def create(name: String,description: String): $name;format="Camel"$Resource = {
+  def create(name: String, description: String): $name;format="Camel"$Resource = {
     $name;format="Camel"$Resource(None, name, description)
   }
 }

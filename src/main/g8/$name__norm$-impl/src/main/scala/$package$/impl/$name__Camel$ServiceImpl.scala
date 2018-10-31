@@ -140,22 +140,22 @@ class $name;format="Camel"$Entity extends PersistentEntity {
   }
 }
 
-case class $name;format="Camel"$(id: UUID, name: String, description: String)
+case class $name;format="Camel"$AggregateEntity(id: UUID, name: String, description: String)
 
-object $name;format="Camel"$ {
-  implicit val format: Format[$name;format="Camel"$] = Json.format
+object $name;format="Camel"$AggregateEntity {
+  implicit val format: Format[$name;format="Camel"$AggregateEntity] = Json.format
 }
 
 sealed trait $name;format="Camel"$Command
 
-case object Get$name;format="Camel"$ extends $name;format="Camel"$Command with ReplyType[Option[$name;format="Camel"$]] {
-  implicit val format: Format[Get$name;format="Camel"$.type] = singletonFormat(Get$name;format="Camel"$)
+case object Get$name;format="Camel"$Query extends $name;format="Camel"$Command with ReplyType[Option[$name;format="Camel"$Resource]] {
+  implicit val format: Format[Get$name;format="Camel"$Query.type] = singletonFormat(Get$name;format="Camel"$Query)
 }
 
-case class Create$name;format="Camel"$($name;format="camel"$: $name;format="Camel"$) extends $name;format="Camel"$Command with ReplyType[Done]
+case class Create$name;format="Camel"$Command($name;format="camel"$: $name;format="Camel"$Request) extends $name;format="Camel"$Command with ReplyType[Done]
 
-object Create$name;format="Camel"$ {
-  implicit val format: Format[Create$name;format="Camel"$] = Json.format
+object Create$name;format="Camel"$Command {
+  implicit val format: Format[Create$name;format="Camel"$Command] = Json.format
 }
 
 sealed trait $name;format="Camel"$Event extends AggregateEvent[$name;format="Camel"$Event] {
@@ -167,10 +167,10 @@ object $name;format="Camel"$Event {
   val Tag: AggregateEventShards[$name;format="Camel"$Event] = AggregateEventTag.sharded[$name;format="Camel"$Event](NumShards)
 }
 
-case class $name;format="Camel"$Created($name;format="camel"$: $name;format="Camel"$) extends $name;format="Camel"$Event
+case class $name;format="Camel"$CreatedEvent($name;format="camel"$: $name;format="Camel"$AggregateEntity) extends $name;format="Camel"$Event
 
-object $name;format="Camel"$Created {
-  implicit val format: Format[$name;format="Camel"$Created] = Json.format
+object $name;format="Camel"$CreatedEvent {
+  implicit val format: Format[$name;format="Camel"$CreatedEvent] = Json.format
 }
 
 // $name$ Application Loader
@@ -299,6 +299,13 @@ private[impl] class $name;format="Camel"$EventProcessor(session: CassandraSessio
 
 object $name;format="Camel"$SerializerRegistry extends JsonSerializerRegistry {
   override def serializers = List(
+    JsonSerializer[$name;format="Camel"$Resource],
+    JsonSerializer[Create$name;format="Camel"$Request],
+    JsonSerializer[Create$name;format="Camel"$Response],
+    JsonSerializer[Get$name;format="Camel"$Response],
+    JsonSerializer[GetAll$plural_name;format="Camel"$Response],
+    JsonSerializer[$name;format="Camel"$],
+    JsonSerializer[$name;format="Camel"$],
     JsonSerializer[$name;format="Camel"$],
 
     JsonSerializer[Create$name;format="Camel"$],
