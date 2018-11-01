@@ -47,10 +47,10 @@ trait $name;format="Camel"$Service extends Service {
         //   A Saga needs to be implemented in this manner
         //   Command body should include a unique identifier, can be a span id
         restCall(Method.POST, "/api/$plural_name;format="lower,hyphen"$", create$name;format="Camel"$ _),
-        restCall(Method.POST, "/api/$plural_name;format="lower,hyphen"$/Create$name;format="Camel"$", create$name;format="Camel"$ _),
+        restCall(Method.POST, "/api/$plural_name;format="lower,hyphen"$/create$name;format="Camel"$", create$name;format="Camel"$ _),
         restCall(Method.GET, "/api/$plural_name;format="lower,hyphen"$/:id", get$name;format="Camel"$ _)
         restCall(Method.GET, "/api/$plural_name;format="lower,hyphen"$", getAll$plural_name;format="Camel"$ _),
-        pathCall("/api/$plural_name;format="lower,hyphen"$/stream", get$name;format="Camel"$Stream _),
+        pathCall("/api/$plural_name;format="lower,hyphen"$/stream", subscribe$name;format="Camel"$Stream _),
         // POST restCall for other domain commands = post to a REST resource
         // restCall(Method.POST, "/api/$plural_name;format="camel"$"/:id/startAuction, startAuction _)
       )
@@ -110,7 +110,7 @@ trait $name;format="Camel"$Service extends Service {
 //  def getAll$plural_name;format="Camel"$(page: Option[String]): ServiceCall[NotUsed, utils.PagingState[GetAll$plural_name;format="Camel"$Response]]
   def getAll$plural_name;format="Camel"$: ServiceCall[NotUsed, GetAll$plural_name;format="Camel"$Response]
 
-  def get$name;format="Camel"$Stream: ServiceCall[NotUsed, Source[$name;format="Camel"$Resource, NotUsed]]
+  def subscribe$name;format="Camel"$Stream: ServiceCall[NotUsed, Source[$name;format="Camel"$Resource, NotUsed]]
 
 // $name$ Topic
 

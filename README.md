@@ -1,0 +1,1 @@
+Giter8 template for a DDD lagom scala project
