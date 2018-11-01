@@ -24,6 +24,7 @@ val jbcrypt = "org.mindrot" % "jbcrypt" % "0.3m"
 val cuid = "cool.graph" % "cuid-java" % "0.1.1"
 val jwt = "com.pauldijou" %% "jwt-play-json" % "0.12.1"
 val accord = "com.wix" %% "accord-core" % "0.7.2"
+val cassandraDriverExtras = "com.datastax.cassandra" % "cassandra-driver-extras" % "3.0.0" // Adds extra codecs
 
 libraryDependencies += lagomScaladslPersistenceCassandra
 
@@ -43,11 +44,13 @@ lazy val `common` = (project in file("common"))
       lagomScaladslServer,
       jwt,
       accord,
-      playJsonDerivedCodecs
+      playJsonDerivedCodecs,
+      scalaTest
     )
   )
 
 lazy val $name;format="camel"$Api = (project in file("$name;format="norm"$-api"))
+  .dependsOn(`common`)
   .settings(commonSettings: _*)
   .settings(
     libraryDependencies ++= Seq(
@@ -56,16 +59,17 @@ lazy val $name;format="camel"$Api = (project in file("$name;format="norm"$-api")
       "ai.x" %% "play-json-extensions" % "0.10.0"
     )
   )
-  .dependsOn(`common`)
 
 lazy val $name;format="camel"$Impl = (project in file("$name;format="norm"$-impl"))
   .settings(commonSettings: _*)
-  .enablePlugins(LagomScala)
+  .enablePlugins(LagomScala, SbtReactiveAppPlugin)
   .settings(
     libraryDependencies ++= Seq(
       lagomScaladslPersistenceCassandra,
       lagomScaladslKafkaBroker,
       lagomScaladslTestKit,
+      lagomScaladslPubSub,
+      cassandraDriverExtras,
       macwire,
       jbcrypt,
       scalaTest,

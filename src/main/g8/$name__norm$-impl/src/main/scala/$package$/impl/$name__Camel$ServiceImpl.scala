@@ -222,7 +222,7 @@ private[impl] class $name;format="Camel"$Repository(session: CassandraSession)(i
     session.selectAll(
       """
       SELECT * FROM $name;format="camel"$
-    """).map(rows => rows.map(row => convert$name;format="Camel"$(row)))
+    """).map(rows => rows.map(row => convertTo$name;format="Camel"$Aggregate(row)))
   }
 
   def select$name;format="Camel"$(id: UUID) = {
@@ -230,8 +230,8 @@ private[impl] class $name;format="Camel"$Repository(session: CassandraSession)(i
     session.selectOne("SELECT * FROM $name;format="camel"$ WHERE id = ?", id)
   }
 
-  private def convert$name;format="Camel"$($name;format="camel"$Row: Row): $name;format="Camel"$ = {
-    $name;format="Camel"$(
+  private def convertTo$name;format="Camel"$Aggregate($name;format="camel"$Row: Row): $name;format="Camel"$Aggregate = {
+    $name;format="Camel"$Aggregate(
       $name;format="camel"$Row.getUUID("id"),
       $name;format="camel"$Row.getString("name"),
       $name;format="camel"$Row.getString("description"))
