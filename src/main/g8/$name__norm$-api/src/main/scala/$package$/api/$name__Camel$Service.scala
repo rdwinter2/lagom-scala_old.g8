@@ -13,12 +13,14 @@ import com.lightbend.lagom.scaladsl.api.broker.kafka.{KafkaProperties, Partition
 import com.lightbend.lagom.scaladsl.api.deser.{DefaultExceptionSerializer, PathParamSerializer}
 import com.lightbend.lagom.scaladsl.api.transport.Method
 import com.lightbend.lagom.scaladsl.api.{Descriptor, Service, ServiceCall}
+import com.wix.accord._
 import com.wix.accord.dsl._
+import com.wix.accord.Descriptions._
 import java.time.{Duration, Instant}
 import java.util.UUID
 import julienrf.json.derived
 import play.api.{Environment, Mode}
-import play.api.libs.json.{Format, Json}
+import play.api.libs.json._
 
 //object $name;format="Camel"$Service  {
 //  val TOPIC_NAME = "agg.event.$name;format="lower,snake"$"
@@ -46,10 +48,10 @@ trait $name;format="Camel"$Service extends Service {
       //   A Saga needs to be implemented in this manner
       //   Command body should include a unique identifier, can be a span id
       restCall(Method.POST, "/api/$plural_name;format="lower,hyphen"$", create$name;format="Camel"$ _),
-//      restCall(Method.POST, "/api/$plural_name;format="lower,hyphen"$/:id/create$name;format="Camel"$", create$name;format="Camel"$ _),
-      restCall(Method.GET, "/api/$plural_name;format="lower,hyphen"$/:id", get$name;format="Camel"$ _)
+      //restCall(Method.POST, "/api/$plural_name;format="lower,hyphen"$/:id/create$name;format="Camel"$", create$name;format="Camel"$ _),
+      restCall(Method.GET, "/api/$plural_name;format="lower,hyphen"$/:id", get$name;format="Camel"$ _),
       restCall(Method.GET, "/api/$plural_name;format="lower,hyphen"$", getAll$plural_name;format="Camel"$ _),
-      pathCall("/api/$plural_name;format="lower,hyphen"$/stream", subscribe$name;format="Camel"$Stream _),
+      pathCall("/api/$plural_name;format="lower,hyphen"$/stream", subscribe$name;format="Camel"$Stream _)
         // POST restCall for other domain commands = post to a REST resource
         // restCall(Method.POST, "/api/$plural_name;format="camel"$"/:id/startAuction, startAuction _)
     )
@@ -68,7 +70,7 @@ trait $name;format="Camel"$Service extends Service {
       .withAutoAcl(true)
       .withExceptionSerializer(new DefaultExceptionSerializer(Environment.simple(mode = Mode.Prod)))
       .withTopics(
-        topic("$name;format="camel"$-$name;format="Camel"$MessageBrokerEvent", this.$name;format="Camel"$MessageBrokerEvent)
+        topic("$name;format="camel"$-$name;format="Camel"$MessageBrokerEvent", this.$name;format="camel"$MessageBrokerEvents)
 //        topic("$name;format="Camel"$Events", $name;format="camel"$Events)
       )
     // @formatter:on
@@ -143,6 +145,7 @@ object Create$name;format="Camel"$Request {
   implicit val format: Format[Create$name;format="Camel"$Request] = Jsonx.formatCaseClass
 
   implicit val Create$name;format="Camel"$RequestValidator = validator[Create$name;format="Camel"$Request] {u =>
+//    u.name is notEmpty
     u.name as notEmptyKey("name") is notEmpty
 //    u.name as matchRegexFullyKey("name") should matchRegexFully(Matchers.name)
   }
@@ -162,7 +165,7 @@ object Get$name;format="Camel"$Response {
   implicit val format: Format[Get$name;format="Camel"$Response] = Json.format
 }
 
-case class GetAll$plural_name;format="Camel"$Response($plural_name;format="camel"$: Seq[$name;format="Camel"$])
+case class GetAll$plural_name;format="Camel"$Response($plural_name;format="camel"$: Seq[$name;format="Camel"$Resource])
 
 object GetAll$plural_name;format="Camel"$Response {
   implicit val format: Format[GetAll$plural_name;format="Camel"$Response] = Json.format

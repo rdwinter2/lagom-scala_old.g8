@@ -83,7 +83,7 @@ class $name;format="Camel"$ServiceImpl(
       registry.eventStream(tag, offset)
         .filter {
           _.event match {
-            case x@(_: $name;format="Camel"$Created) => true
+            case x@(_: $name;format="Camel"$CreatedEvent) => true
             case _ => false
           }
         }.mapAsync(1)(convertEvent)
@@ -129,9 +129,9 @@ class $name;format="Camel"$Entity extends PersistentEntity {
   private val notCreated = {
     Actions().onCommand[Create$name;format="Camel"$, Done] {
       case (Create$name;format="Camel"$($name;format="camel"$), ctx, state) =>
-        ctx.thenPersist($name;format="Camel"$Created($name;format="camel"$))(_ => ctx.reply(Done))
+        ctx.thenPersist($name;format="Camel"$CreatedEvent($name;format="camel"$))(_ => ctx.reply(Done))
     }.onEvent {
-      case ($name;format="Camel"$Created($name;format="camel"$), state) => Some($name;format="camel"$)
+      case ($name;format="Camel"$CreatedEvent($name;format="camel"$), state) => Some($name;format="camel"$)
     }.orElse(get$name;format="Camel"$Command)
   }
 
@@ -248,7 +248,7 @@ private[impl] class $name;format="Camel"$EventProcessor(session: CassandraSessio
     readSide.builder[$name;format="Camel"$Event]("$name;format="camel"$EventOffset")
       .setGlobalPrepare(createTables)
       .setPrepare(_ => prepareStatements())
-      .setEventHandler[$name;format="Camel"$Created](e => {
+      .setEventHandler[$name;format="Camel"$CreatedEvent](e => {
         insert$name;format="Camel"$(e.event.$name;format="camel"$)
       })
       .build
@@ -287,8 +287,8 @@ private[impl] class $name;format="Camel"$EventProcessor(session: CassandraSessio
     }
   }
 
-  private def insert$name;format="Camel"$($name;format="camel"$: $name;format="Camel"$) = {
-    logger.info(s"Inserting \$$name$...")
+  private def insert$name;format="Camel"$($name;format="camel"$: $name;format="Camel"$Aggregate) = {
+    logger.info(s"Inserting \$$name;format="camel"$...")
     Future.successful(List(
       insert$name;format="Camel"$Statement.bind($name;format="camel"$.id, $name;format="camel"$.name, $name;format="camel"$.description)
     ))
@@ -304,12 +304,11 @@ object $name;format="Camel"$SerializerRegistry extends JsonSerializerRegistry {
     JsonSerializer[Create$name;format="Camel"$Response],
     JsonSerializer[Get$name;format="Camel"$Response],
     JsonSerializer[GetAll$plural_name;format="Camel"$Response],
-    JsonSerializer[$name;format="Camel"$],
-    JsonSerializer[$name;format="Camel"$],
-    JsonSerializer[$name;format="Camel"$],
+    JsonSerializer[$name;format="Camel"$Aggregate],
+    JsonSerializer[$name;format="Camel"$CreatedEvent],
 
-    JsonSerializer[Create$name;format="Camel"$],
-    JsonSerializer[Get$name;format="Camel"$.type],
+    JsonSerializer[Create$name;format="Camel"$Command],
+    JsonSerializer[Get$name;format="Camel"$Query.type],
 
     JsonSerializer[$name;format="Camel"$Created]
   )
