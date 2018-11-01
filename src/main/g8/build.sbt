@@ -8,8 +8,6 @@ lazy val root = (project in file("."))
     `common`,
     $name;format="camel"$Api,
     $name;format="camel"$Impl
-//    $name;format="camel"$StreamApi,
-//    $name;format="camel"$StreamImpl
   )
   .settings(commonSettings: _*)
 
@@ -54,7 +52,8 @@ lazy val $name;format="camel"$Api = (project in file("$name;format="norm"$-api")
   .settings(
     libraryDependencies ++= Seq(
       lagomScaladslApi,
-      playJsonDerivedCodecs
+      playJsonDerivedCodecs,
+      "ai.x" %% "play-json-extensions" % "0.10.0"
     )
   )
   .dependsOn(`common`)
@@ -69,31 +68,12 @@ lazy val $name;format="camel"$Impl = (project in file("$name;format="norm"$-impl
       lagomScaladslTestKit,
       macwire,
       jbcrypt,
-      scalaTest
+      scalaTest,
+      "ai.x" %% "play-json-extensions" % "0.10.0"
     )
   )
   .settings(lagomForkedTestSettings: _*)
   .dependsOn($name;format="camel"$Api, `common`, `base64`)
-
-//lazy val $name;format="camel"$StreamApi = (project in file("$name;format="norm"$-stream-api"))
-//  .settings(commonSettings: _*)
-//  .settings(
-//    libraryDependencies ++= Seq(
-//      lagomScaladslApi
-//    )
-//  )
-//
-//lazy val $name;format="camel"$StreamImpl = (project in file("$name;format="norm"$-stream-impl"))
-//  .settings(commonSettings: _*)
-//  .enablePlugins(LagomScala)
-//  .settings(
-//    libraryDependencies ++= Seq(
-//      lagomScaladslTestKit,
-//      macwire,
-//      scalaTest
-//    )
-//  )
-//  .dependsOn($name;format="camel"$StreamApi, $name;format="camel"$Api)
 
 def commonSettings: Seq[Setting[_]] = Seq(
 )
