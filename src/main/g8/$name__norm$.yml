@@ -2,11 +2,14 @@
 events:
   | $name;format="Camel"$Created
   | $name;format="Camel"$Archived
+paths:
+  | "/api/$plural_name;format="lower,hyphen"$": create$name;format="Camel"$
+  |
 calls:
-  | create$name;format="Camel"$Command: ServiceCall[Create$name;format="Camel"$Request, Create$name;format="Camel"$Response]
-  | archive$name;format="Camel"$Command($name;format="camel"$Id: UUID): ServiceCall[Archive$name;format="Camel"$Request, Archive$name;format="Camel"$Response]
+  | create$name;format="Camel"$: ServiceCall[Create$name;format="Camel"$Request, Create$name;format="Camel"$Response]
+  | archive$name;format="Camel"$($name;format="camel"$Id: UUID): ServiceCall[Archive$name;format="Camel"$Request, Archive$name;format="Camel"$Response]
   | get$name;format="Camel"$($name;format="camel"$Id: UUID): ServiceCall[NotUsed, Get$name;format="Camel"$Response]
-  | GetAll$plural_name;format="Camel"$: ServiceCall[NotUsed, GetAll$plural_name;format="Camel"$Response]
+  | getAll$plural_name;format="Camel"$: ServiceCall[NotUsed, GetAll$plural_name;format="Camel"$Response]
 commands:
 replies:
 type: $name;format="Camel"$
