@@ -54,7 +54,7 @@ class $name;format="Camel"$ServiceImpl(
     val $name;format="camel"$EntityRef = registry.refFor[$name;format="Camel"$Entity](id.toString)
     logger.info(s"Publishing event \$$name;format="camel"$Aggregate")
     val topic = pubSubRegistry.refFor(TopicId[$name;format="Camel"$Resource])
-    topic.publish(create$name;format="Camel"$Resource)
+    topic.publish($name;format="camel"$Resource)
     $name;format="camel"$EntityRef.ask(Create$name;format="Camel"$Command($name;format="camel"$Aggregate)).map { _ =>
       map$name;format="Camel"$ResourceToCreateResponse($name;format="camel"$Resource)
     }
@@ -78,8 +78,8 @@ class $name;format="Camel"$ServiceImpl(
     create$name;format="Camel"$Resource(Some(create$name;format="Camel"$Aggregate.id), create$name;format="Camel"$Aggregate.name, create$name;format="Camel"$Aggregate.description)
   }
 
-  private def mapcreate$name;format="Camel"$AggregateToCreateResponse(create$name;format="Camel"$Aggregate: create$name;format="Camel"$Aggregate): Create$name;format="Camel"$Response = {
-    Create$name;format="Camel"$Response(create$name;format="Camel"$Aggregate.id, create$name;format="Camel"$Aggregate.name, create$name;format="Camel"$Aggregate.description)
+  private def map$name;format="Camel"$AggregateToCreateResponse($name;format="Camel"$Aggregate: $name;format="Camel"$Aggregate): Create$name;format="Camel"$Response = {
+    Create$name;format="Camel"$Response($name;format="Camel"$Aggregate.id, $name;format="Camel"$Aggregate.name, $name;format="Camel"$Aggregate.description)
   }
 
   private def map$name;format="Camel"$ResourceToCreateResponse(create$name;format="Camel"$Resource: create$name;format="Camel"$Resource): Create$name;format="Camel"$Response = {
