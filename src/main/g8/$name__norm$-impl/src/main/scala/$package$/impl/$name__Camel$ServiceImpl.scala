@@ -4,7 +4,7 @@ import $organization$.common.authentication.AuthenticationServiceComposition._
 import $organization$.common.authentication.TokenContent
 import $organization$.common.utils.JsonFormats._
 import $organization$.common.utils.{ErrorResponse, Marshaller, ErrorResponses => ER}
-import $organization$.common.validation.ValidationUtil._
+//import $organization$.common.validation.ValidationUtil._
 import $package$.api._
 
 import akka.{Done, NotUsed}
@@ -45,36 +45,49 @@ class $name;format="Camel"$ServiceImpl(
 )(implicit ec: ExecutionContext) extends $name;format="Camel"$Service {
   private val logger = LoggerFactory.getLogger(classOf[$name;format="Camel"$ServiceImpl])
 
-  override def create$name;format="Camel"$: ServiceCall[Create$name;format="Camel"$Request, Either[ErrorResponse, Create$name;format="Camel"$Response]] = ServerServiceCall { request =>
-    logger.info(s"Creating '$name$' with input \$request...")
-    validate(request)
+  override def create$name;format="Camel"$: ServiceCall[Create$name;format="Camel"$Request, Create$name;format="Camel"$Response] = ServerServiceCall { create$name;format="Camel"$Request =>
+    logger.info(s"Creating '$name$' with input \$create$name;format="Camel"$Request...")
+    //validate(create$name;format="Camel"$Request)
     val id = UUIDs.timeBased()
-    val $name;format="camel"$ = $name;format="Camel"$Aggregate(id, request.name, request.description)
+    val $name;format="camel"$Aggregate = $name;format="Camel"$Aggregate(id, create$name;format="Camel"$Request.name, create$name;format="Camel"$Request.description)
+    val $name;format="camel"$Resource = $name;format="Camel"$Resource(Some(id), create$name;format="Camel"$Request.name, create$name;format="Camel"$Request.description)
     val $name;format="camel"$EntityRef = registry.refFor[$name;format="Camel"$Entity](id.toString)
-    logger.info(s"Publishing event \$$name;format="camel"$")
+    logger.info(s"Publishing event \$$name;format="camel"$Aggregate")
     val topic = pubSubRegistry.refFor(TopicId[$name;format="Camel"$Resource])
-    topic.publish(request)
-    $name;format="camel"$EntityRef.ask(Create$name;format="Camel"$Command($name;format="camel"$)).map { _ =>
-      map$name;format="Camel"$($name;format="camel"$)
+    topic.publish(create$name;format="Camel"$Request)
+    $name;format="camel"$EntityRef.ask(Create$name;format="Camel"$Command($name;format="camel"$Aggregate)).map { _ =>
+      map$name;format="Camel"$ResourceToCreateResponse($name;format="camel"$Resource)
     }
   }
 
-  override def get$name;format="Camel"$(id: UUID): ServiceCall[NotUsed, Either[ErrorResponse, Get$name;format="Camel"$Response]] = ServerServiceCall { _ =>
+  override def get$name;format="Camel"$(id: UUID): ServiceCall[NotUsed, Get$name;format="Camel"$Response] = ServerServiceCall { _ =>
     logger.info(s"Looking up '$name$' with ID \$id...")
     val $name;format="camel"$EntityRef = registry.refFor[$name;format="Camel"$Entity](id.toString)
-    $name;format="camel"$EntityRef.ask(Get$name;format="Camel"$).map {
-      case Some($name;format="camel"$) => map$name;format="Camel"$($name;format="camel"$)
+    $name;format="camel"$EntityRef.ask(Get$name;format="Camel"$Query).map {
+      case Some($name;format="camel"$Aggregate) => map$name;format="Camel"$AggregateToResource($name;format="camel"$Aggregate)
       case None => throw NotFound(s"$name$ \$id not found")
     }
   }
 
   override def getAll$plural_name;format="Camel"$: ServiceCall[NotUsed, GetAll$plural_name;format="Camel"$Response] = ServiceCall { _ =>
     logger.info("Looking up all '$plural_name$'...")
-    $name;format="camel"$Repository.selectAll$name;format="Camel"$s.map($name;format="camel"$s => GetAll$plural_name;format="Camel"$Response($name;format="camel"$.map(map$name;format="Camel"$)))
+    $name;format="camel"$Repository.selectAll$name;format="Camel"$s.map($name;format="camel"$s => GetAll$plural_name;format="Camel"$Response($plural_name;format="camel"$.map(map$name;format="Camel"$)))
   }
 
-  private def map$name;format="Camel"$($name;format="camel"$: $name;format="Camel"$): $name;format="Camel"$Resource = {
-    $name;format="Camel"$Resource(Some($name;format="camel"$.id), $name;format="camel"$.name, $name;format="camel"$.description)
+  private def mapcreate$name;format="Camel"$AggregateToResource(create$name;format="Camel"$: create$name;format="Camel"$Aggregate): create$name;format="Camel"$Resource = {
+    create$name;format="Camel"$Resource(Some(create$name;format="Camel"$.id), create$name;format="Camel"$.name, create$name;format="Camel"$.description)
+  }
+
+  private def mapcreate$name;format="Camel"$AggregateToCreateResponse(create$name;format="Camel"$: create$name;format="Camel"$Aggregate): Create$name;format="Camel"$Response = {
+    Create$name;format="Camel"$Response(create$name;format="Camel"$.id, create$name;format="Camel"$.name, create$name;format="Camel"$.description)
+  }
+
+  private def mapcreate$name;format="Camel"$ResourceToCreateResponse(create$name;format="Camel"$Resource: create$name;format="Camel"$Resource): Create$name;format="Camel"$Response = {
+    Create$name;format="Camel"$Response(create$name;format="Camel"$Resource.id.getOrElse(UUID.randomUUID()), create$name;format="Camel"$Resource.name, create$name;format="Camel"$Resource.description)
+  }
+
+  private def mapCreate$name;format="Camel"$RequestToResource(create$name;format="Camel"$Request: create$name;format="Camel"$Request): create$name;format="Camel"$Resource = {
+    create$name;format="Camel"$Resource(Some(UUID.randomUUID()), create$name;format="Camel"$Request.name, create$name;format="Camel"$Request.description)
   }
 
   override def $name;format="camel"$MessageBrokerEvents: Topic[$name;format="Camel"$MessageBrokerEvent] =
@@ -113,30 +126,30 @@ class $name;format="Camel"$ServiceImpl(
 class $name;format="Camel"$Entity extends PersistentEntity {
   override type Command = $name;format="Camel"$Command
   override type Event = $name;format="Camel"$Event
-  override type State = Option[$name;format="Camel"$]
+  override type State = Option[$name;format="Camel"$Aggregate]
 
-  override def initialState: Option[$name;format="Camel"$] = None
+  override def initialState: Option[$name;format="Camel"$Aggregate] = None
 
   override def behavior: Behavior = {
     case None => notCreated
     case Some($name;format="camel"$) => created($name;format="camel"$)
   }
 
-  private val get$name;format="Camel"$Command = Actions().onReadOnlyCommand[Get$name;format="Camel"$.type, Option[$name;format="Camel"$]] {
+  private val get$name;format="Camel"$Query = Actions().onReadOnlyCommand[Get$name;format="Camel"$Query.type, Option[$name;format="Camel"$Aggregate]] {
     case (Get$name;format="Camel"$, ctx, state) => ctx.reply(state)
   }
 
   private val notCreated = {
-    Actions().onCommand[Create$name;format="Camel"$, Done] {
-      case (Create$name;format="Camel"$($name;format="camel"$), ctx, state) =>
+    Actions().onCommand[Create$name;format="Camel"$Command, Done] {
+      case (Create$name;format="Camel"$Command($name;format="camel"$), ctx, state) =>
         ctx.thenPersist($name;format="Camel"$CreatedEvent($name;format="camel"$))(_ => ctx.reply(Done))
     }.onEvent {
       case ($name;format="Camel"$CreatedEvent($name;format="camel"$), state) => Some($name;format="camel"$)
-    }.orElse(get$name;format="Camel"$Command)
+    }.orElse(get$name;format="Camel"$Query)
   }
 
-  private def created($name;format="camel"$: $name;format="Camel"$) = {
-    Actions().orElse(get$name;format="Camel"$Command)
+  private def created($name;format="camel"$: $name;format="Camel"$Aggregate) = {
+    Actions().orElse(get$name;format="Camel"$Query)
   }
 }
 
@@ -148,11 +161,11 @@ object $name;format="Camel"$Aggregate {
 
 sealed trait $name;format="Camel"$Command
 
-case object Get$name;format="Camel"$Query extends $name;format="Camel"$Command with ReplyType[Option[$name;format="Camel"$Resource]] {
+case object Get$name;format="Camel"$Query extends $name;format="Camel"$Command with ReplyType[Option[$name;format="Camel"$Aggregate]] {
   implicit val format: Format[Get$name;format="Camel"$Query.type] = singletonFormat(Get$name;format="Camel"$Query)
 }
 
-case class Create$name;format="Camel"$Command($name;format="camel"$: $name;format="Camel"$Request) extends $name;format="Camel"$Command with ReplyType[Done]
+case class Create$name;format="Camel"$Command($name;format="camel"$Aggregate: $name;format="Camel"$Aggregate) extends $name;format="Camel"$Command with ReplyType[Done]
 
 object Create$name;format="Camel"$Command {
   implicit val format: Format[Create$name;format="Camel"$Command] = Json.format
@@ -167,7 +180,7 @@ object $name;format="Camel"$Event {
   val Tag: AggregateEventShards[$name;format="Camel"$Event] = AggregateEventTag.sharded[$name;format="Camel"$Event](NumShards)
 }
 
-case class $name;format="Camel"$CreatedEvent($name;format="camel"$: $name;format="Camel"$AggregateEntity) extends $name;format="Camel"$Event
+case class $name;format="Camel"$CreatedEvent($name;format="camel"$: $name;format="Camel"$Aggregate) extends $name;format="Camel"$Event
 
 object $name;format="Camel"$CreatedEvent {
   implicit val format: Format[$name;format="Camel"$CreatedEvent] = Json.format
@@ -217,7 +230,7 @@ class $name;format="Camel"$ApplicationLoader extends LagomApplicationLoader {
 private[impl] class $name;format="Camel"$Repository(session: CassandraSession)(implicit ec: ExecutionContext) {
   private val logger = LoggerFactory.getLogger(classOf[$name;format="Camel"$Repository])
 
-  def selectAll$name;format="Camel"$s: Future[Seq[$name;format="Camel"$]] = {
+  def selectAll$name;format="Camel"$s: Future[Seq[$name;format="Camel"$Aggregate]] = {
     logger.info("Querying all $plural_name$...")
     session.selectAll(
       """

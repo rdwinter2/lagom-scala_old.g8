@@ -19,3 +19,47 @@ GET for queries
    A Saga needs to be implemented in this manner
    Command body should include a unique identifier, can be a span id
 ```
+
+```{.scala}
+  override final def descriptor = {
+    import Service._
+    // @formatter:off
+    named("$name;format="norm"$").withCalls(
+      // For REST calls with DDD/CQRS/ES only use GET and POST
+      // GET for queries
+      //   pagination and expand for large resources
+      // POST for commands
+      //   "Use POST APIs to create new subordinate resources" https://restfulapi.net/http-methods/
+      //   A DDD command can be thought of as a subordinate resource to the DDD aggregate entity
+      //   The command "could" have an identity and be queryable, for instance an async req/resp.
+      //   A Saga needs to be implemented in this manner
+      //   Command body should include a unique identifier, can be a span id
+      restCall(Method.POST, "/api/$plural_name;format="lower,hyphen"$", create$name;format="Camel"$ _),
+      //restCall(Method.POST, "/api/$plural_name;format="lower,hyphen"$/:id/create$name;format="Camel"$", create$name;format="Camel"$ _),
+      restCall(Method.GET, "/api/$plural_name;format="lower,hyphen"$/:id", get$name;format="Camel"$ _),
+      restCall(Method.GET, "/api/$plural_name;format="lower,hyphen"$", getAll$plural_name;format="Camel"$ _),
+      pathCall("/api/$plural_name;format="lower,hyphen"$/stream", subscribe$name;format="Camel"$Stream _)
+        // POST restCall for other domain commands = post to a REST resource
+        // restCall(Method.POST, "/api/$plural_name;format="camel"$"/:id/startAuction, startAuction _)
+    )
+//      .withTopics(
+//        topic($name;format="Camel"$Service.TOPIC_NAME, $name;format="lower,snake"$)
+          // Kafka partitions messages, messages within the same partition will
+          // be delivered in order, to ensure that all messages for the same $name;format="camel"$
+          // go to the same partition (and hence are delivered in order with respect
+          // to that $name;format="camel"$), we configure a partition key strategy that extracts the
+          // name as the partition key.
+//          .addProperty(
+//            KafkaProperties.partitionKeyStrategy,
+//            PartitionKeyStrategy[GreetingMessageChanged](_.name)
+//          )
+//      )
+      .withAutoAcl(true)
+      .withExceptionSerializer(new DefaultExceptionSerializer(Environment.simple(mode = Mode.Prod)))
+      .withTopics(
+        topic("$name;format="camel"$-$name;format="Camel"$MessageBrokerEvent", this.$name;format="camel"$MessageBrokerEvents)
+//        topic("$name;format="Camel"$Events", $name;format="camel"$Events)
+      )
+    // @formatter:on
+  }
+```

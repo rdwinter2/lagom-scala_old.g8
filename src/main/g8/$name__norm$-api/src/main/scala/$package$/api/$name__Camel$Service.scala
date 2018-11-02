@@ -38,40 +38,15 @@ trait $name;format="Camel"$Service extends Service {
     import Service._
     // @formatter:off
     named("$name;format="norm"$").withCalls(
-      // For REST calls with DDD/CQRS/ES only use GET and POST
-      // GET for queries
-      //   pagination and expand for large resources
-      // POST for commands
-      //   "Use POST APIs to create new subordinate resources" https://restfulapi.net/http-methods/
-      //   A DDD command can be thought of as a subordinate resource to the DDD aggregate entity
-      //   The command "could" have an identity and be queryable, for instance an async req/resp.
-      //   A Saga needs to be implemented in this manner
-      //   Command body should include a unique identifier, can be a span id
       restCall(Method.POST, "/api/$plural_name;format="lower,hyphen"$", create$name;format="Camel"$ _),
-      //restCall(Method.POST, "/api/$plural_name;format="lower,hyphen"$/:id/create$name;format="Camel"$", create$name;format="Camel"$ _),
       restCall(Method.GET, "/api/$plural_name;format="lower,hyphen"$/:id", get$name;format="Camel"$ _),
       restCall(Method.GET, "/api/$plural_name;format="lower,hyphen"$", getAll$plural_name;format="Camel"$ _),
       pathCall("/api/$plural_name;format="lower,hyphen"$/stream", subscribe$name;format="Camel"$Stream _)
-        // POST restCall for other domain commands = post to a REST resource
-        // restCall(Method.POST, "/api/$plural_name;format="camel"$"/:id/startAuction, startAuction _)
     )
-//      .withTopics(
-//        topic($name;format="Camel"$Service.TOPIC_NAME, $name;format="lower,snake"$)
-          // Kafka partitions messages, messages within the same partition will
-          // be delivered in order, to ensure that all messages for the same $name;format="camel"$
-          // go to the same partition (and hence are delivered in order with respect
-          // to that $name;format="camel"$), we configure a partition key strategy that extracts the
-          // name as the partition key.
-//          .addProperty(
-//            KafkaProperties.partitionKeyStrategy,
-//            PartitionKeyStrategy[GreetingMessageChanged](_.name)
-//          )
-//      )
       .withAutoAcl(true)
       .withExceptionSerializer(new DefaultExceptionSerializer(Environment.simple(mode = Mode.Prod)))
       .withTopics(
         topic("$name;format="camel"$-$name;format="Camel"$MessageBrokerEvent", this.$name;format="camel"$MessageBrokerEvents)
-//        topic("$name;format="Camel"$Events", $name;format="camel"$Events)
       )
     // @formatter:on
   }
@@ -87,7 +62,7 @@ trait $name;format="Camel"$Service extends Service {
     * Example:
     * curl -H "Content-Type: application/json" -X POST -d '{"name": "test", "description": "test description"}' http://localhost:9000/api/$plural_name;format="lower,hyphen"$
     */
-  def create$name;format="Camel"$: ServiceCall[Create$name;format="Camel"$Request, Either[ErrorResponse, Create$name;format="Camel"$Response]]
+  def create$name;format="Camel"$: ServiceCall[Create$name;format="Camel"$Request, Create$name;format="Camel"$Response]
 
   /**
     * Get a "$name$" with the given surrogate key ID.
@@ -98,7 +73,7 @@ trait $name;format="Camel"$Service extends Service {
     * Example:
     * curl http://localhost:9000/api/$plural_name;format="lower,hyphen"$/123e4567-e89b-12d3-a456-426655440000
     */
-  def get$name;format="Camel"$(id: UUID): ServiceCall[NotUsed, Either[ErrorResponse, Get$name;format="Camel"$Response]]
+  def get$name;format="Camel"$(id: UUID): ServiceCall[NotUsed, Get$name;format="Camel"$Response]
 
   /**
     * Get all "$plural_name$".
@@ -145,15 +120,15 @@ object Create$name;format="Camel"$Request {
   implicit val format: Format[Create$name;format="Camel"$Request] = Jsonx.formatCaseClass
 
   implicit val Create$name;format="Camel"$RequestValidator = validator[Create$name;format="Camel"$Request] {u =>
-//    u.name is notEmpty
-    u.name as notEmptyKey("name") is notEmpty
+    u.name is notEmpty
+//    u.name as notEmptyKey("name") is notEmpty
 //    u.name as matchRegexFullyKey("name") should matchRegexFully(Matchers.name)
   }
 }
 
 // Response
 
-case class Create$name;format="Camel"$Response(id: UUID)
+case class Create$name;format="Camel"$Response(id: UUID, name: String, description: String)
 
 object Create$name;format="Camel"$Response {
   implicit val format: Format[Create$name;format="Camel"$Response] = Json.format
