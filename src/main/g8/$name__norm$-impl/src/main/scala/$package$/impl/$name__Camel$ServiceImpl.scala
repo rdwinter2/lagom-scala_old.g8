@@ -45,7 +45,7 @@ class $name;format="Camel"$ServiceImpl(
 )(implicit ec: ExecutionContext) extends $name;format="Camel"$Service {
   private val logger = LoggerFactory.getLogger(classOf[$name;format="Camel"$ServiceImpl])
 
-  override def create$name;format="Camel"$ = ServerServiceCall { create$name;format="Camel"$Request =>
+  override def create$name;format="Camel"$: ServiceCall[Create$name;format="Camel"$Request, Create$name;format="Camel"$Response] = ServerServiceCall { create$name;format="Camel"$Request =>
     logger.info(s"Creating '$name$' with input \$create$name;format="Camel"$Request...")
     //validate(create$name;format="Camel"$Request)
     val id = UUIDs.timeBased()
@@ -235,7 +235,7 @@ private[impl] class $name;format="Camel"$Repository(session: CassandraSession)(i
   private val logger = LoggerFactory.getLogger(classOf[$name;format="Camel"$Repository])
 
   def selectAll$name;format="Camel"$s: Future[Seq[$name;format="Camel"$Aggregate]] = {
-    logger.info("Querying all $plural_name$...")
+    logger.info("Querying all '$plural_name$'...")
     session.selectAll(
       """
       SELECT * FROM $name;format="lower,snake,word"$

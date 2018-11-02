@@ -1,0 +1,30 @@
+---
+events:
+  | $name;format="Camel"$Created
+  | $name;format="Camel"$Archived
+calls:
+  | create$name;format="Camel"$Command: ServiceCall[Create$name;format="Camel"$Request, Create$name;format="Camel"$Response]
+  | archive$name;format="Camel"$Command($name;format="camel"$Id: UUID): ServiceCall[Archive$name;format="Camel"$Request, Archive$name;format="Camel"$Response]
+  | get$name;format="Camel"$($name;format="camel"$Id: UUID): ServiceCall[NotUsed, Get$name;format="Camel"$Response]
+  | GetAll$plural_name;format="Camel"$: ServiceCall[NotUsed, GetAll$plural_name;format="Camel"$Response]
+commands:
+replies:
+type: $name;format="Camel"$
+  name: String!
+  description: String
+type: $name;format="Camel"$Resource
+  $name;format="camel"$Id: Uuid @isUnique @default(timeUuid)
+  $name;format="camel"$: $name;format="Camel"$
+type: $name;format="Camel"$Aggregate
+  $name;format="camel"$Id: Uuid! @isUnique
+  $name;format="camel"$: $name;format="Camel"$
+# All commands include parameters for CorrelationId and SpanId
+type: Create$name;format="Camel"$Command
+type: Create$name;format="Camel"$Request
+  $name;format="camel"$Id: Uuid
+  $name;format="camel"$: $name;format="Camel"$
+
+# The purpose of the SpanId is to function as a distributed tracing span
+# identifier. If it is missing the command generates a unique identifier.
+# This identifier along with timestamps of
+...
