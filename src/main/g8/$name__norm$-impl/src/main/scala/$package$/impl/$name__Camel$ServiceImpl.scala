@@ -87,7 +87,7 @@ class $name;format="Camel"$ServiceImpl(
   }
 
   private def map$name;format="Camel"$ResourceToCreateResponse($name;format="camel"$Resource: $name;format="Camel"$Resource): Create$name;format="Camel"$Response = {
-    Create$name;format="Camel"$Response(create$name;format="camel"$Resource.id.getOrElse(UUID.randomUUID()), create$name;format="camel"$Resource.name, create$name;format="camel"$Resource.description)
+    Create$name;format="Camel"$Response($name;format="camel"$Resource.id.getOrElse(UUID.randomUUID()), $name;format="camel"$Resource.name, $name;format="camel"$Resource.description)
   }
 
   private def mapCreate$name;format="Camel"$RequestToResource(create$name;format="Camel"$Request: Create$name;format="Camel"$Request): $name;format="Camel"$Resource = {
