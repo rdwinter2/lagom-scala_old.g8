@@ -238,13 +238,13 @@ private[impl] class $name;format="Camel"$Repository(session: CassandraSession)(i
     logger.info("Querying all $plural_name$...")
     session.selectAll(
       """
-      SELECT * FROM $name;format="camel"$
+      SELECT * FROM $name;format="lower,snake,word"$
     """).map(rows => rows.map(row => convertTo$name;format="Camel"$Aggregate(row)))
   }
 
   def select$name;format="Camel"$(id: UUID) = {
     logger.info(s"Querying '$name$' with ID \$id...")
-    session.selectOne("SELECT * FROM $name;format="camel"$ WHERE id = ?", id)
+    session.selectOne("SELECT * FROM $name;format="lower,snake,word"$ WHERE id = ?", id)
   }
 
   private def convertTo$name;format="Camel"$Aggregate($name;format="camel"$Row: Row): $name;format="Camel"$Aggregate = {
@@ -278,7 +278,7 @@ private[impl] class $name;format="Camel"$EventProcessor(session: CassandraSessio
     for {
       _ <- session.executeCreateTable(
         """
-        CREATE TABLE IF NOT EXISTS $name;format="camel"$ (
+        CREATE TABLE IF NOT EXISTS $name;format="lower,snake,word"$ (
           id timeuuid PRIMARY KEY,
           name text,
           description text
@@ -292,7 +292,7 @@ private[impl] class $name;format="Camel"$EventProcessor(session: CassandraSessio
     for {
       insert$name;format="Camel"$ <- session.prepare(
         """
-        INSERT INTO $name;format="camel"$(
+        INSERT INTO $name;format="lower,snake,word"$(
           id,
           name,
           description
