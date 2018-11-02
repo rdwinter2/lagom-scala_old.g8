@@ -45,7 +45,7 @@ class $name;format="Camel"$ServiceImpl(
 )(implicit ec: ExecutionContext) extends $name;format="Camel"$Service {
   private val logger = LoggerFactory.getLogger(classOf[$name;format="Camel"$ServiceImpl])
 
-  override def create$name;format="Camel"$: ServiceCall[Create$name;format="Camel"$Request, Create$name;format="Camel"$Response] = ServerServiceCall { create$name;format="Camel"$Request =>
+  override def create$name;format="Camel"$ = ServerServiceCall { create$name;format="Camel"$Request =>
     logger.info(s"Creating '$name$' with input \$create$name;format="Camel"$Request...")
     //validate(create$name;format="Camel"$Request)
     val id = UUIDs.timeBased()
@@ -54,7 +54,7 @@ class $name;format="Camel"$ServiceImpl(
     val $name;format="camel"$EntityRef = registry.refFor[$name;format="Camel"$Entity](id.toString)
     logger.info(s"Publishing event \$$name;format="camel"$Aggregate")
     val topic = pubSubRegistry.refFor(TopicId[$name;format="Camel"$Resource])
-    topic.publish(create$name;format="Camel"$Request)
+    topic.publish(create$name;format="Camel"$Resource)
     $name;format="camel"$EntityRef.ask(Create$name;format="Camel"$Command($name;format="camel"$Aggregate)).map { _ =>
       map$name;format="Camel"$ResourceToCreateResponse($name;format="camel"$Resource)
     }
@@ -64,25 +64,25 @@ class $name;format="Camel"$ServiceImpl(
     logger.info(s"Looking up '$name$' with ID \$id...")
     val $name;format="camel"$EntityRef = registry.refFor[$name;format="Camel"$Entity](id.toString)
     $name;format="camel"$EntityRef.ask(Get$name;format="Camel"$Query).map {
-      case Some($name;format="camel"$Aggregate) => map$name;format="Camel"$AggregateToResource($name;format="camel"$Aggregate)
+      case Some($name;format="camel"$Aggregate) => map$name;format="Camel"$AggregateToGetResponse($name;format="camel"$Aggregate)
       case None => throw NotFound(s"$name$ \$id not found")
     }
   }
 
   override def getAll$plural_name;format="Camel"$: ServiceCall[NotUsed, GetAll$plural_name;format="Camel"$Response] = ServiceCall { _ =>
     logger.info("Looking up all '$plural_name$'...")
-    $name;format="camel"$Repository.selectAll$name;format="Camel"$s.map($name;format="camel"$s => GetAll$plural_name;format="Camel"$Response($plural_name;format="camel"$.map(map$name;format="Camel"$)))
+    $name;format="camel"$Repository.selectAll$name;format="Camel"$s.map($name;format="camel"$s => GetAll$plural_name;format="Camel"$Response($plural_name;format="camel"$.map(map$name;format="Camel"$AggregateToResource)))
   }
 
-  private def mapcreate$name;format="Camel"$AggregateToResource(create$name;format="Camel"$: create$name;format="Camel"$Aggregate): create$name;format="Camel"$Resource = {
-    create$name;format="Camel"$Resource(Some(create$name;format="Camel"$.id), create$name;format="Camel"$.name, create$name;format="Camel"$.description)
+  private def map$name;format="Camel"$AggregateToResource(create$name;format="Camel"$Aggregate: create$name;format="Camel"$Aggregate): create$name;format="Camel"$Resource = {
+    create$name;format="Camel"$Resource(Some(create$name;format="Camel"$Aggregate.id), create$name;format="Camel"$Aggregate.name, create$name;format="Camel"$Aggregate.description)
   }
 
-  private def mapcreate$name;format="Camel"$AggregateToCreateResponse(create$name;format="Camel"$: create$name;format="Camel"$Aggregate): Create$name;format="Camel"$Response = {
-    Create$name;format="Camel"$Response(create$name;format="Camel"$.id, create$name;format="Camel"$.name, create$name;format="Camel"$.description)
+  private def mapcreate$name;format="Camel"$AggregateToCreateResponse(create$name;format="Camel"$Aggregate: create$name;format="Camel"$Aggregate): Create$name;format="Camel"$Response = {
+    Create$name;format="Camel"$Response(create$name;format="Camel"$Aggregate.id, create$name;format="Camel"$Aggregate.name, create$name;format="Camel"$Aggregate.description)
   }
 
-  private def mapcreate$name;format="Camel"$ResourceToCreateResponse(create$name;format="Camel"$Resource: create$name;format="Camel"$Resource): Create$name;format="Camel"$Response = {
+  private def map$name;format="Camel"$ResourceToCreateResponse(create$name;format="Camel"$Resource: create$name;format="Camel"$Resource): Create$name;format="Camel"$Response = {
     Create$name;format="Camel"$Response(create$name;format="Camel"$Resource.id.getOrElse(UUID.randomUUID()), create$name;format="Camel"$Resource.name, create$name;format="Camel"$Resource.description)
   }
 
@@ -115,7 +115,7 @@ class $name;format="Camel"$ServiceImpl(
     }
   }
 
-  override def get$name;format="Camel"$Stream: ServiceCall[NotUsed, Source[$name;format="Camel"$Resource, NotUsed]] = ServiceCall { _ =>
+  override def subscribe$name;format="Camel"$Stream: ServiceCall[NotUsed, Source[$name;format="Camel"$Resource, NotUsed]] = ServiceCall { _ =>
     val topic = pubSubRegistry.refFor(TopicId[$name;format="Camel"$Resource])
     Future.successful(topic.subscriber)
   }
@@ -136,7 +136,7 @@ class $name;format="Camel"$Entity extends PersistentEntity {
   }
 
   private val get$name;format="Camel"$Query = Actions().onReadOnlyCommand[Get$name;format="Camel"$Query.type, Option[$name;format="Camel"$Aggregate]] {
-    case (Get$name;format="Camel"$, ctx, state) => ctx.reply(state)
+    case (Get$name;format="Camel"$Query, ctx, state) => ctx.reply(state)
   }
 
   private val notCreated = {
