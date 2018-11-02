@@ -75,7 +75,7 @@ class $name;format="Camel"$ServiceImpl(
   }
 
   private def map$name;format="Camel"$AggregateToResource($name;format="camel"$Aggregate: $name;format="Camel"$Aggregate): $name;format="Camel"$Resource = {
-    create$name;format="Camel"$Resource(Some($name;format="camel"$Aggregate.id), $name;format="camel"$Aggregate.name, $name;format="camel"$Aggregate.description)
+    $name;format="Camel"$Resource(Some($name;format="camel"$Aggregate.id), $name;format="camel"$Aggregate.name, $name;format="camel"$Aggregate.description)
   }
 
   private def map$name;format="Camel"$AggregateToCreateResponse($name;format="camel"$Aggregate: $name;format="Camel"$Aggregate): Create$name;format="Camel"$Response = {
@@ -86,13 +86,13 @@ class $name;format="Camel"$ServiceImpl(
     Get$name;format="Camel"$Response($name;format="camel"$Aggregate.id, $name;format="camel"$Aggregate.name, $name;format="camel"$Aggregate.description)
   }
 
-  private def map$name;format="Camel"$ResourceToCreateResponse(create$name;format="camel"$Resource: create$name;format="Camel"$Resource): Create$name;format="Camel"$Response = {
-    Create$name;format="Camel"$Resource.id.getOrElse(UUID.randomUUID()), create$name;format="camel"$Resource.name, create$name;format="camel"$Resource.description)
+  private def map$name;format="Camel"$ResourceToCreateResponse($name;format="camel"$Resource: $name;format="Camel"$Resource): Create$name;format="Camel"$Response = {
+    Create$name;format="Camel"$Response(create$name;format="camel"$Resource.id.getOrElse(UUID.randomUUID()), create$name;format="camel"$Resource.name, create$name;format="camel"$Resource.description)
   }
 
- private def mapCreate$name;format="Camel"$RequestToResource(create$name;format="Camel"$Request: Create$name;format="Camel"$Request): $name;format="Camel"$Resource = {
+  private def mapCreate$name;format="Camel"$RequestToResource(create$name;format="Camel"$Request: Create$name;format="Camel"$Request): $name;format="Camel"$Resource = {
     $name;format="Camel"$Resource(Some(UUID.randomUUID()), create$name;format="Camel"$Request.name, create$name;format="Camel"$Request.description)
- }
+  }
 
   override def $name;format="camel"$MessageBrokerEvents: Topic[$name;format="Camel"$MessageBrokerEvent] =
     TopicProducer.taggedStreamWithOffset($name;format="Camel"$Event.Tag.allTags.toList) { (tag, offset) =>
