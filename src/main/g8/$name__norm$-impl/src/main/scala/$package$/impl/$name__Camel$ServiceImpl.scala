@@ -74,21 +74,25 @@ class $name;format="Camel"$ServiceImpl(
     $name;format="camel"$Repository.selectAll$name;format="Camel"$s.map($name;format="camel"$s => GetAll$plural_name;format="Camel"$Response($plural_name;format="camel"$.map(map$name;format="Camel"$AggregateToResource)))
   }
 
-  private def map$name;format="Camel"$AggregateToResource(create$name;format="Camel"$Aggregate: create$name;format="Camel"$Aggregate): create$name;format="Camel"$Resource = {
-    create$name;format="Camel"$Resource(Some(create$name;format="Camel"$Aggregate.id), create$name;format="Camel"$Aggregate.name, create$name;format="Camel"$Aggregate.description)
+  private def map$name;format="Camel"$AggregateToResource($name;format="camel"$Aggregate: $name;format="Camel"$Aggregate): $name;format="Camel"$Resource = {
+    create$name;format="Camel"$Resource(Some($name;format="camel"$Aggregate.id), $name;format="camel"$Aggregate.name, $name;format="camel"$Aggregate.description)
   }
 
-  private def map$name;format="Camel"$AggregateToCreateResponse($name;format="Camel"$Aggregate: $name;format="Camel"$Aggregate): Create$name;format="Camel"$Response = {
-    Create$name;format="Camel"$Response($name;format="Camel"$Aggregate.id, $name;format="Camel"$Aggregate.name, $name;format="Camel"$Aggregate.description)
+  private def map$name;format="Camel"$AggregateToCreateResponse($name;format="camel"$Aggregate: $name;format="Camel"$Aggregate): Create$name;format="Camel"$Response = {
+    Create$name;format="Camel"$Response($name;format="camel"$Aggregate.id, $name;format="camel"$Aggregate.name, $name;format="camel"$Aggregate.description)
   }
 
-  private def map$name;format="Camel"$ResourceToCreateResponse(create$name;format="Camel"$Resource: create$name;format="Camel"$Resource): Create$name;format="Camel"$Response = {
-    Create$name;format="Camel"$Response(create$name;format="Camel"$Resource.id.getOrElse(UUID.randomUUID()), create$name;format="Camel"$Resource.name, create$name;format="Camel"$Resource.description)
+  private def map$name;format="Camel"$AggregateToGetResponse($name;format="camel"$Aggregate: $name;format="Camel"$Aggregate): Get$name;format="Camel"$Response = {
+    Get$name;format="Camel"$Response($name;format="camel"$Aggregate.id, $name;format="camel"$Aggregate.name, $name;format="camel"$Aggregate.description)
   }
 
-  private def mapCreate$name;format="Camel"$RequestToResource(create$name;format="Camel"$Request: create$name;format="Camel"$Request): create$name;format="Camel"$Resource = {
-    create$name;format="Camel"$Resource(Some(UUID.randomUUID()), create$name;format="Camel"$Request.name, create$name;format="Camel"$Request.description)
+  private def map$name;format="Camel"$ResourceToCreateResponse(create$name;format="camel"$Resource: create$name;format="Camel"$Resource): Create$name;format="Camel"$Response = {
+    Create$name;format="Camel"$Resource.id.getOrElse(UUID.randomUUID()), create$name;format="camel"$Resource.name, create$name;format="camel"$Resource.description)
   }
+
+ private def mapCreate$name;format="Camel"$RequestToResource(create$name;format="Camel"$Request: Create$name;format="Camel"$Request): $name;format="Camel"$Resource = {
+    $name;format="Camel"$Resource(Some(UUID.randomUUID()), create$name;format="Camel"$Request.name, create$name;format="Camel"$Request.description)
+ }
 
   override def $name;format="camel"$MessageBrokerEvents: Topic[$name;format="Camel"$MessageBrokerEvent] =
     TopicProducer.taggedStreamWithOffset($name;format="Camel"$Event.Tag.allTags.toList) { (tag, offset) =>
