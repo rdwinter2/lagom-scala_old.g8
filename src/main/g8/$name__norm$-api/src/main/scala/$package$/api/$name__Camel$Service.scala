@@ -38,8 +38,11 @@ trait $name;format="Camel"$Service extends Service {
     import Service._
     // @formatter:off
     named("$name;format="norm"$").withCalls(
-      restCall(Method.POST, "/api/$plural_name;format="lower,hyphen"$", create$name;format="Camel"$ _),
-      restCall(Method.GET, "/api/$plural_name;format="lower,hyphen"$/:id", get$name;format="Camel"$ _),
+      restCall(Method.POST, "/api/$plural_name;format="lower,hyphen"$", create$name;format="Camel"$WithSystemGeneratedId _),
+      restCall(Method.POST, "/api/$plural_name;format="lower,hyphen"$/:$name;format="camel"$Id/create-$name;format="lower,hyphen"$", create$name;format="Camel"$ _),
+      restCall(Method.POST, "/api/$plural_name;format="lower,hyphen"$/:$name;format="camel"$Id/archive-$name;format="lower,hyphen"$", archive$name;format="Camel"$ _),
+      restCall(Method.POST, "/api/$plural_name;format="lower,hyphen"$/:$name;format="camel"$Id/unarchive-$name;format="lower,hyphen"$", unarchive$name;format="Camel"$ _),
+      restCall(Method.GET, "/api/$plural_name;format="lower,hyphen"$/:$name;format="camel"$Id", get$name;format="Camel"$ _),
       restCall(Method.GET, "/api/$plural_name;format="lower,hyphen"$", getAll$plural_name;format="Camel"$ _),
       pathCall("/api/$plural_name;format="lower,hyphen"$/stream", subscribe$name;format="Camel"$Stream _)
     )
@@ -60,14 +63,25 @@ trait $name;format="Camel"$Service extends Service {
     *         HTTP 404 status code if one or more items in the [[Create$name;format="Camel"$Request]] failed vaildation.
     *
     * Example:
-    * curl -H "Content-Type: application/json" -X POST -d '{"name": "test", "description": "test description"}' http://localhost:9000/api/$plural_name;format="lower,hyphen"$
+    * curl -H "Content-Type: application/json" -X POST -d '{"$name;format="camel"$": {"name": "test", "description": "test description"}}' http://localhost:9000/api/$plural_name;format="lower,hyphen"$
     */
-  def create$name;format="Camel"$: ServiceCall[Create$name;format="Camel"$Request, Create$name;format="Camel"$Response]
+  def create$name;format="Camel"$WithSystemGeneratedId: ServiceCall[Create$name;format="Camel"$Request, Create$name;format="Camel"$Response]
+
+  /**
+    * Create a "$name$".
+    *
+    * @return HTTP 200 status code if the "$name$" was created successfully.
+    *         HTTP 404 status code if one or more items in the [[Create$name;format="Camel"$Request]] failed vaildation.
+    *
+    * Example:
+    * curl -H "Content-Type: application/json" -X POST -d '{"$name;format="camel"$": {"name": "test", "description": "test description"}}' http://localhost:9000/api/$plural_name;format="lower,hyphen"$/{$name;format="camel"$Id}/create-$name;format="lower,hyphen"$
+    */
+  def create$name;format="Camel"$($name;format="camel"$Id: Option[UUID]): ServiceCall[Create$name;format="Camel"$Request, Create$name;format="Camel"$Response]
 
   /**
     * Get a "$name$" with the given surrogate key ID.
     *
-    * @param id The ID of the "$name$" to get.
+    * @param $name;format="camel"$Id The ID of the "$name$" to get.
     * @return HTTP 200 status code with the current state of the "$name$" resource.
     *
     * Example:
@@ -98,7 +112,7 @@ trait $name;format="Camel"$Service extends Service {
 
 case class $name;format="Camel"$(
   name: String,
-  description: String) {
+  description: Option[String]) {
 }
 
 object $name;format="Camel"$ {
@@ -107,15 +121,17 @@ object $name;format="Camel"$ {
 
 // Resource
 
-case class $name;format="Camel"$Resource(id: Option[UUID], name: String, description: String) {
+case class $name;format="Camel"$Resource(
+  id: Option[UUID],
+  $name;format="camel"$: $name;format="Camel"$) {
   def safeId: UUID = id.getOrElse(UUID.randomUUID())
 }
 
 object $name;format="Camel"$Resource {
   implicit val format: Format[$name;format="Camel"$Resource] = Jsonx.formatCaseClass
 
-  def create(name: String, description: String): $name;format="Camel"$Resource = {
-    $name;format="Camel"$Resource(None, name, description)
+  def create(name: String, description: Option[String]): $name;format="Camel"$Resource = {
+    $name;format="Camel"$Resource(None, $name;format="Camel"$(name, description))
   }
 }
 
@@ -123,15 +139,14 @@ object $name;format="Camel"$Resource {
 
 // TODO: include span ID as the unique identity of a Create$name;format="Camel"$Request
 case class Create$name;format="Camel"$Request(
-  name: String,
-  description: String
+  $name;format="camel"$: $name;format="Camel"$
 )
 
 object Create$name;format="Camel"$Request {
   implicit val format: Format[Create$name;format="Camel"$Request] = Jsonx.formatCaseClass
 
   implicit val Create$name;format="Camel"$RequestValidator = validator[Create$name;format="Camel"$Request] {u =>
-    u.name is notEmpty
+    u.$name;format="camel"$.name is notEmpty
 //    u.name as notEmptyKey("name") is notEmpty
 //    u.name as matchRegexFullyKey("name") should matchRegexFully(Matchers.name)
   }
@@ -139,22 +154,28 @@ object Create$name;format="Camel"$Request {
 
 // Response
 
-case class Create$name;format="Camel"$Response(id: UUID, name: String, description: String)
+case class Create$name;format="Camel"$Response(
+  id: UUID,
+  $name;format="camel"$: $name;format="Camel"$
+)
 
 object Create$name;format="Camel"$Response {
   implicit val format: Format[Create$name;format="Camel"$Response] = Json.format
 }
 
-case class Get$name;format="Camel"$Response(id: UUID, name: String, description: String)
+case class Get$name;format="Camel"$Response(
+  id: UUID,
+  $name;format="camel"$: $name;format="Camel"$
+)
 
 object Get$name;format="Camel"$Response {
   implicit val format: Format[Get$name;format="Camel"$Response] = Json.format
 }
 
-case class GetAll$plural_name;format="Camel"$Response($plural_name;format="camel"$: Seq[$name;format="Camel"$Resource])
+case class GetAll$name;format="Camel"$sResponse($name;format="camel"$s: Seq[$name;format="Camel"$Resource])
 
-object GetAll$plural_name;format="Camel"$Response {
-  implicit val format: Format[GetAll$plural_name;format="Camel"$Response] = Json.format
+object GetAll$name;format="Camel"$sResponse {
+  implicit val format: Format[GetAll$name;format="Camel"$sResponse] = Json.format
 }
 
 // Message Broker Event
@@ -164,7 +185,10 @@ sealed trait $name;format="Camel"$MessageBrokerEvent {
   val id: UUID
 }
 
-case class $name;format="Camel"$Created(id: UUID, name: String, description: String) extends $name;format="Camel"$MessageBrokerEvent
+case class $name;format="Camel"$Created(
+  id: UUID,
+  $name;format="camel"$: $name;format="Camel"$
+) extends $name;format="Camel"$MessageBrokerEvent
 
 object $name;format="Camel"$Created {
   implicit val format: Format[$name;format="Camel"$Created] = Json.format

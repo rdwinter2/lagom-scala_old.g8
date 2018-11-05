@@ -1,4 +1,6 @@
 ---
+scalar_types:
+  $name;format="Camel"$Id: String @check("[a-zA-Z0-9\-\.\_\~]{1,128}")
 events:
   | $name;format="Camel"$Created
   | $name;format="Camel"$Deleted
@@ -18,7 +20,7 @@ type: $name;format="Camel"$
   name: String!
   description: String
 type: $name;format="Camel"$Resource
-  $name;format="camel"$Id: Uuid @isUnique @default(timeUuid)
+  $name;format="camel"$Id: $name;format="Camel"$Id @isUnique @default(CUID)
   $name;format="camel"$: $name;format="Camel"$
 type: $name;format="Camel"$Aggregate
   $name;format="camel"$Id: Uuid! @isUnique
