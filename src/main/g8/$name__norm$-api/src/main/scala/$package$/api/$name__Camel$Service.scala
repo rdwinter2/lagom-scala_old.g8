@@ -94,6 +94,17 @@ trait $name;format="Camel"$Service extends Service {
 
 }
 
+// $name$ algebraic type
+
+case class $name;format="Camel"$(
+  name: String,
+  description: String) {
+}
+
+object $name;format="Camel"$ {
+  implicit val format: Format[$name;format="Camel"$] = Jsonx.formatCaseClass
+}
+
 // Resource
 
 case class $name;format="Camel"$Resource(id: Option[UUID], name: String, description: String) {

@@ -304,10 +304,10 @@ private[impl] class $name;format="Camel"$EventProcessor(session: CassandraSessio
     }
   }
 
-  private def insert$name;format="Camel"$($name;format="camel"$: $name;format="Camel"$Aggregate) = {
-    logger.info(s"Inserting \$$name;format="camel"$...")
+  private def insert$name;format="Camel"$($name;format="camel"$Aggregate: $name;format="Camel"$Aggregate) = {
+    logger.info(s"Inserting \$$name;format="camel"$Aggregate...")
     Future.successful(List(
-      insert$name;format="Camel"$Statement.bind($name;format="camel"$.id, $name;format="camel"$.name, $name;format="camel"$.description)
+      insert$name;format="Camel"$Statement.bind($name;format="camel"$Aggregate.id, $name;format="camel"$Aggregate.name, $name;format="camel"$Aggregate.description)
     ))
   }
 }
@@ -316,6 +316,7 @@ private[impl] class $name;format="Camel"$EventProcessor(session: CassandraSessio
 
 object $name;format="Camel"$SerializerRegistry extends JsonSerializerRegistry {
   override def serializers = List(
+    JsonSerializer[$name;format="Camel"$],
     JsonSerializer[$name;format="Camel"$Resource],
     JsonSerializer[Create$name;format="Camel"$Request],
     JsonSerializer[Create$name;format="Camel"$Response],

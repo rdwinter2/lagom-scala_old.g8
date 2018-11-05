@@ -1,7 +1,9 @@
 ---
 events:
   | $name;format="Camel"$Created
+  | $name;format="Camel"$Deleted
   | $name;format="Camel"$Archived
+  | $name;format="Camel"$Unarchived
 paths:
   | "/api/$plural_name;format="lower,hyphen"$": create$name;format="Camel"$
   |
