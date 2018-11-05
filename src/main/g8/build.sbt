@@ -71,6 +71,7 @@ lazy val $name;format="camel"$Impl = (project in file("$name;format="norm"$-impl
       lagomScaladslPubSub,
       cassandraDriverExtras,
       macwire,
+      cuid,
       jbcrypt,
       scalaTest,
       "ai.x" %% "play-json-extensions" % "0.10.0"
