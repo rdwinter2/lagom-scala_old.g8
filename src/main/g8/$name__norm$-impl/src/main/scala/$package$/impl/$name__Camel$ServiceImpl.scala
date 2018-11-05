@@ -46,21 +46,6 @@ class $name;format="Camel"$ServiceImpl(
 )(implicit ec: ExecutionContext) extends $name;format="Camel"$Service {
   private val logger = LoggerFactory.getLogger(classOf[$name;format="Camel"$ServiceImpl])
 
-  //override def create$name;format="Camel"$2: ServiceCall[Create$name;format="Camel"$Request, Create$name;format="Camel"$Response] = ServerServiceCall {
-  //  create$name;format="Camel"$Request =>
-  //  logger.info(s"Creating '$name$' with id not specified and input \$create$name;format="Camel"$Request...")
-  //  val id = UUIDs.timeBased()
-  //  val $name;format="camel"$Aggregate = $name;format="Camel"$Aggregate(id, create$name;format="Camel"$Request.$name;format="camel"$)
-  //  val $name;format="camel"$Resource = $name;format="Camel"$Resource(Some(id), $name;format="Camel"$(create$name;format="Camel"$Request.$name;format="camel"$.name, create$name;format="Camel"$Request.$name;format="camel"$.description))
-  //  val $name;format="camel"$EntityRef = registry.refFor[$name;format="Camel"$Entity](id.toString)
-  //  logger.info(s"Publishing event \$$name;format="camel"$Aggregate")
-  //  val topic = pubSubRegistry.refFor(TopicId[$name;format="Camel"$Resource])
-  //  topic.publish($name;format="camel"$Resource)
-  //  $name;format="camel"$EntityRef.ask(Create$name;format="Camel"$Command($name;format="camel"$Aggregate)).map { _ =>
-  //    mapToCreate$name;format="Camel"$Response($name;format="camel"$Resource)
-  //  }
-  //}
-
   override def create$name;format="Camel"$WithSystemGeneratedId: ServiceCall[Create$name;format="Camel"$Request, Create$name;format="Camel"$Response] = ServerServiceCall { create$name;format="Camel"$Request =>
     logger.info(s"Creating '$name$' with a system generated identifier and input \$create$name;format="Camel"$Request...")
     //validate(create$name;format="Camel"$Request)
@@ -303,12 +288,12 @@ private[impl] class $name;format="Camel"$EventProcessor(session: CassandraSessio
     for {
       _ <- session.executeCreateTable(
         """
-        CREATE TABLE IF NOT EXISTS $name;format="lower,snake,word"$ (
-          id text PRIMARY KEY,
-          name text,
-          description text
-        )
-      """)
+          |CREATE TABLE IF NOT EXISTS $name;format="lower,snake,word"$ (
+          | id text PRIMARY KEY,
+          | name text,
+          | description text
+          |);
+        """.stripMargin)
     } yield Done
   }
 
@@ -317,12 +302,13 @@ private[impl] class $name;format="Camel"$EventProcessor(session: CassandraSessio
     for {
       insert$name;format="Camel"$ <- session.prepare(
         """
-        INSERT INTO $name;format="lower,snake,word"$(
-          id,
-          name,
-          description
-        ) VALUES (?, ?, ?)
-      """)
+          |INSERT INTO $name;format="lower,snake,word"$(
+          | id,
+          | name,
+          | description
+          | ) VALUES (
+          | ?, ?, ?);
+        """.stripMargin)
     } yield {
       insert$name;format="Camel"$Statement = insert$name;format="Camel"$
       Done
