@@ -47,12 +47,12 @@ class $name;format="Camel"$ServiceImpl(
 
   //override def create$name;format="Camel"$2: ServiceCall[Create$name;format="Camel"$Request, Create$name;format="Camel"$Response] = ServerServiceCall {
   //  create$name;format="Camel"$Request =>
-  //  logger.info(s"Creating '$name$' with id not specified and input $create$name;format="Camel"$Request...")
+  //  logger.info(s"Creating '$name$' with id not specified and input \$create$name;format="Camel"$Request...")
   //  val id = UUIDs.timeBased()
   //  val $name;format="camel"$Aggregate = $name;format="Camel"$Aggregate(id, create$name;format="Camel"$Request.$name;format="camel"$)
   //  val $name;format="camel"$Resource = $name;format="Camel"$Resource(Some(id), $name;format="Camel"$(create$name;format="Camel"$Request.$name;format="camel"$.name, create$name;format="Camel"$Request.$name;format="camel"$.description))
   //  val $name;format="camel"$EntityRef = registry.refFor[$name;format="Camel"$Entity](id.toString)
-  //  logger.info(s"Publishing event $$name;format="camel"$Aggregate")
+  //  logger.info(s"Publishing event \$$name;format="camel"$Aggregate")
   //  val topic = pubSubRegistry.refFor(TopicId[$name;format="Camel"$Resource])
   //  topic.publish($name;format="camel"$Resource)
   //  $name;format="camel"$EntityRef.ask(Create$name;format="Camel"$Command($name;format="camel"$Aggregate)).map { _ =>
@@ -62,13 +62,13 @@ class $name;format="Camel"$ServiceImpl(
 
 
   override def create$name;format="Camel"$($name;format="camel"$Id: Option[UUID]): ServiceCall[Create$name;format="Camel"$Request, Create$name;format="Camel"$Response] = ServerServiceCall { create$name;format="Camel"$Request =>
-    logger.info(s"Creating '$name$' with input $create$name;format="Camel"$Request...")
+    logger.info(s"Creating '$name$' with input \$create$name;format="Camel"$Request...")
     //validate(create$name;format="Camel"$Request)
     val id = $name;format="camel"$Id.getOrElse(UUIDs.timeBased())
     val $name;format="camel"$Aggregate = $name;format="Camel"$Aggregate(id, create$name;format="Camel"$Request.$name;format="camel"$)
     val $name;format="camel"$Resource = $name;format="Camel"$Resource(Some(id), $name;format="Camel"$(create$name;format="Camel"$Request.$name;format="camel"$.name, create$name;format="Camel"$Request.$name;format="camel"$.description))
     val $name;format="camel"$EntityRef = registry.refFor[$name;format="Camel"$Entity](id.toString)
-    logger.info(s"Publishing event $$name;format="camel"$Aggregate")
+    logger.info(s"Publishing event \$$name;format="camel"$Aggregate")
     val topic = pubSubRegistry.refFor(TopicId[$name;format="Camel"$Resource])
     topic.publish($name;format="camel"$Resource)
     $name;format="camel"$EntityRef.ask(Create$name;format="Camel"$Command($name;format="camel"$Aggregate)).map { _ =>
@@ -77,11 +77,11 @@ class $name;format="Camel"$ServiceImpl(
   }
 
   override def get$name;format="Camel"$(id: UUID): ServiceCall[NotUsed, Get$name;format="Camel"$Response] = ServerServiceCall { _ =>
-    logger.info(s"Looking up '$name$' with ID $id...")
+    logger.info(s"Looking up '$name$' with ID \$id...")
     val $name;format="camel"$EntityRef = registry.refFor[$name;format="Camel"$Entity](id.toString)
     $name;format="camel"$EntityRef.ask(Get$name;format="Camel"$Query).map {
       case Some($name;format="camel"$Aggregate) => mapToGet$name;format="Camel"$Response($name;format="camel"$Aggregate)
-      case None => throw NotFound(s"$name$ $id not found")
+      case None => throw NotFound(s"$name$ \$id not found")
     }
   }
 
@@ -253,7 +253,7 @@ private[impl] class $name;format="Camel"$Repository(session: CassandraSession)(i
   }
 
   def select$name;format="Camel"$(id: UUID) = {
-    logger.info(s"Querying '$name$' with ID $id...")
+    logger.info(s"Querying '$name$' with ID \$id...")
     session.selectOne("SELECT * FROM $name;format="lower,snake,word"$ WHERE id = ?", id)
   }
 
@@ -316,7 +316,7 @@ private[impl] class $name;format="Camel"$EventProcessor(session: CassandraSessio
   }
 
   private def insert$name;format="Camel"$($name;format="camel"$Aggregate: $name;format="Camel"$Aggregate) = {
-    logger.info(s"Inserting $$name;format="camel"$Aggregate...")
+    logger.info(s"Inserting \$$name;format="camel"$Aggregate...")
     Future.successful(List(
       insert$name;format="Camel"$Statement.bind($name;format="camel"$Aggregate.id, $name;format="camel"$Aggregate.$name;format="camel"$.name, $name;format="camel"$Aggregate.$name;format="camel"$.description.getOrElse("no description given"))
     ))
