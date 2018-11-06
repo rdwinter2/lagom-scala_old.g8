@@ -125,7 +125,7 @@ case class $name;format="Camel"$(
 
 object $name;format="Camel"$ {
   implicit val format: Format[$name;format="Camel"$] = Jsonx.formatCaseClass
- 
+
   val $name;format="camel"$Validator: Validator[$name;format="Camel"$] =
     validator[$name;format="Camel"$] { $name;format="camel"$ =>
       $name;format="camel"$.name is notEmpty
@@ -154,7 +154,7 @@ case class Create$name;format="Camel"$Request(
 
 case object Create$name;format="Camel"$Request {
   implicit val format: Format[Create$name;format="Camel"$Request] = Jsonx.formatCaseClass  
-  
+
   implicit val create$name;format="Camel"$RequestValidator: Validator[Create$name;format="Camel"$Request] =
     validator[Create$name;format="Camel"$Request] { create$name;format="Camel"$Request =>
     create$name;format="Camel"$Request.$name;format="camel"$ is valid ( $name;format="Camel"$.$name;format="camel"$Validator )

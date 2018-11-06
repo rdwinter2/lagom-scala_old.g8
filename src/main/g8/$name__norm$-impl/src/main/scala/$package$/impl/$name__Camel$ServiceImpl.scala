@@ -32,6 +32,7 @@ import com.wix.accord._
 import com.wix.accord.dsl._
 import com.wix.accord.Descriptions._
 import cool.graph.cuid._
+import scala.util.Try
 import java.util.UUID
 import org.slf4j.LoggerFactory
 import play.api.{Environment, LoggerConfigurator}
@@ -258,21 +259,24 @@ private[impl] class $name;format="Camel"$Repository(session: CassandraSession)(i
     logger.info("Querying all '$plural_name$'...")
     session.selectAll(
       """
-      SELECT * FROM $name;format="lower,snake,word"$
+      SELECT id, $name;format="lower,snake,word"$ FROM $name;format="lower,snake,word"$
     """).map(rows => rows.map(row => convertTo$name;format="Camel"$Aggregate(row)))
   }
 
   def select$name;format="Camel"$(id: String) = {
     logger.info(s"Querying '$name$' with ID \$id...")
-    session.selectOne("SELECT * FROM $name;format="lower,snake,word"$ WHERE id = ?", id)
+    session.selectOne("SELECT id, $name;format="lower,snake,word"$ FROM $name;format="lower,snake,word"$ WHERE id = ?", id)
   }
 
   private def convertTo$name;format="Camel"$Aggregate($name;format="camel"$Row: Row): $name;format="Camel"$Aggregate = {
     $name;format="Camel"$Aggregate(
       $name;format="camel"$Row.getString("id"),
-      $name;format="Camel"$(
-        $name;format="camel"$Row.getString("name"),
-        Some($name;format="camel"$Row.getString("description"))))
+      Json.fromJson[$name;format="Camel"$](Json.parse($name;format="camel"$Row.getString("$name;format="lower,snake,word"$"))).get
+//      implicitly[Format[$name;format="Camel"$]].reads(Json.parse($name;format="camel"$Row.getString("$name;format="norm"$")))
+//          .toOption
+//          .flatten
+//          .getOrElse(Set.empty[$name;format="Camel"$])
+    )
   }
 }
 
@@ -281,6 +285,8 @@ private[impl] class $name;format="Camel"$EventProcessor(session: CassandraSessio
   private val logger = LoggerFactory.getLogger(classOf[$name;format="Camel"$EventProcessor])
 
   private var insert$name;format="Camel"$Statement: PreparedStatement = _
+  private var insert$name;format="Camel"$ByNameStatement: PreparedStatement = _
+  private var insert$name;format="Camel"$SummaryStatement: PreparedStatement = _
 
   override def buildHandler: ReadSideProcessor.ReadSideHandler[$name;format="Camel"$Event] = {
     readSide.builder[$name;format="Camel"$Event]("$name;format="camel"$EventOffset")
@@ -301,8 +307,21 @@ private[impl] class $name;format="Camel"$EventProcessor(session: CassandraSessio
         """
           |CREATE TABLE IF NOT EXISTS $name;format="lower,snake,word"$ (
           | id text PRIMARY KEY,
-          | name text,
-          | description text
+          | $name;format="lower,snake,word"$ text
+          |);
+        """.stripMargin)
+      _ <- session.executeCreateTable(
+        """
+          |CREATE TABLE IF NOT EXISTS $name;format="lower,snake,word"$_summary (
+          | id text PRIMARY KEY,
+          | name text
+          |);
+        """.stripMargin)
+      _ <- session.executeCreateTable(
+        """
+          |CREATE TABLE IF NOT EXISTS $name;format="lower,snake,word"$_by_name (
+          | id text,
+          | name text PRIMARY KEY
           |);
         """.stripMargin)
     } yield Done
@@ -315,13 +334,30 @@ private[impl] class $name;format="Camel"$EventProcessor(session: CassandraSessio
         """
           |INSERT INTO $name;format="lower,snake,word"$(
           | id,
-          | name,
-          | description
+          | $name;format="lower,snake,word"$
           | ) VALUES (
-          | ?, ?, ?);
+          | ?, ?);
+        """.stripMargin)
+      insert$name;format="Camel"$Summary <- session.prepare(
+        """
+          |INSERT INTO $name;format="lower,snake,word"$_summary(
+          | id,
+          | name
+          | ) VALUES (
+          | ?, ?);
+        """.stripMargin)
+      insert$name;format="Camel"$ByName <- session.prepare(
+        """
+          |INSERT INTO $name;format="lower,snake,word"$_by_name(
+          | id,
+          | name
+          | ) VALUES (
+          | ?, ?);
         """.stripMargin)
     } yield {
       insert$name;format="Camel"$Statement = insert$name;format="Camel"$
+      insert$name;format="Camel"$SummaryStatement = insert$name;format="Camel"$Summary
+      insert$name;format="Camel"$ByNameStatement = insert$name;format="Camel"$ByName
       Done
     }
   }
@@ -329,7 +365,15 @@ private[impl] class $name;format="Camel"$EventProcessor(session: CassandraSessio
   private def insert$name;format="Camel"$($name;format="camel"$Aggregate: $name;format="Camel"$Aggregate) = {
     logger.info(s"Inserting \$$name;format="camel"$Aggregate...")
     Future.successful(List(
-      insert$name;format="Camel"$Statement.bind($name;format="camel"$Aggregate.id, $name;format="camel"$Aggregate.$name;format="camel"$.name, $name;format="camel"$Aggregate.$name;format="camel"$.description.getOrElse("no description given"))
+      insert$name;format="Camel"$Statement.bind(
+        $name;format="camel"$Aggregate.id,
+        implicitly[Format[$name;format="Camel"$]].writes($name;format="camel"$Aggregate.$name;format="camel"$).toString),
+      insert$name;format="Camel"$SummaryStatement.bind(
+        $name;format="camel"$Aggregate.id,
+        $name;format="camel"$Aggregate.$name;format="camel"$.name),
+      insert$name;format="Camel"$ByNameStatement.bind(
+        $name;format="camel"$Aggregate.id,
+        $name;format="camel"$Aggregate.$name;format="camel"$.name)
     ))
   }
 }
