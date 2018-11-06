@@ -1,6 +1,8 @@
 ---
 scalar_types:
   $name;format="Camel"$Id: String @check("[a-zA-Z0-9\-\.\_\~]{1,128}")
+  Name: String @check("[a-zA-Z0-9\-\.\_\~]{1,128}")
+  Description: String @check(".{1,2048}")
 events:
   | $name;format="Camel"$Created
   | $name;format="Camel"$Deleted
