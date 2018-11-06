@@ -1,6 +1,6 @@
 package $package$.api
 
-import $organization$.common.regex.Matchers
+//import $organization$.common.regex.Matchers
 import $organization$.common.utils.ErrorResponse
 import $organization$.common.utils.JsonFormats._
 import $organization$.common.validation.ValidationViolationKeys._
@@ -13,7 +13,7 @@ import com.lightbend.lagom.scaladsl.api.broker.kafka.{KafkaProperties, Partition
 import com.lightbend.lagom.scaladsl.api.deser.{DefaultExceptionSerializer, PathParamSerializer}
 import com.lightbend.lagom.scaladsl.api.transport.Method
 import com.lightbend.lagom.scaladsl.api.{Descriptor, Service, ServiceCall}
-import com.wix.accord._
+import com.wix.accord.Validator
 import com.wix.accord.dsl._
 import com.wix.accord.Descriptions._
 import java.time.{Duration, Instant}
@@ -108,6 +108,14 @@ trait $name;format="Camel"$Service extends Service {
 
 }
 
+// $name$ regex matchers
+
+object Matchers {
+  val Email = """^[a-zA-Z0-9\.!#\$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*\$"""
+  val Name = """^[a-zA-Z0-9\-\.\_\~]{1,128}\$"""
+  val Description = """^.{1,2048}\$"""
+}
+
 // $name$ algebraic type
 
 case class $name;format="Camel"$(
@@ -117,6 +125,13 @@ case class $name;format="Camel"$(
 
 object $name;format="Camel"$ {
   implicit val format: Format[$name;format="Camel"$] = Jsonx.formatCaseClass
+ 
+  val $name;format="camel"$Validator: Validator[$name;format="Camel"$] =
+    validator[$name;format="Camel"$] { $name;format="camel"$ =>
+      $name;format="camel"$.name is notEmpty
+      $name;format="camel"$.name should matchRegexFully(Matchers.Name)
+      $name;format="camel"$.description.each should matchRegexFully(Matchers.Description)
+    }
 }
 
 // Resource
@@ -134,15 +149,15 @@ object $name;format="Camel"$Resource {
 // TODO: include span ID as the unique identity of a Create$name;format="Camel"$Request
 case class Create$name;format="Camel"$Request(
   $name;format="camel"$: $name;format="Camel"$
-)
+) {
+}
 
-object Create$name;format="Camel"$Request {
-  implicit val format: Format[Create$name;format="Camel"$Request] = Jsonx.formatCaseClass
-
-  implicit val Create$name;format="Camel"$RequestValidator = validator[Create$name;format="Camel"$Request] {u =>
-    u.$name;format="camel"$.name is notEmpty
-//    u.name as notEmptyKey("name") is notEmpty
-//    u.name as matchRegexFullyKey("name") should matchRegexFully(Matchers.name)
+case object Create$name;format="Camel"$Request {
+  implicit val format: Format[Create$name;format="Camel"$Request] = Jsonx.formatCaseClass  
+  
+  implicit val create$name;format="Camel"$RequestValidator: Validator[Create$name;format="Camel"$Request] =
+    validator[Create$name;format="Camel"$Request] { create$name;format="Camel"$Request =>
+    create$name;format="Camel"$Request.$name;format="camel"$ is valid ( $name;format="Camel"$.$name;format="camel"$Validator )
   }
 }
 

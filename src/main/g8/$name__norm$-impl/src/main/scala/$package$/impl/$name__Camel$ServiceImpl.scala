@@ -16,7 +16,7 @@ import com.datastax.driver.core.utils.UUIDs
 import com.lightbend.lagom.internal.client.CircuitBreakerMetricsProviderImpl
 import com.lightbend.lagom.scaladsl.api.ServiceCall
 import com.lightbend.lagom.scaladsl.api.broker.Topic
-import com.lightbend.lagom.scaladsl.api.transport.NotFound
+import com.lightbend.lagom.scaladsl.api.transport.{TransportErrorCode, TransportException, NotFound}
 import com.lightbend.lagom.scaladsl.broker.TopicProducer
 import com.lightbend.lagom.scaladsl.broker.kafka.LagomKafkaComponents
 import com.lightbend.lagom.scaladsl.devmode.LagomDevModeComponents
@@ -28,6 +28,9 @@ import com.lightbend.lagom.scaladsl.pubsub.{PubSubComponents, PubSubRegistry, To
 import com.lightbend.lagom.scaladsl.server._
 import com.lightbend.rp.servicediscovery.lagom.scaladsl.LagomServiceLocatorComponents
 import com.softwaremill.macwire._
+import com.wix.accord._
+import com.wix.accord.dsl._
+import com.wix.accord.Descriptions._
 import cool.graph.cuid._
 import java.util.UUID
 import org.slf4j.LoggerFactory
@@ -48,7 +51,11 @@ class $name;format="Camel"$ServiceImpl(
 
   override def create$name;format="Camel"$WithSystemGeneratedId: ServiceCall[Create$name;format="Camel"$Request, Create$name;format="Camel"$Response] = ServerServiceCall { create$name;format="Camel"$Request =>
     logger.info(s"Creating '$name$' with a system generated identifier and input \$create$name;format="Camel"$Request...")
-    //validate(create$name;format="Camel"$Request)
+    val validationResult = validate(create$name;format="Camel"$Request)
+    validationResult match {
+      case failure: Failure =>  throw new TransportException(TransportErrorCode.BadRequest, "request validation failure")
+      case _ =>
+    }
     val id = Cuid.createCuid()
     val $name;format="camel"$Aggregate = $name;format="Camel"$Aggregate(id, create$name;format="Camel"$Request.$name;format="camel"$)
     val $name;format="camel"$Resource = $name;format="Camel"$Resource(id, $name;format="Camel"$(create$name;format="Camel"$Request.$name;format="camel"$.name, create$name;format="Camel"$Request.$name;format="camel"$.description))
@@ -63,7 +70,11 @@ class $name;format="Camel"$ServiceImpl(
 
   override def create$name;format="Camel"$($name;format="camel"$Id: String): ServiceCall[Create$name;format="Camel"$Request, Create$name;format="Camel"$Response] = ServerServiceCall { create$name;format="Camel"$Request =>
     logger.info(s"Creating '$name$' with input \$create$name;format="Camel"$Request...")
-    //validate(create$name;format="Camel"$Request)
+    val validationResult = validate(create$name;format="Camel"$Request)
+    validationResult match {
+      case failure: Failure =>  throw new TransportException(TransportErrorCode.BadRequest, "request validation failure")
+      case _ =>
+    }
     val $name;format="camel"$Aggregate = $name;format="Camel"$Aggregate($name;format="camel"$Id, create$name;format="Camel"$Request.$name;format="camel"$)
     val $name;format="camel"$Resource = $name;format="Camel"$Resource($name;format="camel"$Id, $name;format="Camel"$(create$name;format="Camel"$Request.$name;format="camel"$.name, create$name;format="Camel"$Request.$name;format="camel"$.description))
     val $name;format="camel"$EntityRef = registry.refFor[$name;format="Camel"$Entity]($name;format="camel"$Id.toString)
