@@ -7,7 +7,10 @@ lazy val root = (project in file("."))
   .aggregate(
     `common`,
     $name;format="camel"$Api,
-    $name;format="camel"$Impl
+    $name;format="camel"$Impl,
+    `identity-api`,
+    `identity-impl`,
+    `base64`
   )
   .settings(commonSettings: _*)
 
@@ -24,6 +27,7 @@ val jbcrypt = "org.mindrot" % "jbcrypt" % "0.3m"
 val cuid = "cool.graph" % "cuid-java" % "0.1.1"
 val jwt = "com.pauldijou" %% "jwt-play-json" % "0.12.1"
 val accord = "com.wix" %% "accord-core" % "0.7.2"
+val accord061 = "com.wix" %% "accord-core" % "0.6.1"
 val cassandraDriverExtras = "com.datastax.cassandra" % "cassandra-driver-extras" % "3.0.0" // Adds extra codecs
 
 libraryDependencies += lagomScaladslPersistenceCassandra
@@ -43,7 +47,7 @@ lazy val `common` = (project in file("common"))
       lagomScaladslApi,
       lagomScaladslServer,
       jwt,
-      accord,
+      accord061,
       playJsonDerivedCodecs,
       scalaTest
     )
@@ -80,6 +84,30 @@ lazy val $name;format="camel"$Impl = (project in file("$name;format="norm"$-impl
   .settings(lagomForkedTestSettings: _*)
   .dependsOn($name;format="camel"$Api, `common`, `base64`)
 
+lazy val `identity-api` = (project in file("identity-api"))
+  .settings(
+    libraryDependencies ++= Seq(
+      lagomScaladslApi,
+      accord
+    )
+  )
+  .dependsOn(`common`)
+
+lazy val `identity-impl` = (project in file("identity-impl"))
+  .enablePlugins(LagomScala)
+  .settings(
+    libraryDependencies ++= Seq(
+      lagomScaladslPersistenceCassandra,
+      lagomScaladslTestKit,
+      macwire,
+      scalaTest,
+////      base64,
+      jwt
+    )
+  )
+  .settings(lagomForkedTestSettings: _*)
+  .dependsOn(`common`, `identity-api`, `base64`)
+
 def commonSettings: Seq[Setting[_]] = Seq(
 )
 
@@ -87,6 +115,8 @@ lagomCassandraCleanOnStart in ThisBuild := true
 ////lagomCassandraEnabled in ThisBuild := false
 ////lagomUnmanagedServices in ThisBuild := Map("cas_native" -> "http://localhost:9042")
 
+////lagomKafkaEnabled in ThisBuild := false
+////lagomKafkaAddress in ThisBuild := "localhost:10000"
 
 ensimeScalaVersion in ThisBuild := "2.12.7"
 ensimeIgnoreScalaMismatch in ThisBuild := true
