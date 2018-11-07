@@ -1,4 +1,4 @@
-package io.digitalcat.publictransportation.services.identity.impl.util
+package $organization$.identity.impl.util
 
 import java.security._
 import javax.crypto._

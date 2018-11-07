@@ -1,9 +1,9 @@
-package io.digitalcat.publictransportation.services.identity.api.request
+package $organization$.identity.api.request
 
 import play.api.libs.json.{Format, Json}
 import com.wix.accord.dsl._
-import io.digitalcat.publictransportation.services.common.regex.Matchers
-import io.digitalcat.publictransportation.services.common.validation.ValidationViolationKeys._
+import $organization$.common.regex.Matchers
+import $organization$.common.validation.ValidationViolationKeys._
 
 case class UserCreation(
   firstName: String,

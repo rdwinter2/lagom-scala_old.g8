@@ -1,4 +1,4 @@
-package io.digitalcat.publictransportation.services.identity.api.request
+package $organization$.identity.api.request
 
 import play.api.libs.json.{Format, Json}
 import com.wix.accord.dsl._

@@ -1,11 +1,11 @@
-package io.digitalcat.publictransportation.services.identity.impl
+package $organization$.identity.impl
 
 import akka.Done
 import java.sql.Timestamp
 import java.util.UUID
 
 import com.lightbend.lagom.scaladsl.persistence.cassandra.CassandraSession
-import io.digitalcat.publictransportation.services.common.date.DateUtcUtil
+import $organization$.common.date.DateUtcUtil
 
 import scala.concurrent.{ExecutionContext, Future}
 

@@ -1,4 +1,4 @@
-package io.digitalcat.publictransportation.services.identity.api.response
+package $organization$.identity.api.response
 
 import play.api.libs.json.{Format, Json}
 

@@ -1,4 +1,4 @@
-package io.digitalcat.publictransportation.services.identity.impl
+package $organization$.identity.impl
 
 import java.util.UUID
 

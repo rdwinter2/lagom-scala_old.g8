@@ -1,4 +1,4 @@
-package io.digitalcat.publictransportation.services.identity.api.request
+package $organization$.identity.api.request
 
 trait WithUserCreationFields {
   val firstName: String

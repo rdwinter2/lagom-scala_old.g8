@@ -1,10 +1,10 @@
-package io.digitalcat.publictransportation.services.identity.api
+package $organization$.identity.api
 
 import akka.NotUsed
 import com.lightbend.lagom.scaladsl.api.transport.Method
 import com.lightbend.lagom.scaladsl.api.{Service, ServiceCall}
-import io.digitalcat.publictransportation.services.identity.api.request.{ClientRegistration, UserCreation, UserLogin}
-import io.digitalcat.publictransportation.services.identity.api.response.{IdentityStateDone, TokenRefreshDone, UserLoginDone, GeneratedIdDone}
+import $organization$.identity.api.request.{ClientRegistration, UserCreation, UserLogin}
+import $organization$.identity.api.response.{IdentityStateDone, TokenRefreshDone, UserLoginDone, GeneratedIdDone}
 
 trait IdentityService extends Service {
   def registerClient(): ServiceCall[ClientRegistration, GeneratedIdDone]

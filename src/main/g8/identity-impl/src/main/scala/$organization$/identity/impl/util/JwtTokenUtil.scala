@@ -1,7 +1,7 @@
-package io.digitalcat.publictransportation.services.identity.impl.util
+package $organization$.identity.impl.util
 
 import com.typesafe.config.ConfigFactory
-import io.digitalcat.publictransportation.services.common.authentication.TokenContent
+import $organization$.common.authentication.TokenContent
 import pdi.jwt.{JwtAlgorithm, JwtClaim, JwtJson}
 import play.api.libs.json.{Format, Json}
 

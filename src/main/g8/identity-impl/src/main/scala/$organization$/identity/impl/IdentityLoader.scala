@@ -1,4 +1,4 @@
-package io.digitalcat.publictransportation.services.identity.impl
+package $organization$.identity.impl
 
 import com.lightbend.lagom.scaladsl.api.ServiceLocator
 import com.lightbend.lagom.scaladsl.api.ServiceLocator.NoServiceLocator
@@ -6,8 +6,8 @@ import com.lightbend.lagom.scaladsl.devmode.LagomDevModeComponents
 import com.lightbend.lagom.scaladsl.persistence.cassandra.CassandraPersistenceComponents
 import com.lightbend.lagom.scaladsl.server._
 import com.softwaremill.macwire._
-import io.digitalcat.publictransportation.services.common.exception.handling.CustomExceptionSerializer
-import io.digitalcat.publictransportation.services.identity.api.IdentityService
+import $organization$.common.exception.handling.CustomExceptionSerializer
+import $organization$.identity.api.IdentityService
 import play.api.libs.ws.ahc.AhcWSComponents
 
 class IdentityLoader extends LagomApplicationLoader {

@@ -1,4 +1,4 @@
-package io.digitalcat.publictransportation.services.identity.impl
+package $organization$.identity.impl
 
 import java.util.UUID
 
@@ -6,13 +6,13 @@ import com.lightbend.lagom.scaladsl.api.ServiceCall
 import com.lightbend.lagom.scaladsl.api.transport.{BadRequest, Forbidden}
 import com.lightbend.lagom.scaladsl.persistence.PersistentEntityRegistry
 import com.lightbend.lagom.scaladsl.server.ServerServiceCall
-import io.digitalcat.publictransportation.services.common.authentication.AuthenticationServiceComposition._
-import io.digitalcat.publictransportation.services.common.authentication.TokenContent
-import io.digitalcat.publictransportation.services.common.validation.ValidationUtil._
-import io.digitalcat.publictransportation.services.identity.api.IdentityService
-import io.digitalcat.publictransportation.services.identity.api.request.{ClientRegistration, WithUserCreationFields}
-import io.digitalcat.publictransportation.services.identity.api.response.{TokenRefreshDone, UserLoginDone, GeneratedIdDone}
-import io.digitalcat.publictransportation.services.identity.impl.util.{JwtTokenUtil, SecurePasswordHashing}
+import $organization$.common.authentication.AuthenticationServiceComposition._
+import $organization$.common.authentication.TokenContent
+import $organization$.common.validation.ValidationUtil._
+import $organization$.identity.api.IdentityService
+import $organization$.identity.api.request.{ClientRegistration, WithUserCreationFields}
+import $organization$.identity.api.response.{TokenRefreshDone, UserLoginDone, GeneratedIdDone}
+import $organization$.identity.impl.util.{JwtTokenUtil, SecurePasswordHashing}
 
 import scala.concurrent.{ExecutionContext, Future}
 

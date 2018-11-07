@@ -1,13 +1,13 @@
-package io.digitalcat.publictransportation.services.identity.impl
+package $organization$.identity.impl
 
 import java.util.UUID
 
 import com.lightbend.lagom.scaladsl.persistence.PersistentEntity
 import com.lightbend.lagom.scaladsl.playjson.{JsonSerializer, JsonSerializerRegistry}
-import io.digitalcat.publictransportation.services.identity.api.request.UserLogin
-import io.digitalcat.publictransportation.services.identity.api.response.{IdentityStateDone, UserLoginDone, GeneratedIdDone}
-import io.digitalcat.publictransportation.services.identity.api.response.{User => ResponseUser}
-import io.digitalcat.publictransportation.services.identity.impl.util.{SecurePasswordHashing, Token}
+import $organization$.identity.api.request.UserLogin
+import $organization$.identity.api.response.{IdentityStateDone, UserLoginDone, GeneratedIdDone}
+import $organization$.identity.api.response.{User => ResponseUser}
+import $organization$.identity.impl.util.{SecurePasswordHashing, Token}
 
 import scala.collection.immutable.Seq
 
