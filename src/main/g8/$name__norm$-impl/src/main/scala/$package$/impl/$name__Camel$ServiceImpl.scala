@@ -53,7 +53,8 @@ class $name;format="Camel"$ServiceImpl(
   override def create$name;format="Camel"$WithSystemGeneratedId: ServiceCall[Create$name;format="Camel"$Request, Create$name;format="Camel"$Response] =
     authenticated { (tokenContent, _) =>
       ServerServiceCall { create$name;format="Camel"$Request =>
-      logger.info(s"User \$tokenContent.username is ... ")
+      val username = tokenContent.username
+      logger.info(s"User \$username is ... ")
       logger.info(s"Creating '$name$' with a system generated identifier and input \$create$name;format="Camel"$Request...")
       val validationResult = validate(create$name;format="Camel"$Request)
       validationResult match {
@@ -62,7 +63,7 @@ class $name;format="Camel"$ServiceImpl(
       }
       val id = Cuid.createCuid()
       val $name;format="camel"$Aggregate = $name;format="Camel"$Aggregate(id, create$name;format="Camel"$Request.$name;format="camel"$)
-      val $name;format="camel"$Resource = $name;format="Camel"$Resource(id, $name;format="Camel"$(create$name;format="Camel"$Request.$name;format="camel"$.name, create$name;format="Camel"$Request.$name;format="camel"$.description))
+      val $name;format="camel"$Resource = $name;format="Camel"$Resource(id, create$name;format="Camel"$Request.$name;format="camel"$)
       val $name;format="camel"$EntityRef = registry.refFor[$name;format="Camel"$Entity](id)
       logger.info(s"Publishing event \$$name;format="camel"$Aggregate")
       val topic = pubSubRegistry.refFor(TopicId[$name;format="Camel"$Resource])
@@ -83,7 +84,7 @@ class $name;format="Camel"$ServiceImpl(
         case _ =>
       }
       val $name;format="camel"$Aggregate = $name;format="Camel"$Aggregate($name;format="camel"$Id, create$name;format="Camel"$Request.$name;format="camel"$)
-      val $name;format="camel"$Resource = $name;format="Camel"$Resource($name;format="camel"$Id, $name;format="Camel"$(create$name;format="Camel"$Request.$name;format="camel"$.name, create$name;format="Camel"$Request.$name;format="camel"$.description))
+      val $name;format="camel"$Resource = $name;format="Camel"$Resource($name;format="camel"$Id, create$name;format="Camel"$Request.$name;format="camel"$)
       val $name;format="camel"$EntityRef = registry.refFor[$name;format="Camel"$Entity]($name;format="camel"$Id.toString)
       logger.info(s"Publishing event \$$name;format="camel"$Aggregate")
       val topic = pubSubRegistry.refFor(TopicId[$name;format="Camel"$Resource])
