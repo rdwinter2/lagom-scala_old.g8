@@ -11,7 +11,7 @@ events:
 paths:
   | "/api/$plural_name;format="lower,hyphen"$": create$name;format="Camel"$
   |
-calls:
+serviceCalls:
   | create$name;format="Camel"$: ServiceCall[Create$name;format="Camel"$Request, Create$name;format="Camel"$Response]
   | archive$name;format="Camel"$($name;format="camel"$Id: UUID): ServiceCall[Archive$name;format="Camel"$Request, Archive$name;format="Camel"$Response]
   | get$name;format="Camel"$($name;format="camel"$Id: UUID): ServiceCall[NotUsed, Get$name;format="Camel"$Response]

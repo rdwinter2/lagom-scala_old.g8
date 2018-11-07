@@ -2,7 +2,7 @@ import com.lightbend.lagom.sbt.LagomImport.lagomScaladslApi
 import org.ensime.EnsimeKeys._
 import org.ensime.EnsimePlugin
 
-lazy val root = (project in file("."))
+lazy val `$name;format="normalize"` = (project in file("."))
   .settings(name := "$name;format="norm"$")
   .aggregate(
     `common`,

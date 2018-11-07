@@ -56,7 +56,7 @@ class IdentityServiceImpl(
     validate(request)
 
     for {
-      maybeUser <- identityRepository.findUserByUsername(request.username)
+      maybeUser <- identityRepository.findUserByUsername(request.username)  // TODO: login based off the in-memory image (zero latency)
 
       token = maybeUser.filter(user => passwordMatches(request.password, user.hashedPassword))
         .map(user =>
