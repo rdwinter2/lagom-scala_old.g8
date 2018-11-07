@@ -50,49 +50,58 @@ class $name;format="Camel"$ServiceImpl(
 )(implicit ec: ExecutionContext) extends $name;format="Camel"$Service {
   private val logger = LoggerFactory.getLogger(classOf[$name;format="Camel"$ServiceImpl])
 
-  override def create$name;format="Camel"$WithSystemGeneratedId: ServiceCall[Create$name;format="Camel"$Request, Create$name;format="Camel"$Response] = ServerServiceCall { create$name;format="Camel"$Request =>
-    logger.info(s"Creating '$name$' with a system generated identifier and input \$create$name;format="Camel"$Request...")
-    val validationResult = validate(create$name;format="Camel"$Request)
-    validationResult match {
-      case failure: Failure =>  throw new TransportException(TransportErrorCode.BadRequest, "request validation failure")
-      case _ =>
-    }
-    val id = Cuid.createCuid()
-    val $name;format="camel"$Aggregate = $name;format="Camel"$Aggregate(id, create$name;format="Camel"$Request.$name;format="camel"$)
-    val $name;format="camel"$Resource = $name;format="Camel"$Resource(id, $name;format="Camel"$(create$name;format="Camel"$Request.$name;format="camel"$.name, create$name;format="Camel"$Request.$name;format="camel"$.description))
-    val $name;format="camel"$EntityRef = registry.refFor[$name;format="Camel"$Entity](id)
-    logger.info(s"Publishing event \$$name;format="camel"$Aggregate")
-    val topic = pubSubRegistry.refFor(TopicId[$name;format="Camel"$Resource])
-    topic.publish($name;format="camel"$Resource)
-    $name;format="camel"$EntityRef.ask(Create$name;format="Camel"$Command($name;format="camel"$Aggregate)).map { _ =>
-      mapToCreate$name;format="Camel"$Response($name;format="camel"$Resource)
-    }
-  }
-
-  override def create$name;format="Camel"$($name;format="camel"$Id: String): ServiceCall[Create$name;format="Camel"$Request, Create$name;format="Camel"$Response] = ServerServiceCall { create$name;format="Camel"$Request =>
-    logger.info(s"Creating '$name$' with input \$create$name;format="Camel"$Request...")
-    val validationResult = validate(create$name;format="Camel"$Request)
-    validationResult match {
-      case failure: Failure =>  throw new TransportException(TransportErrorCode.BadRequest, "request validation failure")
-      case _ =>
-    }
-    val $name;format="camel"$Aggregate = $name;format="Camel"$Aggregate($name;format="camel"$Id, create$name;format="Camel"$Request.$name;format="camel"$)
-    val $name;format="camel"$Resource = $name;format="Camel"$Resource($name;format="camel"$Id, $name;format="Camel"$(create$name;format="Camel"$Request.$name;format="camel"$.name, create$name;format="Camel"$Request.$name;format="camel"$.description))
-    val $name;format="camel"$EntityRef = registry.refFor[$name;format="Camel"$Entity]($name;format="camel"$Id.toString)
-    logger.info(s"Publishing event \$$name;format="camel"$Aggregate")
-    val topic = pubSubRegistry.refFor(TopicId[$name;format="Camel"$Resource])
-    topic.publish($name;format="camel"$Resource)
-    $name;format="camel"$EntityRef.ask(Create$name;format="Camel"$Command($name;format="camel"$Aggregate)).map { _ =>
-      mapToCreate$name;format="Camel"$Response($name;format="camel"$Resource)
+  override def create$name;format="Camel"$WithSystemGeneratedId: ServiceCall[Create$name;format="Camel"$Request, Create$name;format="Camel"$Response] =
+    authenticated { (tokenContent, _) =>
+      ServerServiceCall { create$name;format="Camel"$Request =>
+      logger.info(s"Creating '$name$' with a system generated identifier and input \$create$name;format="Camel"$Request...")
+      val validationResult = validate(create$name;format="Camel"$Request)
+      validationResult match {
+        case failure: Failure =>  throw new TransportException(TransportErrorCode.BadRequest, "request validation failure")
+        case _ =>
+      }
+      val id = Cuid.createCuid()
+      val $name;format="camel"$Aggregate = $name;format="Camel"$Aggregate(id, create$name;format="Camel"$Request.$name;format="camel"$)
+      val $name;format="camel"$Resource = $name;format="Camel"$Resource(id, $name;format="Camel"$(create$name;format="Camel"$Request.$name;format="camel"$.name, create$name;format="Camel"$Request.$name;format="camel"$.description))
+      val $name;format="camel"$EntityRef = registry.refFor[$name;format="Camel"$Entity](id)
+      logger.info(s"Publishing event \$$name;format="camel"$Aggregate")
+      val topic = pubSubRegistry.refFor(TopicId[$name;format="Camel"$Resource])
+      topic.publish($name;format="camel"$Resource)
+      $name;format="camel"$EntityRef.ask(Create$name;format="Camel"$Command($name;format="camel"$Aggregate)).map { _ =>
+        mapToCreate$name;format="Camel"$Response($name;format="camel"$Resource)
+      }
     }
   }
 
-  override def get$name;format="Camel"$($name;format="camel"$Id: String): ServiceCall[NotUsed, Get$name;format="Camel"$Response] = ServerServiceCall { _ =>
-    logger.info(s"Looking up '$name$' with ID \$$name;format="camel"$Id...")
-    val $name;format="camel"$EntityRef = registry.refFor[$name;format="Camel"$Entity]($name;format="camel"$Id.toString)
-    $name;format="camel"$EntityRef.ask(Get$name;format="Camel"$Query).map {
-      case Some($name;format="camel"$Aggregate) => mapToGet$name;format="Camel"$Response($name;format="camel"$Aggregate)
-      case None => throw NotFound(s"$name$ \$$name;format="camel"$Id not found")
+  override def create$name;format="Camel"$($name;format="camel"$Id: String): ServiceCall[Create$name;format="Camel"$Request, Create$name;format="Camel"$Response] =
+    authenticated { (tokenContent, _) =>
+      ServerServiceCall { create$name;format="Camel"$Request =>
+      logger.info(s"Creating '$name$' with input \$create$name;format="Camel"$Request...")
+      val validationResult = validate(create$name;format="Camel"$Request)
+      validationResult match {
+        case failure: Failure =>  throw new TransportException(TransportErrorCode.BadRequest, "request validation failure")
+        case _ =>
+      }
+      val $name;format="camel"$Aggregate = $name;format="Camel"$Aggregate($name;format="camel"$Id, create$name;format="Camel"$Request.$name;format="camel"$)
+      val $name;format="camel"$Resource = $name;format="Camel"$Resource($name;format="camel"$Id, $name;format="Camel"$(create$name;format="Camel"$Request.$name;format="camel"$.name, create$name;format="Camel"$Request.$name;format="camel"$.description))
+      val $name;format="camel"$EntityRef = registry.refFor[$name;format="Camel"$Entity]($name;format="camel"$Id.toString)
+      logger.info(s"Publishing event \$$name;format="camel"$Aggregate")
+      val topic = pubSubRegistry.refFor(TopicId[$name;format="Camel"$Resource])
+      topic.publish($name;format="camel"$Resource)
+      $name;format="camel"$EntityRef.ask(Create$name;format="Camel"$Command($name;format="camel"$Aggregate)).map { _ =>
+        mapToCreate$name;format="Camel"$Response($name;format="camel"$Resource)
+      }
+    }
+  }
+
+  override def get$name;format="Camel"$($name;format="camel"$Id: String): ServiceCall[NotUsed, Get$name;format="Camel"$Response] =
+    authenticated { (tokenContent, _) =>
+      ServerServiceCall { _ =>
+      logger.info(s"Looking up '$name$' with ID \$$name;format="camel"$Id...")
+      val $name;format="camel"$EntityRef = registry.refFor[$name;format="Camel"$Entity]($name;format="camel"$Id.toString)
+      $name;format="camel"$EntityRef.ask(Get$name;format="Camel"$Query).map {
+        case Some($name;format="camel"$Aggregate) => mapToGet$name;format="Camel"$Response($name;format="camel"$Aggregate)
+        case None => throw NotFound(s"$name$ \$$name;format="camel"$Id not found")
+      }
     }
   }
 
