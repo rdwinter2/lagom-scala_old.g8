@@ -53,6 +53,7 @@ class $name;format="Camel"$ServiceImpl(
   override def create$name;format="Camel"$WithSystemGeneratedId: ServiceCall[Create$name;format="Camel"$Request, Create$name;format="Camel"$Response] =
     authenticated { (tokenContent, _) =>
       ServerServiceCall { create$name;format="Camel"$Request =>
+      logger.info(s"User $tokenContent.username is ... ")
       logger.info(s"Creating '$name$' with a system generated identifier and input \$create$name;format="Camel"$Request...")
       val validationResult = validate(create$name;format="Camel"$Request)
       validationResult match {
