@@ -31,7 +31,7 @@ object SecurePasswordHashing {
     val salt64 = new String(toBase64UrlSafe(salt))
     val hash64 = new String(toBase64UrlSafe(hash))
 
-    s"${nrOfIterations}${HashPartSeparator}${hash64}${HashPartSeparator}${salt64}"
+    s"\${nrOfIterations}\${HashPartSeparator}\${hash64}\${HashPartSeparator}\${salt64}"
   }
 
   def validatePassword(password: String, hashedPassword: String): Boolean = {
