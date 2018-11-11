@@ -3,7 +3,11 @@ package $package$.impl
 import $organization$.common.authentication.AuthenticationServiceComposition._
 import $organization$.common.authentication.TokenContent
 import $organization$.common.utils.JsonFormats._
-import $organization$.common.utils.{ErrorResponse, Marshaller, ErrorResponses => ER}
+import $organization$.common.utils.{
+  ErrorResponse,
+  Marshaller,
+  ErrorResponses => ER
+}
 //import $organization$.common.validation.ValidationUtil._
 import $package$.api._
 
@@ -16,15 +20,38 @@ import com.datastax.driver.core.utils.UUIDs
 import com.lightbend.lagom.internal.client.CircuitBreakerMetricsProviderImpl
 import com.lightbend.lagom.scaladsl.api.ServiceCall
 import com.lightbend.lagom.scaladsl.api.broker.Topic
-import com.lightbend.lagom.scaladsl.api.transport.{TransportErrorCode, TransportException, NotFound}
+import com.lightbend.lagom.scaladsl.api.transport.{
+  TransportErrorCode,
+  TransportException,
+  NotFound
+}
 import com.lightbend.lagom.scaladsl.broker.TopicProducer
 import com.lightbend.lagom.scaladsl.broker.kafka.LagomKafkaComponents
 import com.lightbend.lagom.scaladsl.devmode.LagomDevModeComponents
-import com.lightbend.lagom.scaladsl.persistence.cassandra.{CassandraReadSide, CassandraSession, CassandraPersistenceComponents}
+import com.lightbend.lagom.scaladsl.persistence.cassandra.{
+  CassandraReadSide,
+  CassandraSession,
+  CassandraPersistenceComponents
+}
 import com.lightbend.lagom.scaladsl.persistence.PersistentEntity.ReplyType
-import com.lightbend.lagom.scaladsl.persistence.{AggregateEvent, AggregateEventShards, AggregateEventTag, EventStreamElement, PersistentEntity, PersistentEntityRegistry, ReadSideProcessor}
-import com.lightbend.lagom.scaladsl.playjson.{JsonSerializer, JsonSerializerRegistry}
-import com.lightbend.lagom.scaladsl.pubsub.{PubSubComponents, PubSubRegistry, TopicId}
+import com.lightbend.lagom.scaladsl.persistence.{
+  AggregateEvent,
+  AggregateEventShards,
+  AggregateEventTag,
+  EventStreamElement,
+  PersistentEntity,
+  PersistentEntityRegistry,
+  ReadSideProcessor
+}
+import com.lightbend.lagom.scaladsl.playjson.{
+  JsonSerializer,
+  JsonSerializerRegistry
+}
+import com.lightbend.lagom.scaladsl.pubsub.{
+  PubSubComponents,
+  PubSubRegistry,
+  TopicId
+}
 import com.lightbend.lagom.scaladsl.server._
 import com.lightbend.rp.servicediscovery.lagom.scaladsl.LagomServiceLocatorComponents
 import com.softwaremill.macwire._
@@ -44,113 +71,150 @@ import scala.concurrent.{ExecutionContext, Future}
 // $name$ Service Implementation
 
 class $name;format="Camel"$ServiceImpl(
-  registry: PersistentEntityRegistry,
-  $name;format="camel"$Repository: $name;format="Camel"$Repository,
-  pubSubRegistry: PubSubRegistry
-)(implicit ec: ExecutionContext) extends $name;format="Camel"$Service {
+    registry: PersistentEntityRegistry,
+    $name;format="camel"$Repository: $name;format="Camel"$Repository,
+    pubSubRegistry: PubSubRegistry
+)(implicit ec: ExecutionContext)
+    extends $name;format="Camel"$Service {
   private val logger = LoggerFactory.getLogger(classOf[$name;format="Camel"$ServiceImpl])
 
-  override def create$name;format="Camel"$WithSystemGeneratedId: ServiceCall[Create$name;format="Camel"$Request, Create$name;format="Camel"$Response] =
+  override def create$name;format="Camel"$WithSystemGeneratedId
+    : ServiceCall[Create$name;format="Camel"$Request, Create$name;format="Camel"$Response] =
     authenticated { (tokenContent, _) =>
       ServerServiceCall { create$name;format="Camel"$Request =>
-      val username = tokenContent.username
-      logger.info(s"User \$username is ... ")
-      logger.info(s"Creating '$name$' with a system generated identifier and input \$create$name;format="Camel"$Request...")
-      val validationResult = validate(create$name;format="Camel"$Request)
-      validationResult match {
-        case failure: Failure =>  throw new TransportException(TransportErrorCode.BadRequest, "request validation failure")
-        case _ =>
-      }
-      val id = Cuid.createCuid()
-      val $name;format="camel"$Aggregate = $name;format="Camel"$Aggregate(id, create$name;format="Camel"$Request.$name;format="camel"$)
-      val $name;format="camel"$Resource = $name;format="Camel"$Resource(id, create$name;format="Camel"$Request.$name;format="camel"$)
-      val $name;format="camel"$EntityRef = registry.refFor[$name;format="Camel"$Entity](id)
-      logger.info(s"Publishing event \$$name;format="camel"$Aggregate")
-      val topic = pubSubRegistry.refFor(TopicId[$name;format="Camel"$Resource])
-      topic.publish($name;format="camel"$Resource)
-      $name;format="camel"$EntityRef.ask(Create$name;format="Camel"$Command($name;format="camel"$Aggregate)).map { _ =>
-        mapToCreate$name;format="Camel"$Response($name;format="camel"$Resource)
+        val username = tokenContent.username
+        logger.info(s"User \$username is ... ")
+        logger.info(
+          s"Creating '$name$' with a system generated identifier and input \$create$name;format="Camel"$Request...")
+        val validationResult = validate(create$name;format="Camel"$Request)
+        validationResult match {
+          case failure: Failure =>
+            throw new TransportException(TransportErrorCode.BadRequest,
+                                         "request validation failure")
+          case _ =>
+        }
+        val id = Cuid.createCuid()
+        val $name;format="camel"$Aggregate =
+          $name;format="Camel"$Aggregate(id, create$name;format="Camel"$Request.$name;format="camel"$)
+        val $name;format="camel"$Resource =
+          $name;format="Camel"$Resource(id, create$name;format="Camel"$Request.$name;format="camel"$)
+        val $name;format="camel"$EntityRef = registry.refFor[$name;format="Camel"$Entity](id)
+        logger.info(s"Publishing event \$$name;format="camel"$Aggregate")
+        val topic = pubSubRegistry.refFor(TopicId[$name;format="Camel"$Resource])
+        topic.publish($name;format="camel"$Resource)
+        $name;format="camel"$EntityRef
+          .ask(Create$name;format="Camel"$Command($name;format="camel"$Aggregate))
+          .map { _ =>
+            mapToCreate$name;format="Camel"$Response($name;format="camel"$Resource)
+          }
       }
     }
-  }
 
-  override def create$name;format="Camel"$($name;format="camel"$Id: String): ServiceCall[Create$name;format="Camel"$Request, Create$name;format="Camel"$Response] =
+  override def create$name;format="Camel"$($name;format="camel"$Id: String)
+    : ServiceCall[Create$name;format="Camel"$Request, Create$name;format="Camel"$Response] =
     authenticated { (tokenContent, _) =>
       ServerServiceCall { create$name;format="Camel"$Request =>
-      logger.info(s"Creating '$name$' with input \$create$name;format="Camel"$Request...")
-      val validationResult = validate(create$name;format="Camel"$Request)
-      validationResult match {
-        case failure: Failure =>  throw new TransportException(TransportErrorCode.BadRequest, "request validation failure")
-        case _ =>
-      }
-      val $name;format="camel"$Aggregate = $name;format="Camel"$Aggregate($name;format="camel"$Id, create$name;format="Camel"$Request.$name;format="camel"$)
-      val $name;format="camel"$Resource = $name;format="Camel"$Resource($name;format="camel"$Id, create$name;format="Camel"$Request.$name;format="camel"$)
-      val $name;format="camel"$EntityRef = registry.refFor[$name;format="Camel"$Entity]($name;format="camel"$Id.toString)
-      logger.info(s"Publishing event \$$name;format="camel"$Aggregate")
-      val topic = pubSubRegistry.refFor(TopicId[$name;format="Camel"$Resource])
-      topic.publish($name;format="camel"$Resource)
-      $name;format="camel"$EntityRef.ask(Create$name;format="Camel"$Command($name;format="camel"$Aggregate)).map { _ =>
-        mapToCreate$name;format="Camel"$Response($name;format="camel"$Resource)
+        logger.info(
+          s"Creating '$name$' with input \$create$name;format="Camel"$Request...")
+        val validationResult = validate(create$name;format="Camel"$Request)
+        validationResult match {
+          case failure: Failure =>
+            throw new TransportException(TransportErrorCode.BadRequest,
+                                         "request validation failure")
+          case _ =>
+        }
+        val $name;format="camel"$Aggregate =
+          $name;format="Camel"$Aggregate($name;format="camel"$Id, create$name;format="Camel"$Request.$name;format="camel"$)
+        val $name;format="camel"$Resource =
+          $name;format="Camel"$Resource($name;format="camel"$Id, create$name;format="Camel"$Request.$name;format="camel"$)
+        val $name;format="camel"$EntityRef =
+          registry.refFor[$name;format="Camel"$Entity]($name;format="camel"$Id.toString)
+        logger.info(s"Publishing event \$$name;format="camel"$Aggregate")
+        val topic = pubSubRegistry.refFor(TopicId[$name;format="Camel"$Resource])
+        topic.publish($name;format="camel"$Resource)
+        $name;format="camel"$EntityRef
+          .ask(Create$name;format="Camel"$Command($name;format="camel"$Aggregate))
+          .map { _ =>
+            mapToCreate$name;format="Camel"$Response($name;format="camel"$Resource)
+          }
       }
     }
-  }
 
-  override def get$name;format="Camel"$($name;format="camel"$Id: String): ServiceCall[NotUsed, Get$name;format="Camel"$Response] =
+  override def get$name;format="Camel"$(
+      $name;format="camel"$Id: String): ServiceCall[NotUsed, Get$name;format="Camel"$Response] =
     authenticated { (tokenContent, _) =>
       ServerServiceCall { _ =>
-      logger.info(s"Looking up '$name$' with ID \$$name;format="camel"$Id...")
-      val $name;format="camel"$EntityRef = registry.refFor[$name;format="Camel"$Entity]($name;format="camel"$Id.toString)
-      $name;format="camel"$EntityRef.ask(Get$name;format="Camel"$Query).map {
-        case Some($name;format="camel"$Aggregate) => mapToGet$name;format="Camel"$Response($name;format="camel"$Aggregate)
-        case None => throw NotFound(s"$name$ \$$name;format="camel"$Id not found")
+        logger.info(s"Looking up '$name$' with ID \$$name;format="camel"$Id...")
+        val $name;format="camel"$EntityRef =
+          registry.refFor[$name;format="Camel"$Entity]($name;format="camel"$Id.toString)
+        $name;format="camel"$EntityRef.ask(Get$name;format="Camel"$Query).map {
+          case Some($name;format="camel"$Aggregate) =>
+            mapToGet$name;format="Camel"$Response($name;format="camel"$Aggregate)
+          case None => throw NotFound(s"$name$ \$$name;format="camel"$Id not found")
+        }
       }
     }
-  }
 
-  override def getAll$plural_name;format="Camel"$: ServiceCall[NotUsed, GetAll$plural_name;format="Camel"$Response] = ServiceCall { _ =>
+  override def getAll$plural_name;format="Camel"$
+    : ServiceCall[NotUsed, GetAll$plural_name;format="Camel"$Response] = ServiceCall { _ =>
     logger.info("Looking up all '$plural_name$'...")
-    $name;format="camel"$Repository.selectAll$plural_name;format="Camel"$.map($name;format="camel"$s => GetAll$plural_name;format="Camel"$Response($name;format="camel"$s.map(mapTo$name;format="Camel"$Resource)))
+    $name;format="camel"$Repository.selectAll$plural_name;format="Camel"$.map($name;format="camel"$s =>
+      GetAll$plural_name;format="Camel"$Response($name;format="camel"$s.map(mapTo$name;format="Camel"$Resource)))
   }
 
-  private def mapTo$name;format="Camel"$Resource($name;format="camel"$Aggregate: $name;format="Camel"$Aggregate): $name;format="Camel"$Resource = {
+  private def mapTo$name;format="Camel"$Resource(
+      $name;format="camel"$Aggregate: $name;format="Camel"$Aggregate): $name;format="Camel"$Resource = {
     $name;format="Camel"$Resource($name;format="camel"$Aggregate.id, $name;format="camel"$Aggregate.$name;format="camel"$)
   }
 
-  private def mapToGet$name;format="Camel"$Response($name;format="camel"$Aggregate: $name;format="Camel"$Aggregate): Get$name;format="Camel"$Response = {
-    Get$name;format="Camel"$Response($name;format="camel"$Aggregate.id, $name;format="camel"$Aggregate.$name;format="camel"$)
+  private def mapToGet$name;format="Camel"$Response(
+      $name;format="camel"$Aggregate: $name;format="Camel"$Aggregate): Get$name;format="Camel"$Response = {
+    Get$name;format="Camel"$Response($name;format="camel"$Aggregate.id,
+                          $name;format="camel"$Aggregate.$name;format="camel"$)
   }
 
-  private def mapToCreate$name;format="Camel"$Response($name;format="camel"$Resource: $name;format="Camel"$Resource): Create$name;format="Camel"$Response = {
-    Create$name;format="Camel"$Response($name;format="camel"$Resource.id, $name;format="camel"$Resource.$name;format="camel"$)
+  private def mapToCreate$name;format="Camel"$Response(
+      $name;format="camel"$Resource: $name;format="Camel"$Resource): Create$name;format="Camel"$Response = {
+    Create$name;format="Camel"$Response($name;format="camel"$Resource.id,
+                             $name;format="camel"$Resource.$name;format="camel"$)
   }
 
-  override def $name;format="camel"$MessageBrokerEvents: Topic[$name;format="Camel"$MessageBrokerEvent] =
-    TopicProducer.taggedStreamWithOffset($name;format="Camel"$Event.Tag.allTags.toList) { (tag, offset) =>
-      logger.info("Creating $name;format="Camel"$Event Topic...")
-      registry.eventStream(tag, offset)
-        .filter {
-          _.event match {
-            case x@(_: $name;format="Camel"$CreatedEvent) => true
-            case _ => false
+  override def $name;format="camel"$MessageBrokerEvents
+    : Topic[$name;format="Camel"$MessageBrokerEvent] =
+    TopicProducer.taggedStreamWithOffset($name;format="Camel"$Event.Tag.allTags.toList) {
+      (tag, offset) =>
+        logger.info("Creating $name;format="Camel"$Event Topic...")
+        registry
+          .eventStream(tag, offset)
+          .filter {
+            _.event match {
+              case x @ (_: $name;format="Camel"$CreatedEvent) => true
+              case _                               => false
+            }
           }
-        }.mapAsync(1)(convertEvent)
+          .mapAsync(1)(convertEvent)
     }
 
-  private def convertEvent(eventStreamElement: EventStreamElement[$name;format="Camel"$Event]): Future[($name;format="Camel"$MessageBrokerEvent, Offset)] = {
+  private def convertEvent(
+      eventStreamElement: EventStreamElement[$name;format="Camel"$Event])
+    : Future[($name;format="Camel"$MessageBrokerEvent, Offset)] = {
     eventStreamElement match {
       case EventStreamElement(id, $name;format="Camel"$CreatedEvent($name;format="camel"$), offset) =>
         Future.successful {
           ($name;format="Camel"$Created(
-            id = $name;format="camel"$.id,
-            $name;format="camel"$ = $name;format="camel"$.$name;format="camel"$
-          ), offset)
+             id = $name;format="camel"$.id,
+             $name;format="camel"$ = $name;format="camel"$.$name;format="camel"$
+           ),
+           offset)
         }
     }
   }
 
-  override def subscribe$name;format="Camel"$Stream: ServiceCall[NotUsed, Source[$name;format="Camel"$Resource, NotUsed]] = ServiceCall { _ =>
-    val topic = pubSubRegistry.refFor(TopicId[$name;format="Camel"$Resource])
-    Future.successful(topic.subscriber)
+  override def subscribe$name;format="Camel"$Stream
+    : ServiceCall[NotUsed, Source[$name;format="Camel"$Resource, NotUsed]] = ServiceCall {
+    _ =>
+      val topic = pubSubRegistry.refFor(TopicId[$name;format="Camel"$Resource])
+      Future.successful(topic.subscriber)
   }
 }
 
@@ -164,21 +228,26 @@ class $name;format="Camel"$Entity extends PersistentEntity {
   override def initialState: Option[$name;format="Camel"$Aggregate] = None
 
   override def behavior: Behavior = {
-    case None => notCreated
+    case None             => notCreated
     case Some($name;format="camel"$) => created($name;format="camel"$)
   }
 
-  private val get$name;format="Camel"$Query = Actions().onReadOnlyCommand[Get$name;format="Camel"$Query.type, Option[$name;format="Camel"$Aggregate]] {
-    case (Get$name;format="Camel"$Query, ctx, state) => ctx.reply(state)
-  }
+  private val get$name;format="Camel"$Query = Actions()
+    .onReadOnlyCommand[Get$name;format="Camel"$Query.type, Option[$name;format="Camel"$Aggregate]] {
+      case (Get$name;format="Camel"$Query, ctx, state) => ctx.reply(state)
+    }
 
   private val notCreated = {
-    Actions().onCommand[Create$name;format="Camel"$Command, Done] {
-      case (Create$name;format="Camel"$Command($name;format="camel"$), ctx, state) =>
-        ctx.thenPersist($name;format="Camel"$CreatedEvent($name;format="camel"$))(_ => ctx.reply(Done))
-    }.onEvent {
-      case ($name;format="Camel"$CreatedEvent($name;format="camel"$), state) => Some($name;format="camel"$)
-    }.orElse(get$name;format="Camel"$Query)
+    Actions()
+      .onCommand[Create$name;format="Camel"$Command, Done] {
+        case (Create$name;format="Camel"$Command($name;format="camel"$), ctx, state) =>
+          ctx.thenPersist($name;format="Camel"$CreatedEvent($name;format="camel"$))(_ =>
+            ctx.reply(Done))
+      }
+      .onEvent {
+        case ($name;format="Camel"$CreatedEvent($name;format="camel"$), state) => Some($name;format="camel"$)
+      }
+      .orElse(get$name;format="Camel"$Query)
   }
 
   private def created($name;format="camel"$: $name;format="Camel"$Aggregate) = {
@@ -187,8 +256,8 @@ class $name;format="Camel"$Entity extends PersistentEntity {
 }
 
 case class $name;format="Camel"$Aggregate(
-  id: String,
-  $name;format="camel"$: $name;format="Camel"$
+    id: String,
+    $name;format="camel"$: $name;format="Camel"$
 )
 
 object $name;format="Camel"$Aggregate {
@@ -197,11 +266,16 @@ object $name;format="Camel"$Aggregate {
 
 sealed trait $name;format="Camel"$Command
 
-case object Get$name;format="Camel"$Query extends $name;format="Camel"$Command with ReplyType[Option[$name;format="Camel"$Aggregate]] {
-  implicit val format: Format[Get$name;format="Camel"$Query.type] = singletonFormat(Get$name;format="Camel"$Query)
+case object Get$name;format="Camel"$Query
+    extends $name;format="Camel"$Command
+    with ReplyType[Option[$name;format="Camel"$Aggregate]] {
+  implicit val format: Format[Get$name;format="Camel"$Query.type] = singletonFormat(
+    Get$name;format="Camel"$Query)
 }
 
-case class Create$name;format="Camel"$Command($name;format="camel"$Aggregate: $name;format="Camel"$Aggregate) extends $name;format="Camel"$Command with ReplyType[Done]
+case class Create$name;format="Camel"$Command($name;format="camel"$Aggregate: $name;format="Camel"$Aggregate)
+    extends $name;format="Camel"$Command
+    with ReplyType[Done]
 
 object Create$name;format="Camel"$Command {
   implicit val format: Format[Create$name;format="Camel"$Command] = Json.format
@@ -213,10 +287,12 @@ sealed trait $name;format="Camel"$Event extends AggregateEvent[$name;format="Cam
 
 object $name;format="Camel"$Event {
   val NumShards = 4
-  val Tag: AggregateEventShards[$name;format="Camel"$Event] = AggregateEventTag.sharded[$name;format="Camel"$Event](NumShards)
+  val Tag: AggregateEventShards[$name;format="Camel"$Event] =
+    AggregateEventTag.sharded[$name;format="Camel"$Event](NumShards)
 }
 
-case class $name;format="Camel"$CreatedEvent($name;format="camel"$: $name;format="Camel"$Aggregate) extends $name;format="Camel"$Event
+case class $name;format="Camel"$CreatedEvent($name;format="camel"$: $name;format="Camel"$Aggregate)
+    extends $name;format="Camel"$Event
 
 object $name;format="Camel"$CreatedEvent {
   implicit val format: Format[$name;format="Camel"$CreatedEvent] = Json.format
@@ -224,26 +300,34 @@ object $name;format="Camel"$CreatedEvent {
 
 // $name$ Application Loader
 
-trait $name;format="Camel"$Components extends LagomServerComponents with CassandraPersistenceComponents with PubSubComponents {
+trait $name;format="Camel"$Components
+    extends LagomServerComponents
+    with CassandraPersistenceComponents
+    with PubSubComponents {
   implicit def executionContext: ExecutionContext
 
   def environment: Environment
 
-  override lazy val lagomServer: LagomServer = serverFor[$name;format="Camel"$Service](wire[$name;format="Camel"$ServiceImpl])
-  lazy val $name;format="camel"$Repository: $name;format="Camel"$Repository = wire[$name;format="Camel"$Repository]
-  override lazy val jsonSerializerRegistry: $name;format="Camel"$SerializerRegistry.type = $name;format="Camel"$SerializerRegistry
+  override lazy val lagomServer: LagomServer =
+    serverFor[$name;format="Camel"$Service](wire[$name;format="Camel"$ServiceImpl])
+  lazy val $name;format="camel"$Repository: $name;format="Camel"$Repository =
+    wire[$name;format="Camel"$Repository]
+  override lazy val jsonSerializerRegistry: $name;format="Camel"$SerializerRegistry.type =
+    $name;format="Camel"$SerializerRegistry
 
   persistentEntityRegistry.register(wire[$name;format="Camel"$Entity])
   readSide.register(wire[$name;format="Camel"$EventProcessor])
 }
 
-abstract class $name;format="Camel"$Application(context: LagomApplicationContext) extends LagomApplication(context)
-  with $name;format="Camel"$Components
-  with AhcWSComponents
-  with LagomKafkaComponents {}
+abstract class $name;format="Camel"$Application(context: LagomApplicationContext)
+    extends LagomApplication(context)
+    with $name;format="Camel"$Components
+    with AhcWSComponents
+    with LagomKafkaComponents {}
 
 class $name;format="Camel"$ApplicationLoader extends LagomApplicationLoader {
-  override def loadDevMode(context: LagomApplicationContext): LagomApplication = {
+  override def loadDevMode(
+      context: LagomApplicationContext): LagomApplication = {
     // Workaround for logback.xml not being detected, see https://github.com/lagom/lagom/issues/534
     val environment = context.playContext.environment
     LoggerConfigurator(environment.classLoader).foreach {
@@ -255,7 +339,8 @@ class $name;format="Camel"$ApplicationLoader extends LagomApplicationLoader {
 
   override def load(context: LagomApplicationContext): LagomApplication =
     new $name;format="Camel"$Application(context) with LagomServiceLocatorComponents {
-      override lazy val circuitBreakerMetricsProvider = new CircuitBreakerMetricsProviderImpl(actorSystem)
+      override lazy val circuitBreakerMetricsProvider =
+        new CircuitBreakerMetricsProviderImpl(actorSystem)
     }
 
   override def describeService = Some(readDescriptor[$name;format="Camel"$Service])
@@ -263,26 +348,31 @@ class $name;format="Camel"$ApplicationLoader extends LagomApplicationLoader {
 
 // $name$ Repository
 
-private[impl] class $name;format="Camel"$Repository(session: CassandraSession)(implicit ec: ExecutionContext) {
+private[impl] class $name;format="Camel"$Repository(session: CassandraSession)(
+    implicit ec: ExecutionContext) {
   private val logger = LoggerFactory.getLogger(classOf[$name;format="Camel"$Repository])
 
   def selectAll$plural_name;format="Camel"$: Future[Seq[$name;format="Camel"$Aggregate]] = {
     logger.info("Querying all '$plural_name$'...")
-    session.selectAll(
-      """
+    session.selectAll("""
       SELECT id, $name;format="lower,snake,word"$ FROM $name;format="lower,snake,word"$
     """).map(rows => rows.map(row => convertTo$name;format="Camel"$Aggregate(row)))
   }
 
   def select$name;format="Camel"$(id: String) = {
     logger.info(s"Querying '$name$' with ID \$id...")
-    session.selectOne("SELECT id, $name;format="lower,snake,word"$ FROM $name;format="lower,snake,word"$ WHERE id = ?", id)
+    session.selectOne("SELECT id, $name;format="lower,snake,word"$ FROM $name;format="lower,snake,word"$ WHERE id = ?",
+                      id)
   }
 
-  private def convertTo$name;format="Camel"$Aggregate($name;format="camel"$Row: Row): $name;format="Camel"$Aggregate = {
+  private def convertTo$name;format="Camel"$Aggregate(
+      $name;format="camel"$Row: Row): $name;format="Camel"$Aggregate = {
     $name;format="Camel"$Aggregate(
       $name;format="camel"$Row.getString("id"),
-      Json.fromJson[$name;format="Camel"$](Json.parse($name;format="camel"$Row.getString("$name;format="lower,snake,word"$"))).get
+      Json
+        .fromJson[$name;format="Camel"$](
+          Json.parse($name;format="camel"$Row.getString("$name;format="lower,snake,word"$")))
+        .get
 //      implicitly[Format[$name;format="Camel"$]].reads(Json.parse($name;format="camel"$Row.getString("$name;format="norm"$")))
 //          .toOption
 //          .flatten
@@ -291,16 +381,21 @@ private[impl] class $name;format="Camel"$Repository(session: CassandraSession)(i
   }
 }
 
-private[impl] class $name;format="Camel"$EventProcessor(session: CassandraSession, readSide: CassandraReadSide)(implicit ec: ExecutionContext)
-  extends ReadSideProcessor[$name;format="Camel"$Event] {
-  private val logger = LoggerFactory.getLogger(classOf[$name;format="Camel"$EventProcessor])
+private[impl] class $name;format="Camel"$EventProcessor(
+    session: CassandraSession,
+    readSide: CassandraReadSide)(implicit ec: ExecutionContext)
+    extends ReadSideProcessor[$name;format="Camel"$Event] {
+  private val logger =
+    LoggerFactory.getLogger(classOf[$name;format="Camel"$EventProcessor])
 
   private var insert$name;format="Camel"$Statement: PreparedStatement = _
   private var insert$name;format="Camel"$ByNameStatement: PreparedStatement = _
   private var insert$name;format="Camel"$SummaryStatement: PreparedStatement = _
 
-  override def buildHandler: ReadSideProcessor.ReadSideHandler[$name;format="Camel"$Event] = {
-    readSide.builder[$name;format="Camel"$Event]("$name;format="camel"$EventOffset")
+  override def buildHandler
+    : ReadSideProcessor.ReadSideHandler[$name;format="Camel"$Event] = {
+    readSide
+      .builder[$name;format="Camel"$Event]("$name;format="camel"$EventOffset")
       .setGlobalPrepare(createTables)
       .setPrepare(_ => prepareStatements())
       .setEventHandler[$name;format="Camel"$CreatedEvent](e => {
@@ -309,13 +404,13 @@ private[impl] class $name;format="Camel"$EventProcessor(session: CassandraSessio
       .build
   }
 
-  override def aggregateTags: Set[AggregateEventTag[$name;format="Camel"$Event]] = $name;format="Camel"$Event.Tag.allTags
+  override def aggregateTags: Set[AggregateEventTag[$name;format="Camel"$Event]] =
+    $name;format="Camel"$Event.Tag.allTags
 
   private def createTables() = {
     logger.info("Creating tables...")
     for {
-      _ <- session.executeCreateTable(
-        """
+      _ <- session.executeCreateTable("""
           |CREATE TABLE IF NOT EXISTS $name;format="lower,snake,word"$ (
           | id text PRIMARY KEY,
           | $name;format="lower,snake,word"$ text
@@ -341,8 +436,7 @@ private[impl] class $name;format="Camel"$EventProcessor(session: CassandraSessio
   private def prepareStatements() = {
     logger.info("Preparing statements...")
     for {
-      insert$name;format="Camel"$ <- session.prepare(
-        """
+      insert$name;format="Camel"$ <- session.prepare("""
           |INSERT INTO $name;format="lower,snake,word"$(
           | id,
           | $name;format="lower,snake,word"$
@@ -375,17 +469,17 @@ private[impl] class $name;format="Camel"$EventProcessor(session: CassandraSessio
 
   private def insert$name;format="Camel"$($name;format="camel"$Aggregate: $name;format="Camel"$Aggregate) = {
     logger.info(s"Inserting \$$name;format="camel"$Aggregate...")
-    Future.successful(List(
-      insert$name;format="Camel"$Statement.bind(
-        $name;format="camel"$Aggregate.id,
-        implicitly[Format[$name;format="Camel"$]].writes($name;format="camel"$Aggregate.$name;format="camel"$).toString),
-      insert$name;format="Camel"$SummaryStatement.bind(
-        $name;format="camel"$Aggregate.id,
-        $name;format="camel"$Aggregate.$name;format="camel"$.name),
-      insert$name;format="Camel"$ByNameStatement.bind(
-        $name;format="camel"$Aggregate.id,
-        $name;format="camel"$Aggregate.$name;format="camel"$.name)
-    ))
+    Future.successful(
+      List(
+        insert$name;format="Camel"$Statement.bind($name;format="camel"$Aggregate.id,
+                                       implicitly[Format[$name;format="Camel"$]]
+                                         .writes($name;format="camel"$Aggregate.$name;format="camel"$)
+                                         .toString),
+        insert$name;format="Camel"$SummaryStatement
+          .bind($name;format="camel"$Aggregate.id, $name;format="camel"$Aggregate.$name;format="camel"$.name),
+        insert$name;format="Camel"$ByNameStatement
+          .bind($name;format="camel"$Aggregate.id, $name;format="camel"$Aggregate.$name;format="camel"$.name)
+      ))
   }
 }
 
@@ -401,10 +495,8 @@ object $name;format="Camel"$SerializerRegistry extends JsonSerializerRegistry {
     JsonSerializer[GetAll$plural_name;format="Camel"$Response],
     JsonSerializer[$name;format="Camel"$Aggregate],
     JsonSerializer[$name;format="Camel"$CreatedEvent],
-
     JsonSerializer[Create$name;format="Camel"$Command],
     JsonSerializer[Get$name;format="Camel"$Query.type],
-
     JsonSerializer[$name;format="Camel"$Created]
   )
 }
