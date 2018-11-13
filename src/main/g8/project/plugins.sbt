@@ -10,3 +10,5 @@ addSbtPlugin("org.ensime" % "sbt-ensime" % "2.5.1")
 addSbtPlugin("com.geirsson" % "sbt-scalafmt" % "1.5.1")
 // A Scala library to fetch dependencies from Maven / Ivy repositories
 //addSbtPlugin("io.get-coursier" % "sbt-coursier" % "1.1.0-SNAPSHOT")
+
+addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.5.1")
