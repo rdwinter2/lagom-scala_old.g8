@@ -42,12 +42,12 @@ class $name;format="Camel"$EntitySpec extends WordSpec with Matchers with Before
       outcome.state should ===(Some($name;format="camel"$Aggregate))
     }
 
-//    "allow looking up an $name$" in withTestDriver { driver =>
-//      driver.run(Create$name;format="Camel"$(create$name;format="Camel"$Request))
-//      val outcome = driver.run(create$name;format="Camel"$Request)
-//      outcome.events shouldBe empty
-//      outcome.replies should contain only Some($name;format="camel"$Aggregate)
-//      outcome.state should ===(Some($name;format="camel"$Aggregate))
-//    }
+    "allow looking up an $name$" in withTestDriver { driver =>
+      driver.run(Create$name;format="Camel"$Command($name;format="camel"$Aggregate))
+      val outcome = driver.run(Get$name;format="Camel"$Query)
+      outcome.events shouldBe empty
+      outcome.replies should contain only Some($name;format="camel"$Aggregate)
+      outcome.state should ===(Some($name;format="camel"$Aggregate))
+    }
   }
 }
