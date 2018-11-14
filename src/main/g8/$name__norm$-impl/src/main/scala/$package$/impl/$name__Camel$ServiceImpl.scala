@@ -99,9 +99,9 @@ class $name;format="Camel"$ServiceImpl(
         val $name;format="camel"$Resource =
           $name;format="Camel"$Resource(id, create$name;format="Camel"$Request.$name;format="camel"$)
         val $name;format="camel"$EntityRef = registry.refFor[$name;format="Camel"$Entity](id)
-        logger.info(s"Publishing event \$$name;format="camel"$Aggregate")
-        val topic = pubSubRegistry.refFor(TopicId[$name;format="Camel"$Resource])
-        topic.publish($name;format="camel"$Resource)
+        logger.info(s"Pub/Sub Publishing change to \$$name;format="camel"$Resource")
+        //val topic = pubSubRegistry.refFor(TopicId[$name;format="Camel"$Resource])
+        //topic.publish($name;format="camel"$Resource)
         $name;format="camel"$EntityRef
           .ask(Create$name;format="Camel"$Command($name;format="camel"$Aggregate))
           .map { _ =>
@@ -210,17 +210,20 @@ class $name;format="Camel"$ServiceImpl(
     }
   }
 
-  override def stream$plural_name;format="Camel"$
-    : ServiceCall[NotUsed, Source[$name;format="Camel"$Resource, NotUsed]] = ServiceCall {
-    _ =>
-      val topic = pubSubRegistry.refFor(TopicId[$name;format="Camel"$Resource])
-      Future.successful(topic.subscriber)
-  }
+//  override def stream$plural_name;format="Camel"$
+//    : ServiceCall[NotUsed, Source[$name;format="Camel"$Resource, NotUsed]] = ServiceCall {
+//    _ =>
+      //val topic = pubSubRegistry.refFor(TopicId[$name;format="Camel"$Resource])
+//      Future.successful(topic$name;format="Camel"$CreatedEvent.subscriber)
+//  }
 }
 
 // $name$ Entity
 
-class $name;format="Camel"$Entity extends PersistentEntity {
+final class $name;format="Camel"$Entity extends PersistentEntity {
+  
+  //private val published$name;format="Camel"$CreatedEvent = pubSubRegistry.refFor(TopicId[$name;format="Camel"$CreatedEvent])
+  
   override type Command = $name;format="Camel"$Command
   override type Event = $name;format="Camel"$Event
   override type State = Option[$name;format="Camel"$Aggregate]
@@ -241,8 +244,9 @@ class $name;format="Camel"$Entity extends PersistentEntity {
     Actions()
       .onCommand[Create$name;format="Camel"$Command, Done] {
         case (Create$name;format="Camel"$Command($name;format="camel"$), ctx, state) =>
-          ctx.thenPersist($name;format="Camel"$CreatedEvent($name;format="camel"$))(_ =>
-            ctx.reply(Done))
+          ctx.thenPersist($name;format="Camel"$CreatedEvent($name;format="camel"$)) { evt =>
+            ctx.reply(Done)
+          }
       }
       .onEvent {
         case ($name;format="Camel"$CreatedEvent($name;format="camel"$), state) => Some($name;format="camel"$)
