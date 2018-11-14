@@ -210,7 +210,7 @@ class $name;format="Camel"$ServiceImpl(
     }
   }
 
-  override def subscribe$name;format="Camel"$Stream
+  override def stream$plural_name;format="Camel"$
     : ServiceCall[NotUsed, Source[$name;format="Camel"$Resource, NotUsed]] = ServiceCall {
     _ =>
       val topic = pubSubRegistry.refFor(TopicId[$name;format="Camel"$Resource])

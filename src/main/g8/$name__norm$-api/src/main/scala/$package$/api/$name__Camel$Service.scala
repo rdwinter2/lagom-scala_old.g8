@@ -50,7 +50,7 @@ trait $name;format="Camel"$Service extends Service {
       //restCall(Method.POST, "/api/$plural_name;format="lower,hyphen"$/:$name;format="camel"$Id/unarchive-$name;format="norm"$", unarchive$name;format="Camel"$ _),
       restCall(Method.GET, "/api/$plural_name;format="lower,hyphen"$/:$name;format="camel"$Id", get$name;format="Camel"$ _),
       restCall(Method.GET, "/api/$plural_name;format="lower,hyphen"$", getAll$plural_name;format="Camel"$ _),
-      pathCall("/api/$plural_name;format="lower,hyphen"$/stream", subscribe$name;format="Camel"$Stream _)
+      pathCall("/api/$plural_name;format="lower,hyphen"$/stream", stream$plural_name;format="Camel"$ _)
     )
       .withAutoAcl(true)
       .withExceptionSerializer(new DefaultExceptionSerializer(Environment.simple(mode = Mode.Prod)))
@@ -63,10 +63,11 @@ trait $name;format="Camel"$Service extends Service {
 // $name$ Service Call
 
   /**
-    * Create a "$name$".
+    * Rest api allowing an authenticated user to create a "$name$" aggregate.
     *
     * @return HTTP 200 status code if the "$name$" was created successfully.
     *         HTTP 404 status code if one or more items in the [[Create$name;format="Camel"$Request]] failed vaildation.
+    *         HTTP 409 status code if the "$name$" already exists with the same identity.
     *
     * Example:
     * curl -H "Content-Type: application/json" -X POST -d '{"$name;format="camel"$": {"name": "test", "description": "test description"}}' http://localhost:9000/api/$plural_name;format="lower,hyphen"$
@@ -75,8 +76,9 @@ trait $name;format="Camel"$Service extends Service {
     : ServiceCall[Create$name;format="Camel"$Request, Create$name;format="Camel"$Response]
 
   /**
-    * Create a "$name$".
+    * Rest api allowing an authenticated user to create a "$name$" aggregate.
     *
+    * @param $name;format="camel"$Id unique identifier of the "$name$" to be created.
     * @return HTTP 200 status code if the "$name$" was created successfully.
     *         HTTP 404 status code if one or more items in the [[Create$name;format="Camel"$Request]] failed vaildation.
     *
@@ -109,7 +111,7 @@ trait $name;format="Camel"$Service extends Service {
 //  def getAll$plural_name;format="Camel"$(page: Option[String]): ServiceCall[NotUsed, utils.PagingState[GetAll$plural_name;format="Camel"$Response]]
   def getAll$plural_name;format="Camel"$: ServiceCall[NotUsed, GetAll$plural_name;format="Camel"$Response]
 
-  def subscribe$name;format="Camel"$Stream
+  def stream$plural_name;format="Camel"$
     : ServiceCall[NotUsed, Source[$name;format="Camel"$Resource, NotUsed]]
 
 // $name$ Topic
