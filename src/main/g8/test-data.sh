@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+# Add the cuid module for perl
+#cpan App::cpanminus
+#cpanm Data::Cuid
+
 #set -x
 export LOC=http://localhost:9000/api
 echo "Register a Company and create the admin user"
