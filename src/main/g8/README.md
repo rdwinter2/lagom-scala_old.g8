@@ -63,3 +63,10 @@ GET for queries
     // @formatter:on
   }
 ```
+
+```{.bash}
+-- With Bearer Auth Token
+export AT=`./get-auth-token.sh`
+sed 's/\r//'  $plural_name;format="norm"$.csv | perl -MText::CSV -MJSON::MaybeXS=encode_json -lne '$c=Text::CSV->new;$c->parse($_);@C=$c->fields if $.==1;@F=$c->fields;@L{@C}=@F;$J{$name;format="camel"$}=\%L;$l=encode_json \%J;`curl --show-error --header \"Authorization: Bearer ${'AT'}\" -H \"Content-Type: application/json\" -X POST -d \047$l\047 http://localhost:9000/api/$plural_name;format="lower,hyphen"$/$F[0]/create-$name;format="norm"$`unless $.==1;'
+
+```
