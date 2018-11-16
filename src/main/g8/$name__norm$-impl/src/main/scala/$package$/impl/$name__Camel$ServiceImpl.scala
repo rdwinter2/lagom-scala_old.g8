@@ -221,9 +221,9 @@ class $name;format="Camel"$ServiceImpl(
 // $name$ Entity
 
 final class $name;format="Camel"$Entity extends PersistentEntity {
-  
+
   //private val published$name;format="Camel"$CreatedEvent = pubSubRegistry.refFor(TopicId[$name;format="Camel"$CreatedEvent])
-  
+
   override type Command = $name;format="Camel"$Command
   override type Event = $name;format="Camel"$Event
   override type State = Option[$name;format="Camel"$Aggregate]
@@ -479,10 +479,10 @@ private[impl] class $name;format="Camel"$EventProcessor(
                                        implicitly[Format[$name;format="Camel"$]]
                                          .writes($name;format="camel"$Aggregate.$name;format="camel"$)
                                          .toString),
-        insert$name;format="Camel"$SummaryStatement
-          .bind($name;format="camel"$Aggregate.id, $name;format="camel"$Aggregate.$name;format="camel"$.name),
-        insert$name;format="Camel"$ByNameStatement
-          .bind($name;format="camel"$Aggregate.id, $name;format="camel"$Aggregate.$name;format="camel"$.name)
+        //insert$name;format="Camel"$SummaryStatement
+        //  .bind($name;format="camel"$Aggregate.id, $name;format="camel"$Aggregate.$name;format="camel"$.name),
+        //insert$name;format="Camel"$ByNameStatement
+        //  .bind($name;format="camel"$Aggregate.id, $name;format="camel"$Aggregate.$name;format="camel"$.name)
       ))
   }
 }
