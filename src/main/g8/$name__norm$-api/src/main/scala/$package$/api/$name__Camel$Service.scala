@@ -1,7 +1,7 @@
 package $package$.api
 
 //import $organization$.common.regex.Matchers
-import $organization$.common.utils.ErrorResponse
+import $organization$.common.response.ErrorResponse
 import $organization$.common.utils.JsonFormats._
 import $organization$.common.validation.ValidationViolationKeys._
 
