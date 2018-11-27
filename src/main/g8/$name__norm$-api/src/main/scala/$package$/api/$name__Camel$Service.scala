@@ -46,6 +46,8 @@ trait $name;format="Camel"$Service extends Service {
     named("$name;format="norm"$").withCalls(
       restCall(Method.POST, "/api/$plural_name;format="lower,hyphen"$", create$name;format="Camel"$WithSystemGeneratedId _),
       restCall(Method.POST, "/api/$plural_name;format="lower,hyphen"$/:$name;format="camel"$Id/create-$name;format="norm"$", create$name;format="Camel"$ _),
+      restCall(Method.POST, "/api/$plural_name;format="lower,hyphen"$/:$name;format="camel"$Id/destroy-$name;format="norm"$", destroy$name;format="Camel"$ _),
+      //restCall(Method.POST, "/api/$plural_name;format="lower,hyphen"$/:$name;format="camel"$Id/improve-$name;format="norm"$-description", improve$name;format="Camel"$Description _),
       //restCall(Method.POST, "/api/$plural_name;format="lower,hyphen"$/:$name;format="camel"$Id/archive-$name;format="norm"$", archive$name;format="Camel"$ _),
       //restCall(Method.POST, "/api/$plural_name;format="lower,hyphen"$/:$name;format="camel"$Id/unarchive-$name;format="norm"$", unarchive$name;format="Camel"$ _),
 //      pathCall("/api/$plural_name;format="lower,hyphen"$/stream", stream$plural_name;format="Camel"$ _),
@@ -87,6 +89,12 @@ trait $name;format="Camel"$Service extends Service {
     */
   def create$name;format="Camel"$($name;format="camel"$Id: String)
     : ServiceCall[Create$name;format="Camel"$Request, Create$name;format="Camel"$Response]
+
+  def destroy$name;format="Camel"$($name;format="camel"$Id: String)
+    : ServiceCall[NotUsed, Done]
+
+//  def improve$name;format="Camel"$Description($name;format="camel"$Id: String)
+//    : ServiceCall[Improve$name;format="Camel"$DescriptionRequest, Improve$name;format="Camel"$DescriptionResponse]
 
   /**
     * Get a "$name$" with the given surrogate key ID.
@@ -170,7 +178,30 @@ case object Create$name;format="Camel"$Request {
     }
 }
 
+case class Improve$name;format="Camel"$DescriptionRequest(
+    description: Option[String]
+) {}
+
+case object Improve$name;format="Camel"$DescriptionRequest {
+  implicit val format: Format[Improve$name;format="Camel"$DescriptionRequest] = Jsonx.formatCaseClass
+
+  implicit val mutate$name;format="Camel"$RequestValidator
+    : Validator[Improve$name;format="Camel"$DescriptionRequest] =
+    validator[Improve$name;format="Camel"$DescriptionRequest] { improve$name;format="Camel"$DescriptionRequest =>
+      improve$name;format="Camel"$DescriptionRequest.description.each should matchRegexFully(Matchers.Description)
+    }
+}
+
 // Response
+
+case class Improve$name;format="Camel"$DescriptionResponse(
+    id: String,
+    description: Option[String]
+)
+
+object Improve$name;format="Camel"$DescriptionResponse {
+  implicit val format: Format[Improve$name;format="Camel"$DescriptionResponse] = Json.format
+}
 
 case class Create$name;format="Camel"$Response(
     id: String,

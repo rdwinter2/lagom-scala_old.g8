@@ -84,8 +84,10 @@ class $name;format="Camel"$ServiceImpl(
       ServerServiceCall { create$name;format="Camel"$Request =>
         val username = tokenContent.username
         logger.info(s"User \$username is ... ")
+        val id = Cuid.createCuid()
         logger.info(
-          s"Creating '$name$' with a system generated identifier and input \$create$name;format="Camel"$Request...")
+          s"Creating '$name$' with a system generated identifier \$id...")
+
         val validationResult = validate(create$name;format="Camel"$Request)
         validationResult match {
           case failure: Failure =>
@@ -93,7 +95,6 @@ class $name;format="Camel"$ServiceImpl(
                                          "request validation failure")
           case _ =>
         }
-        val id = Cuid.createCuid()
         val $name;format="camel"$Aggregate =
           $name;format="Camel"$Aggregate(id, create$name;format="Camel"$Request.$name;format="camel"$)
         val $name;format="camel"$Resource =
@@ -139,6 +140,40 @@ class $name;format="Camel"$ServiceImpl(
           }
       }
     }
+
+  override def destroy$name;format="Camel"$($name;format="camel"$Id: String)
+    : ServiceCall[NotUsed, Done] =
+    authenticated { (tokenContent, _) =>
+      ServerServiceCall { _ =>
+      logger.info(
+        s"Deleting '$name$' with id \$$name;format="camel"$Id...")
+      val $name;format="camel"$EntityRef =
+        registry.refFor[$name;format="Camel"$Entity]($name;format="camel"$Id.toString)
+      $name;format="camel"$EntityRef.ask(Destroy$name;format="Camel"$Command)
+      }
+    }
+
+//  override def improve$name;format="Camel"$Description($name;format="camel"$Id: String)
+//    : ServiceCall[Improve$name;format="Camel"$DescriptionRequest, Improve$name;format="Camel"$DescriptionResponse]
+//    authenticated { (tokenContent, _) =>
+//      ServerServiceCall { ($name;format="camel"$Id, improve$name;format="Camel"$DescriptionRequest: Improve$name;format="Camel"$DescriptionRequest) =>
+//      logger.info(
+//        s"Improving the description of '$name$' with id \$$name;format="camel"$Id by setting it to \$improve$name;format="Camel"$DescriptionRequest.description...")
+//      val validationResult = validate(improve$name;format="Camel"$DescriptionRequest)
+//      validationResult match {
+//        case failure: Failure =>
+//          throw new TransportException(TransportErrorCode.BadRequest,
+//                                       "request validation failure")
+//        case _ =>
+//      }
+//      val $name;format="camel"$EntityRef =
+//        registry.refFor[$name;format="Camel"$Entity]($name;format="camel"$Id.toString)
+//      $name;format="camel"$EntityRef.ask(Improve$name;format="Camel"$DescriptionCommand(Improve$name;format="Camel"$DescriptionRequest))
+//          .map { _ =>
+//            mapToImprove$name;format="Camel"$DescriptionResponse($name;format="camel"$Resource)
+//          }
+//      }
+//    }
 
   override def get$name;format="Camel"$(
       $name;format="camel"$Id: String): ServiceCall[NotUsed, Get$name;format="Camel"$Response] =
@@ -199,11 +234,11 @@ class $name;format="Camel"$ServiceImpl(
       eventStreamElement: EventStreamElement[$name;format="Camel"$Event])
     : Future[($name;format="Camel"$MessageBrokerEvent, Offset)] = {
     eventStreamElement match {
-      case EventStreamElement(id, $name;format="Camel"$CreatedEvent($name;format="camel"$), offset) =>
+      case EventStreamElement(id, $name;format="Camel"$CreatedEvent($name;format="camel"$Aggregate), offset) =>
         Future.successful {
           ($name;format="Camel"$Created(
-             id = $name;format="camel"$.id,
-             $name;format="camel"$ = $name;format="camel"$.$name;format="camel"$
+             id = $name;format="camel"$Aggregate.id,
+             $name;format="camel"$ = $name;format="camel"$Aggregate.$name;format="camel"$
            ),
            offset)
         }
@@ -232,7 +267,7 @@ final class $name;format="Camel"$Entity extends PersistentEntity {
 
   override def behavior: Behavior = {
     case None             => notCreated
-    case Some($name;format="camel"$) => created($name;format="camel"$)
+    case Some($name;format="camel"$Aggregate) => created($name;format="camel"$Aggregate)
   }
 
   private val get$name;format="Camel"$Query = Actions()
@@ -243,19 +278,36 @@ final class $name;format="Camel"$Entity extends PersistentEntity {
   private val notCreated = {
     Actions()
       .onCommand[Create$name;format="Camel"$Command, Done] {
-        case (Create$name;format="Camel"$Command($name;format="camel"$), ctx, state) =>
-          ctx.thenPersist($name;format="Camel"$CreatedEvent($name;format="camel"$)) { evt =>
+        case (Create$name;format="Camel"$Command($name;format="camel"$Aggregate), ctx, state) =>
+          ctx.thenPersist($name;format="Camel"$CreatedEvent($name;format="camel"$Aggregate)) { evt =>
             ctx.reply(Done)
           }
       }
       .onEvent {
-        case ($name;format="Camel"$CreatedEvent($name;format="camel"$), state) => Some($name;format="camel"$)
+        case ($name;format="Camel"$CreatedEvent($name;format="camel"$Aggregate), state) => Some($name;format="camel"$Aggregate)
       }
       .orElse(get$name;format="Camel"$Query)
   }
 
-  private def created($name;format="camel"$: $name;format="Camel"$Aggregate) = {
-    Actions().orElse(get$name;format="Camel"$Query)
+  private def created($name;format="camel"$Aggregate: $name;format="Camel"$Aggregate) = {
+    Actions()
+      .onCommand[Destroy$name;format="Camel"$Command.type, Done] {
+        case (Destroy$name;format="Camel"$Command, ctx, Some(u)) =>
+          ctx.thenPersist($name;format="Camel"$DestroyedEvent(u.id))(_ => ctx.reply(Done))
+      }
+//      .onCommand[Improve$name;format="Camel"$DescripionCommand.type, Done] {
+//        case (Improve$name;format="Camel"$DescripionCommand, ctx, Some(u)) =>
+//          ctx.thenPersist($name;format="Camel"$DescripionImprovedEvent(improve$name;format="Camel"$DescripionRequest))(_ => ctx.reply(Done))
+//      }
+      .onEvent {
+        case ($name;format="Camel"$DestroyedEvent(_), Some(u)) =>
+          None
+      }
+//      .onEvent {
+//        case ($name;format="Camel"$DescripionImprovedEvent(_), Some(u)) =>
+//          None
+//      }
+      .orElse(get$name;format="Camel"$Query)
   }
 }
 
@@ -285,6 +337,20 @@ object Create$name;format="Camel"$Command {
   implicit val format: Format[Create$name;format="Camel"$Command] = Json.format
 }
 
+case object Destroy$name;format="Camel"$Command
+    extends $name;format="Camel"$Command
+    with ReplyType[Done] {
+  implicit val format: Format[Destroy$name;format="Camel"$Command.type] = singletonFormat(Destroy$name;format="Camel"$Command)
+}
+
+//case class Improve$name;format="Camel"$DescriptionCommand(improve$name;format="Camel"$DescripionRequest: Improve$name;format="Camel"$DescripionRequest)
+//    extends $name;format="Camel"$Command
+//    with ReplyType[Done]
+//
+//object Improve$name;format="Camel"$DescriptionCommand {
+//  implicit val format: Format[Improve$name;format="Camel"$DescriptionCommand.type] = singletonFormat(Improve$name;format="Camel"$DescriptionCommand)
+//}
+
 sealed trait $name;format="Camel"$Event extends AggregateEvent[$name;format="Camel"$Event] {
   override def aggregateTag = $name;format="Camel"$Event.Tag
 }
@@ -295,11 +361,25 @@ object $name;format="Camel"$Event {
     AggregateEventTag.sharded[$name;format="Camel"$Event](NumShards)
 }
 
-case class $name;format="Camel"$CreatedEvent($name;format="camel"$: $name;format="Camel"$Aggregate)
+case class $name;format="Camel"$CreatedEvent($name;format="camel"$Aggregate: $name;format="Camel"$Aggregate)
     extends $name;format="Camel"$Event
 
 object $name;format="Camel"$CreatedEvent {
   implicit val format: Format[$name;format="Camel"$CreatedEvent] = Json.format
+}
+
+case class $name;format="Camel"$DestroyedEvent($name;format="camel"$Id: String)
+    extends $name;format="Camel"$Event
+
+object $name;format="Camel"$DestroyedEvent {
+  implicit val format: Format[$name;format="Camel"$DestroyedEvent] = Json.format
+}
+
+case class $name;format="Camel"$MutaedEvent($name;format="camel"$Aggregate: $name;format="Camel"$Aggregate)
+    extends $name;format="Camel"$Event
+
+object $name;format="Camel"$MutaedEvent {
+  implicit val format: Format[$name;format="Camel"$MutaedEvent] = Json.format
 }
 
 // $name$ Application Loader
@@ -393,6 +473,7 @@ private[impl] class $name;format="Camel"$EventProcessor(
     LoggerFactory.getLogger(classOf[$name;format="Camel"$EventProcessor])
 
   private var insert$name;format="Camel"$Statement: PreparedStatement = _
+  private var destroy$name;format="Camel"$Statement: PreparedStatement = _
   private var insert$name;format="Camel"$ByNameStatement: PreparedStatement = _
   private var insert$name;format="Camel"$SummaryStatement: PreparedStatement = _
 
@@ -403,7 +484,10 @@ private[impl] class $name;format="Camel"$EventProcessor(
       .setGlobalPrepare(createTables)
       .setPrepare(_ => prepareStatements())
       .setEventHandler[$name;format="Camel"$CreatedEvent](e => {
-        insert$name;format="Camel"$(e.event.$name;format="camel"$)
+        insert$name;format="Camel"$(e.event.$name;format="camel"$Aggregate)
+      })
+      .setEventHandler[$name;format="Camel"$DestroyedEvent](e => {
+        destroy$name;format="Camel"$(e.event.$name;format="camel"$Id)
       })
       .build
   }
@@ -447,6 +531,10 @@ private[impl] class $name;format="Camel"$EventProcessor(
           | ) VALUES (
           | ?, ?);
         """.stripMargin)
+      destroy$name;format="Camel"$ <- session.prepare("""
+          |DELETE FROM $name;format="lower,snake,word"$
+          |WHERE id = ?;
+        """.stripMargin)
       insert$name;format="Camel"$Summary <- session.prepare(
         """
           |INSERT INTO $name;format="lower,snake,word"$_summary(
@@ -465,6 +553,7 @@ private[impl] class $name;format="Camel"$EventProcessor(
         """.stripMargin)
     } yield {
       insert$name;format="Camel"$Statement = insert$name;format="Camel"$
+      destroy$name;format="Camel"$Statement = destroy$name;format="Camel"$
       insert$name;format="Camel"$SummaryStatement = insert$name;format="Camel"$Summary
       insert$name;format="Camel"$ByNameStatement = insert$name;format="Camel"$ByName
       Done
@@ -478,13 +567,27 @@ private[impl] class $name;format="Camel"$EventProcessor(
         insert$name;format="Camel"$Statement.bind($name;format="camel"$Aggregate.id,
                                        implicitly[Format[$name;format="Camel"$]]
                                          .writes($name;format="camel"$Aggregate.$name;format="camel"$)
-                                         .toString),
+                                         .toString)
         //insert$name;format="Camel"$SummaryStatement
         //  .bind($name;format="camel"$Aggregate.id, $name;format="camel"$Aggregate.$name;format="camel"$.name),
         //insert$name;format="Camel"$ByNameStatement
         //  .bind($name;format="camel"$Aggregate.id, $name;format="camel"$Aggregate.$name;format="camel"$.name)
       ))
   }
+
+
+  private def destroy$name;format="Camel"$($name;format="camel"$Id: String) = {
+    logger.info(s"Deleting \$$name;format="camel"$Id...")
+    Future.successful(
+      List(
+        destroy$name;format="Camel"$Statement.bind($name;format="camel"$Id)
+        //insert$name;format="Camel"$SummaryStatement
+        //  .bind($name;format="camel"$Aggregate.id, $name;format="camel"$Aggregate.$name;format="camel"$.name),
+        //insert$name;format="Camel"$ByNameStatement
+        //  .bind($name;format="camel"$Aggregate.id, $name;format="camel"$Aggregate.$name;format="camel"$.name)
+      ))
+  }
+
 }
 
 // $name$ Serializer Registry
