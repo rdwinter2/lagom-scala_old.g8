@@ -19,7 +19,7 @@ while(<>) {
     \$regularexp = \$2;
     \$id = \$3;
     print "transclude::\${file}::[\${regularexp}]";
-    \$re = "^<!--- transclude \${id} .*\\$";
+    \$re = "^<!--- transclude \${id} .*\\\$";
     #print "::\${re}::\n";
     \$skip = 1;
   }
