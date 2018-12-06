@@ -22,7 +22,8 @@ trait Marshaller {
   implicit def eitherMarshall[A]: Marshallable[Either[ErrorResponse, A]] = new Marshallable[Either[ErrorResponse, A]] {
     override def marshall(either: Either[ErrorResponse, A]): (ResponseHeader, Either[ErrorResponse, A]) =
       either match {
-        case Left(e: ErrorResponse) => e //implicit conversion errorToResponse
+        case Left(e: ErrorResponse) =>
+          (ResponseHeader(e.code, MessageProtocol.empty, immutable.Seq.empty[(String, String)]), Left(e))
         case right @ (Right(_)) => (ResponseHeader.Ok, right)
       }
   }

@@ -1,0 +1,9 @@
+#!/bin/bash
+
+toplevel=`git rev-parse --show-toplevel`
+mv --force ${toplevel}/README.md ${toplevel}/README.md_old
+cat ${toplevel}/README.md_old | ${toplevel}/custom-hooks/untransclude.pl | ${toplevel}/custom-hooks/transclude.pl > ${toplevel}/README.md
+rm ${toplevel}/README.md_old
+#echo "Can you make a commit? Well, it depends."
+git add -u ${toplevel}/README.md
+exit 0

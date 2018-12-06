@@ -3,13 +3,15 @@ package $package$.impl
 import $organization$.common.authentication.AuthenticationServiceComposition._
 import $organization$.common.authentication.TokenContent
 import $organization$.common.utils.JsonFormats._
-import $organization$.common.utils.{
+import $organization$.common.response.{
   ErrorResponse,
-  Marshaller,
   ErrorResponses => ER
 }
+import $organization$.common.utils.Marshaller
 //import $organization$.common.validation.ValidationUtil._
 import $package$.api._
+import $package$.impl.ServiceErrors._
+import $package$.impl.ServiceErrors.ServiceError
 
 import akka.{Done, NotUsed}
 import akka.persistence.query.Offset
@@ -75,11 +77,12 @@ class $name;format="Camel"$ServiceImpl(
     $name;format="camel"$Repository: $name;format="Camel"$Repository,
     pubSubRegistry: PubSubRegistry
 )(implicit ec: ExecutionContext)
-    extends $name;format="Camel"$Service {
+    extends $name;format="Camel"$Service
+    with Marshaller {
   private val logger = LoggerFactory.getLogger(classOf[$name;format="Camel"$ServiceImpl])
 
   override def create$name;format="Camel"$WithSystemGeneratedId
-    : ServiceCall[Create$name;format="Camel"$Request, Create$name;format="Camel"$Response] =
+    : ServiceCall[Create$name;format="Camel"$Request, Either[ErrorResponse, Create$name;format="Camel"$Response]] =
     authenticated { (tokenContent, _) =>
       ServerServiceCall { create$name;format="Camel"$Request =>
         val username = tokenContent.username
@@ -105,13 +108,14 @@ class $name;format="Camel"$ServiceImpl(
         //topic.publish($name;format="camel"$Resource)
         $name;format="camel"$EntityRef
           .ask(Create$name;format="Camel"$Command($name;format="camel"$Aggregate))
+          //.map(_.marshall)
           .map { _ =>
-            mapToCreate$name;format="Camel"$Response($name;format="camel"$Resource)
+            Right(mapToCreate$name;format="Camel"$Response($name;format="camel"$Resource))
           }
       }
     }
 
-  override def create$name;format="Camel"$($name;format="camel"$Id: String)
+  override def create$name;format="Camel"$($name;format="camel"$Id: String, commandId: String)
     : ServiceCall[Create$name;format="Camel"$Request, Create$name;format="Camel"$Response] =
     authenticated { (tokenContent, _) =>
       ServerServiceCall { create$name;format="Camel"$Request =>
@@ -141,17 +145,17 @@ class $name;format="Camel"$ServiceImpl(
       }
     }
 
-  override def destroy$name;format="Camel"$($name;format="camel"$Id: String)
-    : ServiceCall[NotUsed, Done] =
-    authenticated { (tokenContent, _) =>
-      ServerServiceCall { _ =>
-      logger.info(
-        s"Deleting '$name$' with id \$$name;format="camel"$Id...")
-      val $name;format="camel"$EntityRef =
-        registry.refFor[$name;format="Camel"$Entity]($name;format="camel"$Id.toString)
-      $name;format="camel"$EntityRef.ask(Destroy$name;format="Camel"$Command)
-      }
-    }
+//  override def destroy$name;format="Camel"$($name;format="camel"$Id: String)
+//    : ServiceCall[NotUsed, Done] =
+//    authenticated { (tokenContent, _) =>
+//      ServerServiceCall { _ =>
+//      logger.info(
+//        s"Deleting '$name$' with id \$$name;format="camel"$Id...")
+//      val $name;format="camel"$EntityRef =
+//        registry.refFor[$name;format="Camel"$Entity]($name;format="camel"$Id.toString)
+//      $name;format="camel"$EntityRef.ask(Destroy$name;format="Camel"$Command)
+//      }
+//    }
 
 //  override def improve$name;format="Camel"$Description($name;format="camel"$Id: String)
 //    : ServiceCall[Improve$name;format="Camel"$DescriptionRequest, Improve$name;format="Camel"$DescriptionResponse]
@@ -175,43 +179,49 @@ class $name;format="Camel"$ServiceImpl(
 //      }
 //    }
 
-  override def get$name;format="Camel"$(
-      $name;format="camel"$Id: String): ServiceCall[NotUsed, Get$name;format="Camel"$Response] =
-    authenticated { (tokenContent, _) =>
-      ServerServiceCall { _ =>
-        logger.info(s"Looking up '$name$' with ID \$$name;format="camel"$Id...")
-        val $name;format="camel"$EntityRef =
-          registry.refFor[$name;format="Camel"$Entity]($name;format="camel"$Id.toString)
-        $name;format="camel"$EntityRef.ask(Get$name;format="Camel"$Query).map {
-          case Some($name;format="camel"$Aggregate) =>
-            mapToGet$name;format="Camel"$Response($name;format="camel"$Aggregate)
-          case None => throw NotFound(s"$name$ \$$name;format="camel"$Id not found")
-        }
-      }
-    }
-
-  override def getAll$plural_name;format="Camel"$
-    : ServiceCall[NotUsed, GetAll$plural_name;format="Camel"$Response] = ServiceCall { _ =>
-    logger.info("Looking up all '$plural_name$'...")
-    $name;format="camel"$Repository.selectAll$plural_name;format="Camel"$.map($name;format="camel"$s =>
-      GetAll$plural_name;format="Camel"$Response($name;format="camel"$s.map(mapTo$name;format="Camel"$Resource)))
-  }
+  //override def get$name;format="Camel"$(
+  //    $name;format="camel"$Id: String): ServiceCall[NotUsed, Get$name;format="Camel"$Response] =
+  //  authenticated { (tokenContent, _) =>
+  //    ServerServiceCall { _ =>
+  //      logger.info(s"Looking up '$name$' with ID \$$name;format="camel"$Id...")
+  //      val $name;format="camel"$EntityRef =
+  //        registry.refFor[$name;format="Camel"$Entity]($name;format="camel"$Id.toString)
+  //      $name;format="camel"$EntityRef.ask(Get$name;format="Camel"$Query).map {
+  //        case Some($name;format="camel"$State) =>
+  //          mapToGet$name;format="Camel"$Response($name;format="camel"$State)
+  //        case None => throw NotFound(s"$name$ \$$name;format="camel"$Id not found")
+  //      }
+  //    }
+  //  }
+//
+  //override def getAll$plural_name;format="Camel"$
+  //  : ServiceCall[NotUsed, GetAll$plural_name;format="Camel"$Response] = ServiceCall { _ =>
+  //  logger.info("Looking up all '$plural_name$'...")
+  //  $name;format="camel"$Repository.selectAll$plural_name;format="Camel"$.map($name;format="camel"$s =>
+  //    GetAll$plural_name;format="Camel"$Response($name;format="camel"$s.map(mapTo$name;format="Camel"$Resource)))
+  //}
 
   private def mapTo$name;format="Camel"$Resource(
       $name;format="camel"$Aggregate: $name;format="Camel"$Aggregate): $name;format="Camel"$Resource = {
-    $name;format="Camel"$Resource($name;format="camel"$Aggregate.id, $name;format="camel"$Aggregate.$name;format="camel"$)
+    $name;format="Camel"$Resource($name;format="camel"$Aggregate.$name;format="camel"$Id, $name;format="camel"$Aggregate.$name;format="camel"$)
   }
 
   private def mapToGet$name;format="Camel"$Response(
       $name;format="camel"$Aggregate: $name;format="Camel"$Aggregate): Get$name;format="Camel"$Response = {
-    Get$name;format="Camel"$Response($name;format="camel"$Aggregate.id,
+    Get$name;format="Camel"$Response($name;format="camel"$Aggregate.$name;format="camel"$Id,
                           $name;format="camel"$Aggregate.$name;format="camel"$)
   }
 
   private def mapToCreate$name;format="Camel"$Response(
       $name;format="camel"$Resource: $name;format="Camel"$Resource): Create$name;format="Camel"$Response = {
-    Create$name;format="Camel"$Response($name;format="camel"$Resource.id,
+    Create$name;format="Camel"$Response($name;format="camel"$Resource.$name;format="camel"$Id,
                              $name;format="camel"$Resource.$name;format="camel"$)
+  }
+
+  private def mapToCreate$name;format="Camel"$Response(
+      $name;format="camel"$State: $name;format="Camel"$State): Create$name;format="Camel"$Response = {
+    Create$name;format="Camel"$Response($name;format="camel"$State.$name;format="camel"$Aggregate map { _.$name;format="camel"$Id } getOrElse "No identifier",
+                             $name;format="camel"$State.$name;format="camel"$Aggregate map { _.$name;format="camel"$} getOrElse $name;format="Camel"$("No name", Some("No description")))
   }
 
   override def $name;format="camel"$MessageBrokerEvents
@@ -237,8 +247,8 @@ class $name;format="Camel"$ServiceImpl(
       case EventStreamElement(id, $name;format="Camel"$CreatedEvent($name;format="camel"$Aggregate), offset) =>
         Future.successful {
           ($name;format="Camel"$Created(
-             id = $name;format="camel"$Aggregate.id,
-             $name;format="camel"$ = $name;format="camel"$Aggregate.$name;format="camel"$
+             $name;format="camel"$Aggregate.$name;format="camel"$Id,
+             $name;format="camel"$Aggregate.$name;format="camel"$
            ),
            offset)
         }
@@ -259,60 +269,138 @@ final class $name;format="Camel"$Entity extends PersistentEntity {
 
   //private val published$name;format="Camel"$CreatedEvent = pubSubRegistry.refFor(TopicId[$name;format="Camel"$CreatedEvent])
 
-  override type Command = $name;format="Camel"$Command
+  override type Command = $name;format="Camel"$Command[_]
   override type Event = $name;format="Camel"$Event
-  override type State = Option[$name;format="Camel"$Aggregate]
+  override type State = $name;format="Camel"$State
 
-  override def initialState: Option[$name;format="Camel"$Aggregate] = None
+  type OnCommandHandler[M] = PartialFunction[(Command, CommandContext[M], State), Persist]
+  type ReadOnlyHandler[M] = PartialFunction[(Command, ReadOnlyCommandContext[M], State), Unit]
 
+  override def initialState: $name;format="Camel"$State = $name;format="Camel"$State.nonexistent
+
+  // FSM
   override def behavior: Behavior = {
-    case None             => notCreated
-    case Some($name;format="camel"$Aggregate) => created($name;format="camel"$Aggregate)
+    case $name;format="Camel"$State(_, $name;format="Camel"$Status.NONEXISTENT, _) => nonexistent$name;format="Camel"$
+    case $name;format="Camel"$State(_, $name;format="Camel"$Status.ACTIVE, _) => active$name;format="Camel"$
+    case $name;format="Camel"$State(_, $name;format="Camel"$Status.ARCHIVED, _) => archived$name;format="Camel"$
+    case $name;format="Camel"$State(_, _, _) => unknown$name;format="Camel"$
   }
 
-  private val get$name;format="Camel"$Query = Actions()
-    .onReadOnlyCommand[Get$name;format="Camel"$Query.type, Option[$name;format="Camel"$Aggregate]] {
+  private def get$name;format="Camel"$Action = Actions()
+    .onReadOnlyCommand[Get$name;format="Camel"$Query.type, $name;format="Camel"$State] {
       case (Get$name;format="Camel"$Query, ctx, state) => ctx.reply(state)
     }
 
+  private val nonexistent$name;format="Camel"$ = {
+    get$name;format="Camel"$Action orElse {
+      Actions()
+        .onCommand[Create$name;format="Camel"$Command, Either[ServiceError, $name;format="Camel"$Aggregate]] { create$name;format="Camel"$Command }
+        .onEvent {
+          case ($name;format="Camel"$CreatedEvent($name;format="camel"$Aggregate), state) => $name;format="Camel"$State(Some($name;format="camel"$Aggregate), $name;format="Camel"$Status.ACTIVE, 1)
+        }
+    }
+  }
+
+  private val active$name;format="Camel"$ = {
+    get$name;format="Camel"$Action orElse {
+      Actions()
+        .onCommand[Create$name;format="Camel"$Command, Either[ServiceError, $name;format="Camel"$Aggregate]] { replyConflict }
+    }
+  }
+
+  private val archived$name;format="Camel"$ = {
+    get$name;format="Camel"$Action orElse {
+      Actions()
+        .onCommand[Create$name;format="Camel"$Command, Either[ServiceError, $name;format="Camel"$Aggregate]] { replyConflict }
+    }
+  }
+
+  private val unknown$name;format="Camel"$ = {
+    get$name;format="Camel"$Action orElse {
+      Actions()
+        .onCommand[Create$name;format="Camel"$Command, Either[ServiceError, $name;format="Camel"$Aggregate]] { replyConflict }
+    }
+  }
+
+  private def create$name;format="Camel"$Command: OnCommandHandler[Either[ServiceError, $name;format="Camel"$Aggregate]] = {
+    case (Create$name;format="Camel"$Command($name;format="camel"$Aggregate), ctx, state) =>
+      ctx.thenPersist($name;format="Camel"$CreatedEvent($name;format="camel"$Aggregate)) { evt =>
+        ctx.reply(Right($name;format="camel"$Aggregate))
+      }
+  }
+
   private val notCreated = {
+    get$name;format="Camel"$Action orElse {
     Actions()
-      .onCommand[Create$name;format="Camel"$Command, Done] {
+      .onCommand[Create$name;format="Camel"$Command, Either[ServiceError, $name;format="Camel"$Aggregate]] {
         case (Create$name;format="Camel"$Command($name;format="camel"$Aggregate), ctx, state) =>
           ctx.thenPersist($name;format="Camel"$CreatedEvent($name;format="camel"$Aggregate)) { evt =>
-            ctx.reply(Done)
+            ctx.reply(Right($name;format="camel"$Aggregate))
           }
       }
-      .onEvent {
-        case ($name;format="Camel"$CreatedEvent($name;format="camel"$Aggregate), state) => Some($name;format="camel"$Aggregate)
-      }
-      .orElse(get$name;format="Camel"$Query)
+    }
+  }
+
+  private def replyConflict[R]: OnCommandHandler[Either[ServiceError, R]] = {
+    case (_, ctx, _) =>
+      ctx.reply(Left($name;format="Camel"$Conflict))
+      ctx.done
   }
 
   private def created($name;format="camel"$Aggregate: $name;format="Camel"$Aggregate) = {
+    get$name;format="Camel"$Action orElse {
     Actions()
-      .onCommand[Destroy$name;format="Camel"$Command.type, Done] {
-        case (Destroy$name;format="Camel"$Command, ctx, Some(u)) =>
-          ctx.thenPersist($name;format="Camel"$DestroyedEvent(u.id))(_ => ctx.reply(Done))
-      }
+//      .onCommand[Destroy$name;format="Camel"$Command.type, Done] {
+//        case (Destroy$name;format="Camel"$Command, ctx, Some(u)) =>
+//          ctx.thenPersist($name;format="Camel"$DestroyedEvent(u.id))(_ => ctx.reply(Done))
+//      }
 //      .onCommand[Improve$name;format="Camel"$DescripionCommand.type, Done] {
 //        case (Improve$name;format="Camel"$DescripionCommand, ctx, Some(u)) =>
 //          ctx.thenPersist($name;format="Camel"$DescripionImprovedEvent(improve$name;format="Camel"$DescripionRequest))(_ => ctx.reply(Done))
 //      }
-      .onEvent {
-        case ($name;format="Camel"$DestroyedEvent(_), Some(u)) =>
-          None
-      }
+//      .onEvent {
+//        case ($name;format="Camel"$DestroyedEvent(_), Some(u)) =>
+//          None
+//      }
 //      .onEvent {
 //        case ($name;format="Camel"$DescripionImprovedEvent(_), Some(u)) =>
 //          None
 //      }
-      .orElse(get$name;format="Camel"$Query)
+    }
   }
+
 }
 
+// $name$ State
+
+case class $name;format="Camel"$State(
+  $name;format="camel"$Aggregate: Option[$name;format="Camel"$Aggregate],
+  status: $name;format="Camel"$Status.Status = $name;format="Camel"$Status.NONEXISTENT,
+  transactionClock: Int
+) {
+  def withStatus (status: $name;format="Camel"$Status.Status) = copy(status = status)
+}
+
+object $name;format="Camel"$State {
+  implicit val format: Format[$name;format="Camel"$State] = Json.format
+  val nonexistent = $name;format="Camel"$State(None, $name;format="Camel"$Status.NONEXISTENT, 0)
+}
+
+// $name$ Status
+
+object $name;format="Camel"$Status extends Enumeration {
+  val NONEXISTENT, ACTIVE, ARCHIVED = Value
+  type Status = Value
+
+  implicit val format: Format[Value] = enumFormat(this)
+//  implicit val pathParamSerializer: PathParamSerializer[Status] =
+//    PathParamSerializer.required("$name;format="camel"$Status")(withName)(_.toString)
+}
+
+// $name$ Aggregate
+
 case class $name;format="Camel"$Aggregate(
-    id: String,
+    $name;format="camel"$Id: String,
     $name;format="camel"$: $name;format="Camel"$
 )
 
@@ -320,28 +408,37 @@ object $name;format="Camel"$Aggregate {
   implicit val format: Format[$name;format="Camel"$Aggregate] = Json.format
 }
 
-sealed trait $name;format="Camel"$Command
+sealed trait $name;format="Camel"$Command[R] extends ReplyType[R]
 
 case object Get$name;format="Camel"$Query
-    extends $name;format="Camel"$Command
-    with ReplyType[Option[$name;format="Camel"$Aggregate]] {
+    extends $name;format="Camel"$Command[$name;format="Camel"$State] {
   implicit val format: Format[Get$name;format="Camel"$Query.type] = singletonFormat(
     Get$name;format="Camel"$Query)
 }
 
+/**
+  * Create $name;format="Camel"$ command
+  *
+  * This command represent a request to create a $name;format="Camel"$.
+  *
+  * The Command is invalid if an item with the same name already exists.
+  *
+  * If the command is accepted, a [[$name;format="Camel"$Created]] event will be persisted.
+  *
+  * @param $name;format="camel"$Aggregate $name;format="Camel"$ aggregate.
+  */
 case class Create$name;format="Camel"$Command($name;format="camel"$Aggregate: $name;format="Camel"$Aggregate)
-    extends $name;format="Camel"$Command
-    with ReplyType[Done]
+    extends $name;format="Camel"$Command[Either[ServiceError, $name;format="Camel"$Aggregate]]
 
 object Create$name;format="Camel"$Command {
   implicit val format: Format[Create$name;format="Camel"$Command] = Json.format
 }
 
-case object Destroy$name;format="Camel"$Command
-    extends $name;format="Camel"$Command
-    with ReplyType[Done] {
-  implicit val format: Format[Destroy$name;format="Camel"$Command.type] = singletonFormat(Destroy$name;format="Camel"$Command)
-}
+//case object Destroy$name;format="Camel"$Command
+//    extends $name;format="Camel"$Command
+//    with ReplyType[Done] {
+//  implicit val format: Format[Destroy$name;format="Camel"$Command.type] = singletonFormat(Destroy$name;format="Camel"$Command)
+//}
 
 //case class Improve$name;format="Camel"$DescriptionCommand(improve$name;format="Camel"$DescripionRequest: Improve$name;format="Camel"$DescripionRequest)
 //    extends $name;format="Camel"$Command
@@ -368,12 +465,12 @@ object $name;format="Camel"$CreatedEvent {
   implicit val format: Format[$name;format="Camel"$CreatedEvent] = Json.format
 }
 
-case class $name;format="Camel"$DestroyedEvent($name;format="camel"$Id: String)
-    extends $name;format="Camel"$Event
-
-object $name;format="Camel"$DestroyedEvent {
-  implicit val format: Format[$name;format="Camel"$DestroyedEvent] = Json.format
-}
+//case class $name;format="Camel"$DestroyedEvent($name;format="camel"$Id: String)
+//    extends $name;format="Camel"$Event
+//
+//object $name;format="Camel"$DestroyedEvent {
+//  implicit val format: Format[$name;format="Camel"$DestroyedEvent] = Json.format
+//}
 
 case class $name;format="Camel"$MutaedEvent($name;format="camel"$Aggregate: $name;format="Camel"$Aggregate)
     extends $name;format="Camel"$Event
@@ -486,9 +583,9 @@ private[impl] class $name;format="Camel"$EventProcessor(
       .setEventHandler[$name;format="Camel"$CreatedEvent](e => {
         insert$name;format="Camel"$(e.event.$name;format="camel"$Aggregate)
       })
-      .setEventHandler[$name;format="Camel"$DestroyedEvent](e => {
-        destroy$name;format="Camel"$(e.event.$name;format="camel"$Id)
-      })
+//      .setEventHandler[$name;format="Camel"$DestroyedEvent](e => {
+//        destroy$name;format="Camel"$(e.event.$name;format="camel"$Id)
+//      })
       .build
   }
 
@@ -564,7 +661,7 @@ private[impl] class $name;format="Camel"$EventProcessor(
     logger.info(s"Inserting \$$name;format="camel"$Aggregate...")
     Future.successful(
       List(
-        insert$name;format="Camel"$Statement.bind($name;format="camel"$Aggregate.id,
+        insert$name;format="Camel"$Statement.bind($name;format="camel"$Aggregate.$name;format="camel"$Id,
                                        implicitly[Format[$name;format="Camel"$]]
                                          .writes($name;format="camel"$Aggregate.$name;format="camel"$)
                                          .toString)
@@ -574,7 +671,6 @@ private[impl] class $name;format="Camel"$EventProcessor(
         //  .bind($name;format="camel"$Aggregate.id, $name;format="camel"$Aggregate.$name;format="camel"$.name)
       ))
   }
-
 
   private def destroy$name;format="Camel"$($name;format="camel"$Id: String) = {
     logger.info(s"Deleting \$$name;format="camel"$Id...")
@@ -604,6 +700,30 @@ object $name;format="Camel"$SerializerRegistry extends JsonSerializerRegistry {
     JsonSerializer[$name;format="Camel"$CreatedEvent],
     JsonSerializer[Create$name;format="Camel"$Command],
     JsonSerializer[Get$name;format="Camel"$Query.type],
+//    JsonSerializer[$name;format="Camel"$Status],
     JsonSerializer[$name;format="Camel"$Created]
   )
+}
+
+/**
+  * ServiceErrors object acts as a enumeration of pre-defined errors that can be used as response for the public REST api.
+  *
+  * Internally these errors can be created by a read action to the Read-side or a message sent to the persistent entities.
+  * It defines all errors related to [[Cart]], [[Bundle]] and [[Item]].
+  */
+object ServiceErrors {
+  type ServiceError = ErrorResponse
+
+  final val CartNotFound: ServiceError = ErrorResponse(404, "Not found", "Cart not found.")
+  final val $name;format="Camel"$Conflict: ServiceError = ErrorResponse(409, "Conflict", "$name$ already exists for this user.")
+  final val CartCannotBeUpdated: ServiceError = ErrorResponse(400, "Bad request", "Cart cannot be updated.")
+
+  final val BundleNotFound: ServiceError = ErrorResponse(404, "Not Found", "Bundle not found.")
+  final val BundleConflict: ServiceError = ErrorResponse(409, "Conflict", "Bundle already exists with this name.")
+
+  final val ItemsNotFoundInInventory: ServiceError = ErrorResponse(404, "Not Found", "One or more items were not found in the inventory.")
+  final val ItemCannotBeRemoved: ServiceError = ErrorResponse(400, "Bad request", "Item is being used by a bundle, remove bundle first.")
+  final val ItemNotFound: ServiceError = ErrorResponse(404, "Not Found", "Item not found.")
+  final val ItemConflict: ServiceError = ErrorResponse(409, "Conflict", "Item already exists with this name.")
+  final val ItemNegativeQuantity: ServiceError = ErrorResponse(400, "Bad request", "Item quantity cannot be negative.")
 }
