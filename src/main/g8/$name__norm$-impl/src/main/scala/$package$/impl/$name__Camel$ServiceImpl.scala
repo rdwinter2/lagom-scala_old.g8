@@ -75,7 +75,8 @@ import scala.concurrent.{ExecutionContext, Future}
 class $name;format="Camel"$ServiceImpl(
     registry: PersistentEntityRegistry,
     $name;format="camel"$Repository: $name;format="Camel"$Repository,
-    pubSubRegistry: PubSubRegistry
+    pubSubRegistry: PubSubRegistry //,
+//    $name;format="camel"$Service: $name;format="Camel"$Service
 )(implicit ec: ExecutionContext)
     extends $name;format="Camel"$Service
     with Marshaller {
@@ -87,31 +88,37 @@ class $name;format="Camel"$ServiceImpl(
       ServerServiceCall { create$name;format="Camel"$Request =>
         val username = tokenContent.username
         logger.info(s"User \$username is ... ")
-        val id = Cuid.createCuid()
+        val $name;format="camel"$Id = Cuid.createCuid()
+        val commandId = Cuid.createCuid()
         logger.info(
-          s"Creating '$name$' with a system generated identifier \$id...")
-
-        val validationResult = validate(create$name;format="Camel"$Request)
-        validationResult match {
-          case failure: Failure =>
-            throw new TransportException(TransportErrorCode.BadRequest,
-                                         "request validation failure")
-          case _ =>
-        }
-        val $name;format="camel"$Aggregate =
-          $name;format="Camel"$Aggregate(id, create$name;format="Camel"$Request.$name;format="camel"$)
-        val $name;format="camel"$Resource =
-          $name;format="Camel"$Resource(id, create$name;format="Camel"$Request.$name;format="camel"$)
-        val $name;format="camel"$EntityRef = registry.refFor[$name;format="Camel"$Entity](id)
-        logger.info(s"Pub/Sub Publishing change to \$$name;format="camel"$Resource")
-        //val topic = pubSubRegistry.refFor(TopicId[$name;format="Camel"$Resource])
-        //topic.publish($name;format="camel"$Resource)
-        $name;format="camel"$EntityRef
-          .ask(Create$name;format="Camel"$Command($name;format="camel"$Aggregate))
-          //.map(_.marshall)
-          .map { _ =>
-            Right(mapToCreate$name;format="Camel"$Response($name;format="camel"$Resource))
+          s"Creating '$name$' with a system generated identifier $name;format="camel"$Id...")
+        this
+          .create$name;format="Camel"$($name;format="camel"$Id, commandId)
+          .handleRequestHeader(requestHeader => requestHeader)
+          .invoke(create$name;format="Camel"$Request).map { response =>
+            Right(response)
           }
+//        val validationResult = validate(create$name;format="Camel"$Request)
+//        validationResult match {
+//          case failure: Failure =>
+//            throw new TransportException(TransportErrorCode.BadRequest,
+//                                         "request validation failure")
+//          case _ =>
+//        }
+//        val $name;format="camel"$Aggregate =
+//          $name;format="Camel"$Aggregate($name;format="camel"$Id, create$name;format="Camel"$Request.$name;format="camel"$)
+//        val $name;format="camel"$Resource =
+//          $name;format="Camel"$Resource($name;format="camel"$Id, create$name;format="Camel"$Request.$name;format="camel"$)
+//        val $name;format="camel"$EntityRef = registry.refFor[$name;format="Camel"$Entity]($name;format="camel"$Id)
+//        logger.info(s"Pub/Sub Publishing change to \$$name;format="camel"$Resource")
+//        //val topic = pubSubRegistry.refFor(TopicId[$name;format="Camel"$Resource])
+//        //topic.publish($name;format="camel"$Resource)
+//        $name;format="camel"$EntityRef
+//          .ask(Create$name;format="Camel"$Command($name;format="camel"$Aggregate))
+//          //.map(_.marshall)
+//          .map { _ =>
+//            Right(mapToCreate$name;format="Camel"$Response($name;format="camel"$Resource))
+//          }
       }
     }
 
@@ -504,7 +511,12 @@ abstract class $name;format="Camel"$Application(context: LagomApplicationContext
     extends LagomApplication(context)
     with $name;format="Camel"$Components
     with AhcWSComponents
-    with LagomKafkaComponents {}
+    with LagomKafkaComponents {
+
+  // To bind to another Lagom service
+  // lazy val otherService = serviceClient.implement[OtherService]
+  //lazy val $name;format="camel"$Service: $name;format="Camel"$Service = serviceClient.implement[$name;format="Camel"$Service]
+}
 
 class $name;format="Camel"$ApplicationLoader extends LagomApplicationLoader {
   override def loadDevMode(

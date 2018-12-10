@@ -1,4 +1,4 @@
-package com.example.common.response
+package $organization$.common.response
 
 import play.api.libs.json.{Format, Json}
 

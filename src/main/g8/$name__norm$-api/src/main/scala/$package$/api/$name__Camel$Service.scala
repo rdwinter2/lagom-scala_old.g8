@@ -44,7 +44,7 @@ trait $name;format="Camel"$Service extends Service {
     import Service._
     // @formatter:off
     named("$name;format="norm"$").withCalls(
-      restCall(Method.POST,    "/api/$plural_name;format="lower,hyphen"$",                                    create$name;format="Camel"$WithSystemGeneratedId _),
+      restCall(Method.POST,    "/api/$plural_name;format="lower,hyphen"$",                     create$name;format="Camel"$WithSystemGeneratedId _),
       restCall(Method.POST,    "/$plural_name;format="lower,hyphen"$/:id/create/:commandId",   create$name;format="Camel"$ _),
       //restCall(Method.POST, "/api/$plural_name;format="lower,hyphen"$/:$name;format="camel"$Id/destroy-$name;format="norm"$", destroy$name;format="Camel"$ _),
       //restCall(Method.POST, "/api/$plural_name;format="lower,hyphen"$/:$name;format="camel"$Id/improve-$name;format="norm"$-description", improve$name;format="Camel"$Description _),
@@ -169,7 +169,7 @@ object $name;format="Camel"$ {
 
 case class Identity(
   identifier: String,
-  transactionClock: Int)
+  transactionClock: Option[Int])
 
 object Identity {
   implicit val format: Format[Identity] = Jsonx.formatCaseClass
@@ -178,7 +178,8 @@ object Identity {
     validator[Identity] { identity =>
       identity.identifier is notEmpty
       identity.identifier should matchRegexFully(Matchers.Id)
-      identity.transactionClock should be >= 0
+      // need Option[Int]
+      //identity.transactionClock should be >= 0
     }
 }
 // }
