@@ -45,7 +45,7 @@ trait $name;format="Camel"$Service extends Service {
     // @formatter:off
     named("$name;format="norm"$").withCalls(
       restCall(Method.POST,    "/api/$plural_name;format="lower,hyphen"$",                     create$name;format="Camel"$WithSystemGeneratedId _),
-      restCall(Method.POST,    "/$plural_name;format="lower,hyphen"$/:id/create/:commandId",   create$name;format="Camel"$ _),
+      restCall(Method.POST,    "/$plural_name;format="lower,hyphen"$/:id/$name;format="lower,hyphen"$-creation/:creationId",   create$name;format="Camel"$ _),
       //restCall(Method.POST, "/api/$plural_name;format="lower,hyphen"$/:$name;format="camel"$Id/destroy-$name;format="norm"$", destroy$name;format="Camel"$ _),
       //restCall(Method.POST, "/api/$plural_name;format="lower,hyphen"$/:$name;format="camel"$Id/improve-$name;format="norm"$-description", improve$name;format="Camel"$Description _),
       //restCall(Method.POST, "/api/$plural_name;format="lower,hyphen"$/:$name;format="camel"$Id/archive-$name;format="norm"$", archive$name;format="Camel"$ _),
