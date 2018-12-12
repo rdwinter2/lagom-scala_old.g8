@@ -15,6 +15,9 @@ sbt new rdwinter2/lagom-scala.g8
 
 After running `git init` or cloning from a repository `cd` into the directory and run `./custom-hooks/run-after-clone.sh`.
 
+
+REST naming folling https://www.thoughtworks.com/insights/blog/rest-api-design-resource-modeling.
+
 The REST call identifiers for the $name$ project are defined as:
 <!--- transclude::api/$name;format="Camel"$Service.scala::[override final def descriptor = {] cjpiqadh10000zwn3jpph16w1 -->
 
