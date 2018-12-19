@@ -44,14 +44,30 @@ trait $name;format="Camel"$Service extends Service {
     import Service._
     // @formatter:off
     named("$name;format="norm"$").withCalls(
-      restCall(Method.POST,    "/api/$plural_name;format="lower,hyphen"$",                     create$name;format="Camel"$WithSystemGeneratedId _),
-      restCall(Method.POST,    "/$plural_name;format="lower,hyphen"$/:id/$name;format="lower,hyphen"$-creation/:creationId",   create$name;format="Camel"$ _),
-      //restCall(Method.POST, "/api/$plural_name;format="lower,hyphen"$/:$name;format="camel"$Id/destroy-$name;format="norm"$", destroy$name;format="Camel"$ _),
-      //restCall(Method.POST, "/api/$plural_name;format="lower,hyphen"$/:$name;format="camel"$Id/improve-$name;format="norm"$-description", improve$name;format="Camel"$Description _),
-      //restCall(Method.POST, "/api/$plural_name;format="lower,hyphen"$/:$name;format="camel"$Id/archive-$name;format="norm"$", archive$name;format="Camel"$ _),
-      //restCall(Method.POST, "/api/$plural_name;format="lower,hyphen"$/:$name;format="camel"$Id/unarchive-$name;format="norm"$", unarchive$name;format="Camel"$ _),
+      // CRUDy REST
+      restCall(Method.POST,   "/api/$plural_name;format="lower,hyphen"$",       post$name;format="Camel"$ _),
+      //restCall(Method.PUT,    "/api/$plural_name;format="lower,hyphen"$/:id",   put$name;format="Camel"$ _),
+      //restCall(Method.PATCH,  "/api/$plural_name;format="lower,hyphen"$/:id",   patch$name;format="Camel"$ _),
+      //restCall(Method.DELETE, "/api/$plural_name;format="lower,hyphen"$/:id",   delete$name;format="Camel"$ _),
+      //restCall(Method.GET,    "/api/$plural_name;format="lower,hyphen"$/:id",   get$name;format="Camel"$ _),
+      //restCall(Method.GET,    "/api/$plural_name;format="lower,hyphen"$",       getAll$plural_name;format="Camel"$ _),
+      // CRUDy DDDified REST without a proper ubiquitious language
+      //restCall(Method.POST,   "/api/$plural_name;format="lower,hyphen"$/:id/creation/:creationId",         create$name;format="Camel"$ _),
+      //restCall(Method.POST,   "/api/$plural_name;format="lower,hyphen"$/:id/amelioration/:ameliorationId", ameliorate$name;format="Camel"$ _),
+      //restCall(Method.POST,   "/api/$plural_name;format="lower,hyphen"$/:id/deactivation/:deactivationId", deactivate$name;format="Camel"$ _),
+      //restCall(Method.POST,   "/api/$plural_name;format="lower,hyphen"$/:id/reactivation/:reactivationId", reactivate$name;format="Camel"$ _),
+      //restCall(Method.GET,    "/api/$plural_name;format="lower,hyphen"$/:id/creation/:creationId",         getCreate$name;format="Camel"$ _),
+      //restCall(Method.GET,    "/api/$plural_name;format="lower,hyphen"$/:id/amelioration/:ameliorationId", getAmeliorate$name;format="Camel"$ _),
+      //restCall(Method.GET,    "/api/$plural_name;format="lower,hyphen"$/:id/deactivation/:deactivationId", getDeactivate$name;format="Camel"$ _),
+      //restCall(Method.GET,    "/api/$plural_name;format="lower,hyphen"$/:id/reactivation/:reactivationId", getReactivate$name;format="Camel"$ _)
+      // DDDified REST with the bounded context's ubiquitious language
+      //restCall(Method.POST,    "/api/$plural_name;format="lower,hyphen"$",                     create$name;format="Camel"$WithSystemGeneratedId _),
+      //restCall(Method.POST,    "/api/$plural_name;format="lower,hyphen"$/:id/creation/:creationId",   create$name;format="Camel"$ _),
+      //restCall(Method.POST, "/api/$plural_name;format="lower,hyphen"$/:id/archival/:archivalId", archive$name;format="Camel"$ _),
+      //restCall(Method.POST, "/api/$plural_name;format="lower,hyphen"$/:id/reactivation/:reactivationId", reactivate$name;format="Camel"$ _),
+      //restCall(Method.POST, "/api/$plural_name;format="lower,hyphen"$/:id/enhancement/:enhancementId", enhance$name;format="Camel"$ _),
 //      pathCall("/api/$plural_name;format="lower,hyphen"$/stream", stream$plural_name;format="Camel"$ _),
-      //restCall(Method.GET, "/api/$plural_name;format="lower,hyphen"$/:$name;format="camel"$Id", get$name;format="Camel"$ _),
+      //restCall(Method.GET, "/api/$plural_name;format="lower,hyphen"$/:id", get$name;format="Camel"$ _),
       //restCall(Method.GET, "/api/$plural_name;format="lower,hyphen"$", getAll$plural_name;format="Camel"$ _)
     )
       .withAutoAcl(true)
@@ -63,7 +79,12 @@ trait $name;format="Camel"$Service extends Service {
   }
 
 // $name$ Service Call
-
+  def post$name;format="Camel"$: ServiceCall[Create$name;format="Camel"$Request, Either[ErrorResponse, Create$name;format="Camel"$Response]]
+  //def put$name;format="Camel"$($name;format="camel"$Id: String): ServiceCall[Put$name;format="Camel"$Request, Either[ErrorResponse, Put$name;format="Camel"$Response]]
+  //def patch$name;format="Camel"$($name;format="camel"$Id: String): ServiceCall[Patch$name;format="Camel"$Request, Either[ErrorResponse, Patch$name;format="Camel"$Response]]
+  //def delete$name;format="Camel"$($name;format="camel"$Id: String): ServiceCall[NotUsed, Either[ErrorResponse, Delete$name;format="Camel"$Response]]
+  //def get$name;format="Camel"$($name;format="camel"$Id: String): ServiceCall[NotUsed, Either[ErrorResponse, Get$name;format="Camel"$Response]]
+  //def get$plural_name;format="Camel"$: ServiceCall[NotUsed, Either[ErrorResponse, Get$plural_name;format="Camel"$Response]]
   /**
     * Rest api allowing an authenticated user to create a "$name$" aggregate.
     *
@@ -166,28 +187,57 @@ object $name;format="Camel"$ {
       $name;format="camel"$.description.each should matchRegexFully(Matchers.Description)
     }
 }
+// }
 
+// Supporting algebraic data types {
 case class Identity(
   identifier: String,
-  transactionClock: Option[Int])
+  revision: Option[Int],
+  hash: Option[String])
 
 object Identity {
   implicit val format: Format[Identity] = Jsonx.formatCaseClass
 
-  val $name;format="camel"$Validator: Validator[Identity] =
+  val identityValidator: Validator[Identity] =
     validator[Identity] { identity =>
       identity.identifier is notEmpty
       identity.identifier should matchRegexFully(Matchers.Id)
       // need Option[Int]
-      //identity.transactionClock should be >= 0
+      //identity.revision should be >= 0
     }
 }
+
+case class HypertextApplicationLanguage(
+  )
+
+case class HalLink(
+  rel: String,
+  href: String,
+  deprecation: Option[String] = None,
+  name: Option[String] = None,
+  profile: Option[String] = None,
+  title: Option[String] = None,
+  hreflang: Option[String] = None,
+  `type`: Option[String] = None,
+  templated: Boolean = false) {
+
+  def withDeprecation(url: String) = this.copy(deprecation = Some(url))
+  def withName(name: String) = this.copy(name = Some(name))
+  def withProfile(profile: String) = this.copy(profile = Some(profile))
+  def withTitle(title: String) = this.copy(title = Some(title))
+  def withHreflang(lang: String) = this.copy(hreflang = Some(lang))
+  def withType(mediaType: String) = this.copy(`type` = Some(mediaType))
+}
+
+object HalLink {
+  implicit val format: Format[HalLink] = Jsonx.formatCaseClass
+}
+
 // }
 
 // Resource
 
 case class $name;format="Camel"$Resource(
-  $name;format="camel"$Id: String,
   $name;format="camel"$: $name;format="Camel"$
 )
 
@@ -196,8 +246,6 @@ object $name;format="Camel"$Resource {
 
   val $name;format="camel"$ResourceValidator: Validator[$name;format="Camel"$Resource] =
     validator[$name;format="Camel"$Resource] { $name;format="camel"$Resource =>
-      $name;format="camel"$Resource.$name;format="camel"$Id is notEmpty
-      $name;format="camel"$Resource.$name;format="camel"$Id should matchRegexFully(Matchers.Id)
       $name;format="camel"$Resource.$name;format="camel"$ is valid($name;format="Camel"$.$name;format="camel"$Validator)
     }
 }
@@ -205,6 +253,7 @@ object $name;format="Camel"$Resource {
 // Request
 
 // TODO: include span ID as the unique identity of a Create$name;format="Camel"$Request
+
 case class Create$name;format="Camel"$Request(
     $name;format="camel"$: $name;format="Camel"$
 ) {}
@@ -235,6 +284,15 @@ case object Improve$name;format="Camel"$DescriptionRequest {
 
 // Response
 
+case class Create$name;format="Camel"$Response(
+    $name;format="camel"$Id: String,
+    $name;format="camel"$: $name;format="Camel"$
+)
+
+object Create$name;format="Camel"$Response {
+  implicit val format: Format[Create$name;format="Camel"$Response] = Json.format
+}
+
 case class Improve$name;format="Camel"$DescriptionResponse(
     $name;format="camel"$Id: String,
     description: Option[String]
@@ -244,14 +302,6 @@ object Improve$name;format="Camel"$DescriptionResponse {
   implicit val format: Format[Improve$name;format="Camel"$DescriptionResponse] = Json.format
 }
 
-case class Create$name;format="Camel"$Response(
-    $name;format="camel"$Id: String,
-    $name;format="camel"$: $name;format="Camel"$
-)
-
-object Create$name;format="Camel"$Response {
-  implicit val format: Format[Create$name;format="Camel"$Response] = Json.format
-}
 
 case class Get$name;format="Camel"$Response(
     $name;format="camel"$Id: String,

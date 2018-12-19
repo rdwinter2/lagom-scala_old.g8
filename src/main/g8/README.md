@@ -15,25 +15,38 @@ sbt new rdwinter2/lagom-scala.g8
 
 After running `git init` or cloning from a repository `cd` into the directory and run `./custom-hooks/run-after-clone.sh`.
 
-
-REST naming folling https://www.thoughtworks.com/insights/blog/rest-api-design-resource-modeling.
-
 The REST call identifiers for the $name$ project are defined as:
-<!--- transclude::api/$name;format="Camel"$Service.scala::[override final def descriptor = {] cjpiqadh10000zwn3jpph16w1 -->
+<!--- transclude::api/$name;format="Camel"$Service.scala::[override final def descriptor = {] cjpv9q8by0000s1n3us1dh0in -->
 
 ```scala
   override final def descriptor = {
     import Service._
     // @formatter:off
     named("$name;format="norm"$").withCalls(
-      restCall(Method.POST,    "/api/$plural_name;format="lower,hyphen"$",                     create$name;format="Camel"$WithSystemGeneratedId _),
-      restCall(Method.POST,    "/$plural_name;format="lower,hyphen"$/:id/create/:commandId",   create$name;format="Camel"$ _),
-      //restCall(Method.POST, "/api/$plural_name;format="lower,hyphen"$/:$name;format="camel"$Id/destroy-$name;format="norm"$", destroy$name;format="Camel"$ _),
-      //restCall(Method.POST, "/api/$plural_name;format="lower,hyphen"$/:$name;format="camel"$Id/improve-$name;format="norm"$-description", improve$name;format="Camel"$Description _),
-      //restCall(Method.POST, "/api/$plural_name;format="lower,hyphen"$/:$name;format="camel"$Id/archive-$name;format="norm"$", archive$name;format="Camel"$ _),
-      //restCall(Method.POST, "/api/$plural_name;format="lower,hyphen"$/:$name;format="camel"$Id/unarchive-$name;format="norm"$", unarchive$name;format="Camel"$ _),
+      // CRUDy REST
+      restCall(Method.POST,   "/api/$plural_name;format="lower,hyphen"$",       post$name;format="Camel"$ _),
+      //restCall(Method.PUT,    "/api/$plural_name;format="lower,hyphen"$/:id",   put$name;format="Camel"$ _),
+      //restCall(Method.PATCH,  "/api/$plural_name;format="lower,hyphen"$/:id",   patch$name;format="Camel"$ _),
+      //restCall(Method.DELETE, "/api/$plural_name;format="lower,hyphen"$/:id",   delete$name;format="Camel"$ _),
+      //restCall(Method.GET,    "/api/$plural_name;format="lower,hyphen"$/:id",   get$name;format="Camel"$ _),
+      //restCall(Method.GET,    "/api/$plural_name;format="lower,hyphen"$",       getAll$plural_name;format="Camel"$ _),
+      // CRUDy DDDified REST without a proper ubiquitious language
+      //restCall(Method.POST,   "/api/$plural_name;format="lower,hyphen"$/:id/creation/:creationId",         create$name;format="Camel"$ _),
+      //restCall(Method.POST,   "/api/$plural_name;format="lower,hyphen"$/:id/amelioration/:ameliorationId", ameliorate$name;format="Camel"$ _),
+      //restCall(Method.POST,   "/api/$plural_name;format="lower,hyphen"$/:id/deactivation/:deactivationId", deactivate$name;format="Camel"$ _),
+      //restCall(Method.POST,   "/api/$plural_name;format="lower,hyphen"$/:id/reactivation/:reactivationId", reactivate$name;format="Camel"$ _),
+      //restCall(Method.GET,    "/api/$plural_name;format="lower,hyphen"$/:id/creation/:creationId",         getCreate$name;format="Camel"$ _),
+      //restCall(Method.GET,    "/api/$plural_name;format="lower,hyphen"$/:id/amelioration/:ameliorationId", getAmeliorate$name;format="Camel"$ _),
+      //restCall(Method.GET,    "/api/$plural_name;format="lower,hyphen"$/:id/deactivation/:deactivationId", getDeactivate$name;format="Camel"$ _),
+      //restCall(Method.GET,    "/api/$plural_name;format="lower,hyphen"$/:id/reactivation/:reactivationId", getReactivate$name;format="Camel"$ _)
+      // DDDified REST with the bounded context's ubiquitious language
+      //restCall(Method.POST,    "/api/$plural_name;format="lower,hyphen"$",                     create$name;format="Camel"$WithSystemGeneratedId _),
+      //restCall(Method.POST,    "/api/$plural_name;format="lower,hyphen"$/:id/creation/:creationId",   create$name;format="Camel"$ _),
+      //restCall(Method.POST, "/api/$plural_name;format="lower,hyphen"$/:id/archival/:archivalId", archive$name;format="Camel"$ _),
+      //restCall(Method.POST, "/api/$plural_name;format="lower,hyphen"$/:id/reactivation/:reactivationId", reactivate$name;format="Camel"$ _),
+      //restCall(Method.POST, "/api/$plural_name;format="lower,hyphen"$/:id/enhancement/:enhancementId", enhance$name;format="Camel"$ _),
 //      pathCall("/api/$plural_name;format="lower,hyphen"$/stream", stream$plural_name;format="Camel"$ _),
-      //restCall(Method.GET, "/api/$plural_name;format="lower,hyphen"$/:$name;format="camel"$Id", get$name;format="Camel"$ _),
+      //restCall(Method.GET, "/api/$plural_name;format="lower,hyphen"$/:id", get$name;format="Camel"$ _),
       //restCall(Method.GET, "/api/$plural_name;format="lower,hyphen"$", getAll$plural_name;format="Camel"$ _)
     )
       .withAutoAcl(true)
@@ -45,10 +58,11 @@ The REST call identifiers for the $name$ project are defined as:
   }
 ```
 
-<!--- transclude cjpiqadh10000zwn3jpph16w1 -->
+<!--- transclude cjpv9q8by0000s1n3us1dh0in -->
+NOTE: For naming resources in a DDD way follow recommendations in https://www.thoughtworks.com/insights/blog/rest-api-design-resource-modeling.
 
 The algebraic data type for $name$ is defined as:
-<!--- transclude::api/$name;format="Camel"$Service.scala::[$name$ algebraic data type {] cjpiqadie0001zwn34dpn1rb4 -->
+<!--- transclude::api/$name;format="Camel"$Service.scala::[$name$ algebraic data type {] cjpv9q8d90001s1n3y0w8s632 -->
 
 ```scala
 // $name$ algebraic data type {
@@ -79,29 +93,13 @@ object $name;format="Camel"$ {
       $name;format="camel"$.description.each should matchRegexFully(Matchers.Description)
     }
 }
-
-case class Identity(
-  identifier: String,
-  transactionClock: Option[Int])
-
-object Identity {
-  implicit val format: Format[Identity] = Jsonx.formatCaseClass
-
-  val $name;format="camel"$Validator: Validator[Identity] =
-    validator[Identity] { identity =>
-      identity.identifier is notEmpty
-      identity.identifier should matchRegexFully(Matchers.Id)
-      // need Option[Int]
-      //identity.transactionClock should be >= 0
-    }
-}
 // }
 ```
 
-<!--- transclude cjpiqadie0001zwn34dpn1rb4 -->
+<!--- transclude cjpv9q8d90001s1n3y0w8s632 -->
 
 With regular expression validation matchers:
-<!--- transclude::api/$name;format="Camel"$Service.scala::[object Matchers {] cjpiqadjl0002zwn3yvup7f2e -->
+<!--- transclude::api/$name;format="Camel"$Service.scala::[object Matchers {] cjpv9q8eo0002s1n3fm0p8dgg -->
 
 ```scala
 object Matchers {
@@ -113,24 +111,23 @@ object Matchers {
 }
 ```
 
-<!--- transclude cjpiqadjl0002zwn3yvup7f2e -->
+<!--- transclude cjpv9q8eo0002s1n3fm0p8dgg -->
 
 The REST resource for $name$ is defined as:
 
-<!--- transclude::api/$name;format="Camel"$Service.scala::[case class $name;format="Camel"$Resource(] cjpiqadks0003zwn3zvgrnpky -->
+<!--- transclude::api/$name;format="Camel"$Service.scala::[case class $name;format="Camel"$Resource(] cjpv9q8g60003s1n3ptkvo08z -->
 
 ```scala
 case class $name;format="Camel"$Resource(
-  $name;format="camel"$Id: String,
   $name;format="camel"$: $name;format="Camel"$
 )
 ```
 
-<!--- transclude cjpiqadks0003zwn3zvgrnpky -->
+<!--- transclude cjpv9q8g60003s1n3ptkvo08z -->
 
 The DDD aggregate for $name$ is defined as:
 
-<!--- transclude::impl/$name;format="Camel"$ServiceImpl.scala::[case class $name;format="Camel"$Aggregate(] cjpiqadma0004zwn3mhbfxcdd -->
+<!--- transclude::impl/$name;format="Camel"$ServiceImpl.scala::[case class $name;format="Camel"$Aggregate(] cjpv9q8hr0004s1n3dwwk46wh -->
 
 ```scala
 case class $name;format="Camel"$Aggregate(
@@ -139,11 +136,11 @@ case class $name;format="Camel"$Aggregate(
 )
 ```
 
-<!--- transclude cjpiqadma0004zwn3mhbfxcdd -->
+<!--- transclude cjpv9q8hr0004s1n3dwwk46wh -->
 
 The state for $name$ is defined as:
 
-<!--- transclude::impl/$name;format="Camel"$ServiceImpl.scala::[case class $name;format="Camel"$State(] cjpiqado90005zwn3blaquhca -->
+<!--- transclude::impl/$name;format="Camel"$ServiceImpl.scala::[case class $name;format="Camel"$State(] cjpv9q8jx0005s1n37iy8cyhe -->
 
 ```scala
 case class $name;format="Camel"$State(
@@ -153,11 +150,11 @@ case class $name;format="Camel"$State(
 )
 ```
 
-<!--- transclude cjpiqado90005zwn3blaquhca -->
+<!--- transclude cjpv9q8jx0005s1n37iy8cyhe -->
 
 The possible statuses for the $name$ aggregate are defined to be:
 
-<!--- transclude::impl/$name;format="Camel"$ServiceImpl.scala::[object $name;format="Camel"$Status extends Enumeration {] cjpiqadq30006zwn3i4yp6qfy -->
+<!--- transclude::impl/$name;format="Camel"$ServiceImpl.scala::[object $name;format="Camel"$Status extends Enumeration {] cjpv9q8m50006s1n3acdtwih1 -->
 
 ```scala
 object $name;format="Camel"$Status extends Enumeration {
@@ -170,11 +167,11 @@ object $name;format="Camel"$Status extends Enumeration {
 }
 ```
 
-<!--- transclude cjpiqadq30006zwn3i4yp6qfy -->
+<!--- transclude cjpv9q8m50006s1n3acdtwih1 -->
 
 The entity for $name$ is defined as:
 
-<!--- transclude::impl/$name;format="Camel"$ServiceImpl.scala::[final class $name;format="Camel"$Entity extends PersistentEntity {] cjpiqads30007zwn3j3dyxty5 -->
+<!--- transclude::impl/$name;format="Camel"$ServiceImpl.scala::[final class $name;format="Camel"$Entity extends PersistentEntity {] cjpv9q8ol0007s1n355johi8i -->
 
 ```scala
 final class $name;format="Camel"$Entity extends PersistentEntity {
@@ -284,7 +281,7 @@ final class $name;format="Camel"$Entity extends PersistentEntity {
 }
 ```
 
-<!--- transclude cjpiqads30007zwn3j3dyxty5 -->
+<!--- transclude cjpv9q8ol0007s1n355johi8i -->
 
 
 

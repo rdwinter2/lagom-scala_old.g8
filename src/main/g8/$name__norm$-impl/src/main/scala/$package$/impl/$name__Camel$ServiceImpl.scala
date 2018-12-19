@@ -82,6 +82,46 @@ class $name;format="Camel"$ServiceImpl(
     with Marshaller {
   private val logger = LoggerFactory.getLogger(classOf[$name;format="Camel"$ServiceImpl])
 
+  override def post$name;format="Camel"$
+    : ServiceCall[Create$name;format="Camel"$Request, Either[ErrorResponse, Create$name;format="Camel"$Response]] =
+    authenticated { (tokenContent, _) =>
+      ServerServiceCall { create$name;format="Camel"$Request =>
+        val username = tokenContent.username
+        logger.info(s"User \$username is ... ")
+        val $name;format="camel"$Id = Cuid.createCuid()
+        val commandId = Cuid.createCuid()
+        logger.info(
+          s"Posting '$name$' with a system generated identifier \$$name;format="camel"$Id...")
+        this
+          .create$name;format="Camel"$($name;format="camel"$Id, commandId)
+          .handleRequestHeader(requestHeader => requestHeader)
+          .invoke(create$name;format="Camel"$Request).map { response =>
+            Right(response)
+          }
+//        val validationResult = validate(create$name;format="Camel"$Request)
+//        validationResult match {
+//          case failure: Failure =>
+//            throw new TransportException(TransportErrorCode.BadRequest,
+//                                         "request validation failure")
+//          case _ =>
+//        }
+//        val $name;format="camel"$Aggregate =
+//          $name;format="Camel"$Aggregate($name;format="camel"$Id, create$name;format="Camel"$Request.$name;format="camel"$)
+//        val $name;format="camel"$Resource =
+//          $name;format="Camel"$Resource($name;format="camel"$Id, create$name;format="Camel"$Request.$name;format="camel"$)
+//        val $name;format="camel"$EntityRef = registry.refFor[$name;format="Camel"$Entity]($name;format="camel"$Id)
+//        logger.info(s"Pub/Sub Publishing change to \$$name;format="camel"$Resource")
+//        //val topic = pubSubRegistry.refFor(TopicId[$name;format="Camel"$Resource])
+//        //topic.publish($name;format="camel"$Resource)
+//        $name;format="camel"$EntityRef
+//          .ask(Create$name;format="Camel"$Command($name;format="camel"$Aggregate))
+//          //.map(_.marshall)
+//          .map { _ =>
+//            Right(mapToCreate$name;format="Camel"$Response($name;format="camel"$Resource))
+//          }
+      }
+    }
+
   override def create$name;format="Camel"$WithSystemGeneratedId
     : ServiceCall[Create$name;format="Camel"$Request, Either[ErrorResponse, Create$name;format="Camel"$Response]] =
     authenticated { (tokenContent, _) =>
@@ -138,7 +178,7 @@ class $name;format="Camel"$ServiceImpl(
         val $name;format="camel"$Aggregate =
           $name;format="Camel"$Aggregate($name;format="camel"$Id, create$name;format="Camel"$Request.$name;format="camel"$)
         val $name;format="camel"$Resource =
-          $name;format="Camel"$Resource($name;format="camel"$Id, create$name;format="Camel"$Request.$name;format="camel"$)
+          $name;format="Camel"$Resource(create$name;format="Camel"$Request.$name;format="camel"$)
         val $name;format="camel"$EntityRef =
           registry.refFor[$name;format="Camel"$Entity]($name;format="camel"$Id.toString)
         logger.info(s"Publishing event \$$name;format="camel"$Aggregate")
@@ -147,7 +187,7 @@ class $name;format="Camel"$ServiceImpl(
         $name;format="camel"$EntityRef
           .ask(Create$name;format="Camel"$Command($name;format="camel"$Aggregate))
           .map { _ =>
-            mapToCreate$name;format="Camel"$Response($name;format="camel"$Resource)
+            mapToCreate$name;format="Camel"$Response($name;format="camel"$Id, $name;format="camel"$Resource)
           }
       }
     }
@@ -210,7 +250,7 @@ class $name;format="Camel"$ServiceImpl(
 
   private def mapTo$name;format="Camel"$Resource(
       $name;format="camel"$Aggregate: $name;format="Camel"$Aggregate): $name;format="Camel"$Resource = {
-    $name;format="Camel"$Resource($name;format="camel"$Aggregate.$name;format="camel"$Id, $name;format="camel"$Aggregate.$name;format="camel"$)
+    $name;format="Camel"$Resource($name;format="camel"$Aggregate.$name;format="camel"$)
   }
 
   private def mapToGet$name;format="Camel"$Response(
@@ -220,8 +260,9 @@ class $name;format="Camel"$ServiceImpl(
   }
 
   private def mapToCreate$name;format="Camel"$Response(
+      $name;format="camel"$Id: String,
       $name;format="camel"$Resource: $name;format="Camel"$Resource): Create$name;format="Camel"$Response = {
-    Create$name;format="Camel"$Response($name;format="camel"$Resource.$name;format="camel"$Id,
+    Create$name;format="Camel"$Response($name;format="camel"$Id,
                              $name;format="camel"$Resource.$name;format="camel"$)
   }
 

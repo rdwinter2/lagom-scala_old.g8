@@ -43,15 +43,15 @@ printf "\n"
 
 curl --silent --show-error --header "Authorization: Bearer \${AT}" -H "Content-Type: application/json" -X POST -d '{"$name;format="camel"$": {"name": "first", "description": "first description"}}' http://localhost:9000/api/$plural_name;format="lower,hyphen"$
 
-curl --silent --show-error --header "Authorization: Bearer \${AT}" -H "Content-Type: application/json" -X POST -d '{"$name;format="camel"$": {"name": "first", "description": "first description"}}' http://localhost:9000/api/$plural_name;format="lower,hyphen"$/123e4567-e89b-12d3-a456-426655440301/create-$name;format="norm"$
+curl --silent --show-error --header "Authorization: Bearer \${AT}" -H "Content-Type: application/json" -X POST -d '{"$name;format="camel"$": {"name": "first", "description": "first description"}}' http://localhost:9000/api/$plural_name;format="lower,hyphen"$
 
-curl --silent --show-error --header "Authorization: Bearer \${AT}" -H "Content-Type: application/json" -X POST -d '{"$name;format="camel"$": {"name": "second", "description": "second description"}}' http://localhost:9000/api/$plural_name;format="lower,hyphen"$/somethinggood/create-$name;format="norm"$
+curl --silent --show-error --header "Authorization: Bearer \${AT}" -H "Content-Type: application/json" -X POST -d '{"$name;format="camel"$": {"name": "second", "description": "second description"}}' http://localhost:9000/api/$plural_name;format="lower,hyphen"$
 
-curl --silent --show-error --header "Authorization: Bearer \${AT}" -H "Content-Type: application/json" -X POST -d '{"$name;format="camel"$": {"name": "third", "description": "third description"}}' http://localhost:9000/api/$plural_name;format="lower,hyphen"$/somethingbad/create-$name;format="norm"$
+curl --silent --show-error --header "Authorization: Bearer \${AT}" -H "Content-Type: application/json" -X POST -d '{"$name;format="camel"$": {"name": "third", "description": "third description"}}' http://localhost:9000/api/$plural_name;format="lower,hyphen"$
 
-curl --silent --show-error --header "Authorization: Bearer \${AT}" -H "Content-Type: application/json" -X POST -d '{"$name;format="camel"$": {"name": "fourth", "description": "fourth description"}}' http://localhost:9000/api/$plural_name;format="lower,hyphen"$/123e4567-e89b-12d3-a456-426655440001/create-$name;format="norm"$
+curl --silent --show-error --header "Authorization: Bearer \${AT}" -H "Content-Type: application/json" -X POST -d '{"$name;format="camel"$": {"name": "fourth", "description": "fourth description"}}' http://localhost:9000/api/$plural_name;format="lower,hyphen"$
 
-curl --silent --show-error --header "Authorization: Bearer \${AT}" -H "Content-Type: application/json" -X POST -d '{"$name;format="camel"$": {"name": "fifth", "description": "fifth description"}}' http://localhost:9000/api/$plural_name;format="lower,hyphen"$/123e4567-e89b-12d3-a456-426655340401/create-$name;format="norm"$
+curl --silent --show-error --header "Authorization: Bearer \${AT}" -H "Content-Type: application/json" -X POST -d '{"$name;format="camel"$": {"name": "fifth", "description": "fifth description"}}' http://localhost:9000/api/$plural_name;format="lower,hyphen"$
 sleep 12
 cqlsh localhost 4000 <<EOT
 select * from $name;format="lower,snake,word"$.$name;format="lower,snake,word"$;
