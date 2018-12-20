@@ -6,6 +6,8 @@
 
 #set -x
 export LOC=http://localhost:9000/api
+export LO=`curl --silent --show-error -H "Content-Type: application/json" -X POST -d '{"username": "jpalinic","password": "test12345"}' "\$LOC/user/login"`
+if [[ \$LO == *"Forbidden"* ]]; then
 echo "Register a Company and create the admin user"
 curl --silent --show-error -H "Content-Type: application/json" -X POST -d '{"company": "Digital Cat", "firstName": "Damir","lastName": "Palinic","email": "damir@palinic.com","username": "dpalinic","password": "test12345"}' "\$LOC/client/registration"
 printf "\n"
@@ -35,6 +37,9 @@ echo "Get the identity status"
 sleep 1
 curl --silent --show-error --header "Authorization: Bearer \${AT}" \${LOC}/state/identity
 printf "\n"
+else
+export AT=`echo \${LO} | jq '.authToken' | sed -e 's/"//g'`
+fi
 #set +x
 
 #curl -sS -H "Content-Type: application/json" -X POST -d '{"username": "dpalinic","password": "test12345"}' http://localhost:9000/api/user/login | jq '.authToken'
@@ -52,6 +57,15 @@ curl --silent --show-error --header "Authorization: Bearer \${AT}" -H "Content-T
 curl --silent --show-error --header "Authorization: Bearer \${AT}" -H "Content-Type: application/json" -X POST -d '{"$name;format="camel"$": {"name": "fourth", "description": "fourth description"}}' http://localhost:9000/api/$plural_name;format="lower,hyphen"$
 
 curl --silent --show-error --header "Authorization: Bearer \${AT}" -H "Content-Type: application/json" -X POST -d '{"$name;format="camel"$": {"name": "fifth", "description": "fifth description"}}' http://localhost:9000/api/$plural_name;format="lower,hyphen"$
+
+ID=\$(perl -MData::Cuid=cuid -e 'print cuid()')
+curl --silent --show-error --header "Authorization: Bearer \${AT}" -H "Content-Type: application/json" -X POST -d '{"$name;format="camel"$": {"name": "sixth", "description": "sixth description"}}' http://localhost:9000/api/$plural_name;format="lower,hyphen"$/\${ID}/creation/\$(perl -MData::Cuid=cuid -e 'print cuid()')
+curl --silent --show-error --header "Authorization: Bearer \${AT}" -H "Content-Type: application/json" -X GET http://localhost:9000/api/$plural_name;format="lower,hyphen"$/\${ID}
+curl --silent --show-error --header "Authorization: Bearer \${AT}" -H "Content-Type: application/json" -X POST -d '{"$name;format="camel"$": {"name": "seventh", "description": "seventh description"}}' http://localhost:9000/api/$plural_name;format="lower,hyphen"$/creation/\$(perl -MData::Cuid=cuid -e 'print cuid()')
+curl --silent --show-error --header "Authorization: Bearer \${AT}" -H "Content-Type: application/json" -X POST -d '{"$name;format="camel"$": {"name": "eigth", "description": "eigth description"}}' http://localhost:9000/api/$plural_name;format="lower,hyphen"$/\$(perl -MData::Cuid=cuid -e 'print cuid()')/creation
+curl --silent --show-error --header "Authorization: Bearer \${AT}" -H "Content-Type: application/json" -X POST -d '{"$name;format="camel"$": {"name": "tenth", "description": "tenth description"}}' http://localhost:9000/api/$plural_name;format="lower,hyphen"$/creation
+
+
 sleep 12
 cqlsh localhost 4000 <<EOT
 select * from $name;format="lower,snake,word"$.$name;format="lower,snake,word"$;
