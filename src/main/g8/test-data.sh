@@ -47,24 +47,29 @@ fi
 #refreshToken
 
 curl --silent --show-error --header "Authorization: Bearer \${AT}" -H "Content-Type: application/json" -X POST -d '{"$name;format="camel"$": {"name": "first", "description": "first description"}}' http://localhost:9000/api/$plural_name;format="lower,hyphen"$
-
+printf "\n"
 curl --silent --show-error --header "Authorization: Bearer \${AT}" -H "Content-Type: application/json" -X POST -d '{"$name;format="camel"$": {"name": "first", "description": "first description"}}' http://localhost:9000/api/$plural_name;format="lower,hyphen"$
-
+printf "\n"
 curl --silent --show-error --header "Authorization: Bearer \${AT}" -H "Content-Type: application/json" -X POST -d '{"$name;format="camel"$": {"name": "second", "description": "second description"}}' http://localhost:9000/api/$plural_name;format="lower,hyphen"$
-
+printf "\n"
 curl --silent --show-error --header "Authorization: Bearer \${AT}" -H "Content-Type: application/json" -X POST -d '{"$name;format="camel"$": {"name": "third", "description": "third description"}}' http://localhost:9000/api/$plural_name;format="lower,hyphen"$
-
+printf "\n"
 curl --silent --show-error --header "Authorization: Bearer \${AT}" -H "Content-Type: application/json" -X POST -d '{"$name;format="camel"$": {"name": "fourth", "description": "fourth description"}}' http://localhost:9000/api/$plural_name;format="lower,hyphen"$
-
+printf "\n"
 curl --silent --show-error --header "Authorization: Bearer \${AT}" -H "Content-Type: application/json" -X POST -d '{"$name;format="camel"$": {"name": "fifth", "description": "fifth description"}}' http://localhost:9000/api/$plural_name;format="lower,hyphen"$
-
+printf "\n"
 ID=\$(perl -MData::Cuid=cuid -e 'print cuid()')
 curl --silent --show-error --header "Authorization: Bearer \${AT}" -H "Content-Type: application/json" -X POST -d '{"$name;format="camel"$": {"name": "sixth", "description": "sixth description"}}' http://localhost:9000/api/$plural_name;format="lower,hyphen"$/\${ID}/creation/\$(perl -MData::Cuid=cuid -e 'print cuid()')
+printf "\n"
+printf "\n"
 curl --silent --show-error --header "Authorization: Bearer \${AT}" -H "Content-Type: application/json" -X GET http://localhost:9000/api/$plural_name;format="lower,hyphen"$/\${ID}
+printf "\n"
 curl --silent --show-error --header "Authorization: Bearer \${AT}" -H "Content-Type: application/json" -X POST -d '{"$name;format="camel"$": {"name": "seventh", "description": "seventh description"}}' http://localhost:9000/api/$plural_name;format="lower,hyphen"$/creation/\$(perl -MData::Cuid=cuid -e 'print cuid()')
+printf "\n"
 curl --silent --show-error --header "Authorization: Bearer \${AT}" -H "Content-Type: application/json" -X POST -d '{"$name;format="camel"$": {"name": "eigth", "description": "eigth description"}}' http://localhost:9000/api/$plural_name;format="lower,hyphen"$/\$(perl -MData::Cuid=cuid -e 'print cuid()')/creation
+printf "\n"
 curl --silent --show-error --header "Authorization: Bearer \${AT}" -H "Content-Type: application/json" -X POST -d '{"$name;format="camel"$": {"name": "tenth", "description": "tenth description"}}' http://localhost:9000/api/$plural_name;format="lower,hyphen"$/creation
-
+printf "\n"
 
 sleep 12
 cqlsh localhost 4000 <<EOT

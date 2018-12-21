@@ -57,7 +57,7 @@ trait $name;format="Camel"$Service extends Service {
       restCall(Method.POST,   "/api/$plural_name;format="lower,hyphen"$/:id/creation",                     create$name;format="Camel"$2 _),
       restCall(Method.POST,   "/api/$plural_name;format="lower,hyphen"$/creation/:creationId",             create$name;format="Camel"$3 _),
       restCall(Method.POST,   "/api/$plural_name;format="lower,hyphen"$/:id/creation/:creationId",         create$name;format="Camel"$4 _),
-      //restCall(Method.POST,   "/api/$plural_name;format="lower,hyphen"$/:id/successor/:successorId", succeed$name;format="Camel"$ _),
+      //restCall(Method.POST,   "/api/$plural_name;format="lower,hyphen"$/:id/replacement/:replcementId", replace$name;format="Camel"$ _),
       //restCall(Method.POST,   "/api/$plural_name;format="lower,hyphen"$/:id/deactivation/:deactivationId", deactivate$name;format="Camel"$ _),
       //restCall(Method.POST,   "/api/$plural_name;format="lower,hyphen"$/:id/reactivation/:reactivationId", reactivate$name;format="Camel"$ _),
       //restCall(Method.GET,    "/api/$plural_name;format="lower,hyphen"$/:id/creation/:creationId",         getCreate$name;format="Camel"$ _),

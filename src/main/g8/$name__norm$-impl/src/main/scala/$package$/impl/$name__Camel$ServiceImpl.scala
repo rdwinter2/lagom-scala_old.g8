@@ -65,9 +65,10 @@ import com.wix.accord.Descriptions._
 import cool.graph.cuid._
 import scala.util.Try
 import java.util.UUID
+import julienrf.json.derived
 import org.slf4j.LoggerFactory
 import play.api.{Environment, LoggerConfigurator}
-import play.api.libs.json.{Format, Json}
+import play.api.libs.json._
 import play.api.libs.ws.ahc.AhcWSComponents
 import play.api.http.HeaderNames
 import scala.collection.immutable
@@ -661,20 +662,8 @@ object $name;format="Camel"$Event {
   val Tag: AggregateEventShards[$name;format="Camel"$Event] =
     AggregateEventTag.sharded[$name;format="Camel"$Event](NumShards)
 
-//  implicit val reads: Reads[$name;format="Camel"$Event] = {
-//    (__ \ "event_type").read[String].flatMap {
-//      case "$name;format="camel"$Created" => implicitly[Reads[$name;format="Camel"$CreatedEvent]].map(identity)
-//      case "$name;format="camel"$Succeeded" => implicitly[Reads[$name;format="Camel"$SucceededEvent]].map(identity)
-//      case other => Reads(_ => JsError(s"Unknown event type \$other"))
-//    }
-//  }
-//  implicit val writes: Writes[$name;format="Camel"$Event] = Writes { event =>
-//    val (jsValue, eventType) = event match {
-//      case m: $name;format="Camel"$CreatedEvent => (Json.toJson(m)($name;format="Camel"$CreatedEvent.format), "$name;format="camel"$Created")
-//      case m: $name;format="Camel"$SucceededEvent => (Json.toJson(m)($name;format="Camel"$SucceededEvent.format), "$name;format="camel"$Succeeded")
-//    }
-//    jsValue.transform(__.json.update((__ \ 'event_type).json.put(JsString(eventType)))).get
-//  }
+  implicit val format: Format[$name;format="Camel"$Event] =
+    derived.flat.oformat((__ \ "type").format[String])
 }
 
 case class $name;format="Camel"$CreatedEvent($name;format="camel"$Aggregate: $name;format="Camel"$Aggregate)
