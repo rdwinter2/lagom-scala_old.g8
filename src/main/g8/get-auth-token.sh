@@ -6,11 +6,11 @@ curl --silent --show-error -H "Content-Type: application/json" -X POST -d '{"com
 printf "\n" >> auth.log
 sleep 12
 echo "Login as the admin user" >> auth.log
-export LO=`curl --silent --show-error -H "Content-Type: application/json" -X POST -d '{"username": "dpalinic","password": "test12345"}' "\$LOC/user/login"` >> auth.log
+export LO=$(curl --silent --show-error -H "Content-Type: application/json" -X POST -d '{"username": "dpalinic","password": "test12345"}' "\$LOC/user/login") >> auth.log
 printf "\n" >> auth.log
-export AT=`echo \${LO} | jq '.authToken' | sed -e 's/"//g'`
+export AT=$(echo \${LO} | jq '.authToken' | sed -e 's/"//g')
 #AT=\${AT%\$'\r'}
-export RT=`echo \${LO} | jq '.refreshToken' | sed -e 's/"//g'`
+export RT=$(echo \${LO} | jq '.refreshToken' | sed -e 's/"//g')
 echo "Get the identity status" >> auth.log
 sleep 1
 curl --silent --show-error --header "Authorization: Bearer \${AT}" \${LOC}/state/identity >> auth.log
@@ -21,11 +21,11 @@ curl --silent --show-error --header "Authorization: Bearer \${AT}" -X POST -d '{
 printf "\n" >> auth.log
 echo "Login as the second user" >> auth.log
 sleep 12
-export LO=`curl --silent --show-error -H "Content-Type: application/json" -X POST -d '{"username": "jpalinic","password": "test12345"}' "\$LOC/user/login"` >> auth.log
+export LO=$(curl --silent --show-error -H "Content-Type: application/json" -X POST -d '{"username": "jpalinic","password": "test12345"}' "\$LOC/user/login") >> auth.log
 printf "\n" >> auth.log
-export AT=`echo \${LO} | jq '.authToken' | sed -e 's/"//g'`
+export AT=$(echo \${LO} | jq '.authToken' | sed -e 's/"//g')
 #AT=\${AT%\$'\r'}
-export RT=`echo \${LO} | jq '.refreshToken' | sed -e 's/"//g'`
+export RT=$(echo \${LO} | jq '.refreshToken' | sed -e 's/"//g')
 echo "Get the identity status" >> auth.log
 sleep 1
 curl --silent --show-error --header "Authorization: Bearer \${AT}" \${LOC}/state/identity >> auth.log

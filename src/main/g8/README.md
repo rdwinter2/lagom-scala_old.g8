@@ -13,7 +13,13 @@ To generate a new project execute the following and supply values for (name, plu
 sbt new rdwinter2/lagom-scala.g8
 ```
 
-After running `git init` or cloning from a repository `cd` into the directory and run `./custom-hooks/run-after-clone.sh`.
+After running `git init` or cloning from a repository `cd` into the directory and run
+```bash
+sudo cpan upgrade
+cpan App::cpanminus
+cpanm Data::Cuid
+./custom-hooks/run-after-clone.sh
+```
 
 The REST call identifiers for the $name$ project are defined as:
 <!--- transclude::api/$name;format="Camel"$Service.scala::[override final def descriptor = {] cjpy10nzd00000fn3imppq3p1 -->
@@ -64,6 +70,9 @@ The REST call identifiers for the $name$ project are defined as:
 
 <!--- transclude cjpy10nzd00000fn3imppq3p1 -->
 NOTE: For naming resources in a DDD way follow recommendations in https://www.thoughtworks.com/insights/blog/rest-api-design-resource-modeling.
+
+From Roy Fielding's dissertation:
+> The key abstraction of information in REST is a resource. Any information that can be named can be a resource: a document or image, a temporal service (e.g. "today's weather in Los Angeles"), a collection of other resources, a non-virtual object (e.g. a person), and so on. In other words, any concept that might be the target of an author's hypertext reference must fit within the definition of a resource. A resource is a conceptual mapping to a set of entities, not the entity that corresponds to the mapping at any particular point in time.
 
 The algebraic data type for $name$ is defined as:
 <!--- transclude::api/$name;format="Camel"$Service.scala::[$name$ algebraic data type {] cjpy10o0c00010fn3ao74jjqs -->
