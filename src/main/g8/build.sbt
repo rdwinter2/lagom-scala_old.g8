@@ -53,7 +53,7 @@ lazy val `common` = (project in file("common"))
     )
   )
 
-lazy val $name;format="camel"$Api = (project in file("$name;format="norm"$-api"))
+lazy val $name;format="camel"$Api = (project in file("$name;format="norm"$/$name;format="norm"$-api"))
   .dependsOn(`common`)
   .settings(commonSettings: _*)
   .settings(
@@ -64,7 +64,7 @@ lazy val $name;format="camel"$Api = (project in file("$name;format="norm"$-api")
     )
   )
 
-lazy val $name;format="camel"$Impl = (project in file("$name;format="norm"$-impl"))
+lazy val $name;format="camel"$Impl = (project in file("$name;format="norm"$/$name;format="norm"$-impl"))
   .settings(commonSettings: _*)
   .enablePlugins(LagomScala, SbtReactiveAppPlugin)
   .settings(
@@ -84,7 +84,7 @@ lazy val $name;format="camel"$Impl = (project in file("$name;format="norm"$-impl
   .settings(lagomForkedTestSettings: _*)
   .dependsOn($name;format="camel"$Api, `common`, `base64`)
 
-lazy val `identity-api` = (project in file("identity-api"))
+lazy val `identity-api` = (project in file("identity/identity-api"))
   .settings(
     libraryDependencies ++= Seq(
       lagomScaladslApi,
@@ -93,7 +93,7 @@ lazy val `identity-api` = (project in file("identity-api"))
   )
   .dependsOn(`common`)
 
-lazy val `identity-impl` = (project in file("identity-impl"))
+lazy val `identity-impl` = (project in file("identity/identity-impl"))
   .enablePlugins(LagomScala)
   .settings(
     libraryDependencies ++= Seq(
