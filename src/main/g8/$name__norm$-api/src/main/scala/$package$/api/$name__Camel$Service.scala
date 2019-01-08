@@ -44,35 +44,45 @@ trait $name;format="Camel"$Service extends Service {
     import Service._
     // @formatter:off
     named("$name;format="norm"$").withCalls(
-      // CRUDy REST
-      restCall(Method.POST,   "/api/$plural_name;format="lower,hyphen"$",       post$name;format="Camel"$ _),
-      //restCall(Method.PUT,    "/api/$plural_name;format="lower,hyphen"$/:id",   put$name;format="Camel"$ _),
-      //restCall(Method.PATCH,  "/api/$plural_name;format="lower,hyphen"$/:id",   patch$name;format="Camel"$ _),
-      //restCall(Method.DELETE, "/api/$plural_name;format="lower,hyphen"$/:id",   delete$name;format="Camel"$ _),
-
-      restCall(Method.GET,    "/api/$plural_name;format="lower,hyphen"$/:id",   get$name;format="Camel"$ _),
-      //restCall(Method.GET,    "/api/$plural_name;format="lower,hyphen"$",       getAll$plural_name;format="Camel"$ _),
+      // CRUDy plain REST
+      restCall(Method.POST,   "/api/$plural_name;format="lower,hyphen"$",     post$name;format="Camel"$1 _),
+      restCall(Method.POST,   "/api/$plural_name;format="lower,hyphen"$/:id", post$name;format="Camel"$2 _),
+      restCall(Method.PUT,    "/api/$plural_name;format="lower,hyphen"$/:id", put$name;format="Camel"$ _),
+      restCall(Method.PATCH,  "/api/$plural_name;format="lower,hyphen"$/:id", patch$name;format="Camel"$ _),
+      restCall(Method.DELETE, "/api/$plural_name;format="lower,hyphen"$/:id", delete$name;format="Camel"$ _),
+      restCall(Method.GET,    "/api/$plural_name;format="lower,hyphen"$/:id", get$name;format="Camel"$ _),
+      restCall(Method.GET,    "/api/$plural_name;format="lower,hyphen"$",     getAll$plural_name;format="Camel"$ _),
       // CRUDy DDDified REST without a proper ubiquitious language
-      restCall(Method.POST,   "/api/$plural_name;format="lower,hyphen"$/creation",                         create$name;format="Camel"$1 _),
-      restCall(Method.POST,   "/api/$plural_name;format="lower,hyphen"$/:id/creation",                     create$name;format="Camel"$2 _),
-      restCall(Method.POST,   "/api/$plural_name;format="lower,hyphen"$/creation/:creationId",             create$name;format="Camel"$3 _),
-      restCall(Method.POST,   "/api/$plural_name;format="lower,hyphen"$/:id/creation/:creationId",         create$name;format="Camel"$4 _),
-      //restCall(Method.POST,   "/api/$plural_name;format="lower,hyphen"$/:id/replacement/:replcementId", replace$name;format="Camel"$ _),
-      //restCall(Method.POST,   "/api/$plural_name;format="lower,hyphen"$/:id/deactivation/:deactivationId", deactivate$name;format="Camel"$ _),
-      //restCall(Method.POST,   "/api/$plural_name;format="lower,hyphen"$/:id/reactivation/:reactivationId", reactivate$name;format="Camel"$ _),
-      //restCall(Method.GET,    "/api/$plural_name;format="lower,hyphen"$/:id/creation/:creationId",         getCreate$name;format="Camel"$ _),
-      //restCall(Method.GET,    "/api/$plural_name;format="lower,hyphen"$/:id/amelioration/:ameliorationId", getAmeliorate$name;format="Camel"$ _),
-      //restCall(Method.GET,    "/api/$plural_name;format="lower,hyphen"$/:id/deactivation/:deactivationId", getDeactivate$name;format="Camel"$ _),
-      //restCall(Method.GET,    "/api/$plural_name;format="lower,hyphen"$/:id/reactivation/:reactivationId", getReactivate$name;format="Camel"$ _)
+      // Create
+      restCall(Method.POST, "/api/$plural_name;format="lower,hyphen"$/creation",                                create$name;format="Camel"$1 _),
+      restCall(Method.POST, "/api/$plural_name;format="lower,hyphen"$/:id/creation",                            create$name;format="Camel"$2 _),
+      restCall(Method.POST, "/api/$plural_name;format="lower,hyphen"$/creation/:creationId",                    create$name;format="Camel"$3 _),
+      restCall(Method.POST, "/api/$plural_name;format="lower,hyphen"$/:id/creation/:creationId",                create$name;format="Camel"$4 _),
+      restCall(Method.GET,  "/api/$plural_name;format="lower,hyphen"$/:id/creation/:creationId",                getCreation$name;format="Camel"$ _),
+      pathCall(             "/api/$plural_name;format="lower,hyphen"$/:id/creation/:creationId/stream",         streamCreation$name;format="Camel"$ _),
+      // Read
+      // Update
+      restCall(Method.POST, "/api/$plural_name;format="lower,hyphen"$/:id/replacement",                         replace$name;format="Camel"$1 _),
+      restCall(Method.POST, "/api/$plural_name;format="lower,hyphen"$/:id/replacement/:replacementId",          replace$name;format="Camel"$2 _),
+      restCall(Method.GET,  "/api/$plural_name;format="lower,hyphen"$/:id/replacement/:replacementId",          getReplacement$name;format="Camel"$ _),
+      pathCall(             "/api/$plural_name;format="lower,hyphen"$/:id/replacement/:replacementId/stream",   streamReplacement$name;format="Camel"$ _),
+      restCall(Method.POST, "/api/$plural_name;format="lower,hyphen"$/:id/mutation",                            mutate$name;format="Camel"$1 _),
+      restCall(Method.POST, "/api/$plural_name;format="lower,hyphen"$/:id/mutation/:mutationId",                mutate$name;format="Camel"$2 _),
+      restCall(Method.GET,  "/api/$plural_name;format="lower,hyphen"$/:id/mutation/:mutationId",                getMutation$name;format="Camel"$ _),
+      pathCall(             "/api/$plural_name;format="lower,hyphen"$/:id/mutation/:mutationId/stream",         streamMutation$name;format="Camel"$ _),
+      // Delete
+      restCall(Method.POST, "/api/$plural_name;format="lower,hyphen"$/:id/deactivation",                        deactivate$name;format="Camel"$1 _),
+      restCall(Method.POST, "/api/$plural_name;format="lower,hyphen"$/:id/deactivation/:deactivationId",        deactivate$name;format="Camel"$2 _),
+      restCall(Method.GET,  "/api/$plural_name;format="lower,hyphen"$/:id/deactivation/:deactivationId",        getDeactivation$name;format="Camel"$ _),
+      pathCall(             "/api/$plural_name;format="lower,hyphen"$/:id/deactivation/:deactivationId/stream", streamDeactivation$name;format="Camel"$ _),
+      // Undelete
+      restCall(Method.POST, "/api/$plural_name;format="lower,hyphen"$/:id/reactivation",                        reactivate$name;format="Camel"$1 _),
+      restCall(Method.POST, "/api/$plural_name;format="lower,hyphen"$/:id/reactivation/:reactivationId",        reactivate$name;format="Camel"$2 _),
+      restCall(Method.GET,  "/api/$plural_name;format="lower,hyphen"$/:id/reactivation/:reactivationId",        getReactivation$name;format="Camel"$ _),
+      pathCall(             "/api/$plural_name;format="lower,hyphen"$/:id/reactivation/:reactivationId/stream", streamReactivation$name;format="Camel"$ _),
       // DDDified REST using the bounded context's ubiquitious language
-      //restCall(Method.POST,    "/api/$plural_name;format="lower,hyphen"$",                     create$name;format="Camel"$WithSystemGeneratedId _),
-      //restCall(Method.POST,    "/api/$plural_name;format="lower,hyphen"$/:id/creation/:creationId",   create$name;format="Camel"$ _),
-      //restCall(Method.POST, "/api/$plural_name;format="lower,hyphen"$/:id/archival/:archivalId", archive$name;format="Camel"$ _),
-      //restCall(Method.POST, "/api/$plural_name;format="lower,hyphen"$/:id/reactivation/:reactivationId", reactivate$name;format="Camel"$ _),
-      //restCall(Method.POST, "/api/$plural_name;format="lower,hyphen"$/:id/enhancement/:enhancementId", enhance$name;format="Camel"$ _),
-//      pathCall("/api/$plural_name;format="lower,hyphen"$/stream", stream$plural_name;format="Camel"$ _),
-      //restCall(Method.GET, "/api/$plural_name;format="lower,hyphen"$/:id", get$name;format="Camel"$ _),
-      //restCall(Method.GET, "/api/$plural_name;format="lower,hyphen"$", getAll$plural_name;format="Camel"$ _)
+      //restCall(Method.POST, "/api/$plural_name;format="lower,hyphen"$/:id/description-enhancement/:enhancementId", enhanceDescription$name;format="Camel"$ _),
+//      pathCall("/api/ff $plural_name;format="lower,hyphen"$/stream", stream$plural_name;format="Camel"$ _),
     )
       .withAutoAcl(true)
       .withExceptionSerializer(new DefaultExceptionSerializer(Environment.simple(mode = Mode.Prod)))
@@ -82,80 +92,198 @@ trait $name;format="Camel"$Service extends Service {
     // @formatter:on
   }
 
-// $name$ Service Call
+// $name$ Service Calls
 
+// $name$ Creation Calls {
   /**
     * Rest api allowing an authenticated user to create a "$name$" aggregate.
     *
-    * @return HTTP 200 status code if the "$name$" was created successfully.
-    *         HTTP 404 status code if one or more items in the [[Create$name;format="Camel"$Request]] failed vaildation.
-    *         HTTP 409 status code if the "$name$" already exists with the same identity.
+    * @param  $name;format="camel"$Id  Optional unique identifier of the "$name$"
+    *         creationId    Optional unique identifier of the creation subordinate resource
+    *
+    * @return HTTP 201 Created               if the "$name$" was created successfully
+    *         HTTP 202 Accepted              if the request has been accepted, but the processing is not complete
+    *         HTTP 400 Bad Request           if domain validation of the [[Create$name;format="Camel"$Request]] failed
+    *         HTTP 401 Unauthorized          if JSON Web Token is missing
+    *         HTTP 403 Forbidden             if authorization failure
+    *         HTTP 404 Not Found             if requested resource doesn't exist, or so as to not reveal a 401 or 403
+    *         HTTP 409 Conflict              if the "$name$" already exists with the same unique identity
+    *         HTTP 413 Payload Too Large     if request size exceeds a defined limit
+    *         HTTP 422 Unprocessable Entity  if the aggregate is not in the proper state to perform this action.
+    *
+    * REST POST endpoints:
+    *   /api/$plural_name;format="lower,hyphen"$
+    *   /api/$plural_name;format="lower,hyphen"$/:id
+    *   /api/$plural_name;format="lower,hyphen"$/creation
+    *   /api/$plural_name;format="lower,hyphen"$/:id/creation
+    *   /api/$plural_name;format="lower,hyphen"$/creation/:creationId
+    *   /api/$plural_name;format="lower,hyphen"$/:id/creation/:creationId
+    *
+    * Examples:
+    * CT="Content-Type: application/json"
+    * DATA='{"$name;format="camel"$": {"name": "test", "description": "test description"}}'
+    * curl -H \$CT -X POST -d \$DATA http://localhost:9000/api/$plural_name;format="lower,hyphen"$
+    */
+  def post$name;format="Camel"$1:                                             ServiceCall[Create$name;format="Camel"$Request, Either[ErrorResponse, Create$name;format="Camel"$Response]]
+  def post$name;format="Camel"$2($name;format="camel"$Id: String):                       ServiceCall[Create$name;format="Camel"$Request, Either[ErrorResponse, Create$name;format="Camel"$Response]]
+  def create$name;format="Camel"$1:                                           ServiceCall[Create$name;format="Camel"$Request, Either[ErrorResponse, Create$name;format="Camel"$Response]]
+  def create$name;format="Camel"$2($name;format="camel"$Id: String):                     ServiceCall[Create$name;format="Camel"$Request, Either[ErrorResponse, Create$name;format="Camel"$Response]]
+  def create$name;format="Camel"$3(creationId: String):                       ServiceCall[Create$name;format="Camel"$Request, Either[ErrorResponse, Create$name;format="Camel"$Response]]
+  def create$name;format="Camel"$4($name;format="camel"$Id: String, creationId: String): ServiceCall[Create$name;format="Camel"$Request, Either[ErrorResponse, Create$name;format="Camel"$Response]]
+  // Retrieve status of creation request
+  def getCreation$name;format="Camel"$($name;format="camel"$Id: String, creationId: String):    ServiceCall[NotUsed, Either[ErrorResponse, Creation$name;format="Camel"$Response]]
+  def streamCreation$name;format="Camel"$($name;format="camel"$Id: String, creationId: String): ServiceCall[NotUsed, Source[Creation$name;format="Camel"$Response, NotUsed]]
+// }
+
+// $name$ Replacement Calls {
+  /**
+    * Rest api allowing an authenticated user to replace a "$name$".
+    *
+    * @param  $name;format="camel"$Id   The unique identifier of the "$name$"
+    *         replacementId  Optional unique identifier of the replacement subordinate resource
+    *
+    * @return HTTP 200 OK                    if the "$name$" was replaced successfully
+    *         HTTP 202 Accepted              if the request has been accepted, but the processing is not complete
+    *         HTTP 400 Bad Request           if domain validation of the [[Replace$name;format="Camel"$Request]] failed
+    *         HTTP 401 Unauthorized          if JSON Web Token is missing
+    *         HTTP 403 Forbidden             if authorization failure (use 404 if authz failure shouldn't be revealed)
+    *         HTTP 404 Not Found             if requested resource doesn't exist, or so as to not reveal a 401 or 403
+    *         HTTP 413 Payload Too Large     if request size exceeds a defined limit
+    *         HTTP 422 Unprocessable Entity  if the aggregate is not in the proper state to perform this action
+    *
+    * REST PUT endpoint:
+    *   /api/$plural_name;format="lower,hyphen"$/:id
+    * REST POST endpoints:
+    *   /api/$plural_name;format="lower,hyphen"$/:id/mutation
+    *   /api/$plural_name;format="lower,hyphen"$/:id/mutation/:mutationId
     *
     * Example:
-    * curl -H "Content-Type: application/json" -X POST -d '{"$name;format="camel"$": {"name": "test", "description": "test description"}}' http://localhost:9000/api/$plural_name;format="lower,hyphen"$
+    * CT="Content-Type: application/json"
+    * DATA='{"$name;format="camel"$": {"name": "test", "description": "different description"}}'
+    * curl -H \$CT -X PUT -d \$DATA http://localhost:9000/api/$plural_name;format="lower,hyphen"$/cjq5au9sr000caqyayo9uktss
     */
-  def post$name;format="Camel"$: ServiceCall[Create$name;format="Camel"$Request, Either[ErrorResponse, Create$name;format="Camel"$Response]]
+  def put$name;format="Camel"$($name;format="camel"$Id: String):                             ServiceCall[Replace$name;format="Camel"$Request, Either[ErrorResponse, Replace$name;format="Camel"$Response]]
+  def replace$name;format="Camel"$1($name;format="camel"$Id: String):                        ServiceCall[Replace$name;format="Camel"$Request, Either[ErrorResponse, Replace$name;format="Camel"$Response]]
+  def replace$name;format="Camel"$2($name;format="camel"$Id: String, replacementId: String): ServiceCall[Replace$name;format="Camel"$Request, Either[ErrorResponse, Replace$name;format="Camel"$Response]]
+  // Retrieve status of replacement request
+  def getReplacement$name;format="Camel"$($name;format="camel"$Id: String, replacementId: String):    ServiceCall[NotUsed, Either[ErrorResponse, Replacement$name;format="Camel"$Response]]
+  def streamReplacement$name;format="Camel"$($name;format="camel"$Id: String, replacementId: String): ServiceCall[NotUsed, Source[Replacement$name;format="Camel"$Response, NotUsed]]
+// }
 
-//  def put$name;format="Camel"$($name;format="camel"$Id: String): ServiceCall[Succeed$name;format="Camel"$Request, Either[ErrorResponse, Succeed$name;format="Camel"$Response]]
-  //def patch$name;format="Camel"$($name;format="camel"$Id: String): ServiceCall[Patch$name;format="Camel"$Request, Either[ErrorResponse, Patch$name;format="Camel"$Response]]
-  //def delete$name;format="Camel"$($name;format="camel"$Id: String): ServiceCall[NotUsed, Either[ErrorResponse, Delete$name;format="Camel"$Response]]
+// $name$ Mutation Calls {
+  /**
+    * Rest api allowing an authenticated user to mutate a "$name$".
+    *
+    * @param  $name;format="camel"$Id  The unique identifier of the "$name$"
+    *         mutationId    Optional unique identifier of the mutation subordinate resource
+    *
+    * @return HTTP 200 OK                    if the "$name$" was mutated successfully
+    *         HTTP 202 Accepted              if the request has been accepted, but the processing is not complete
+    *         HTTP 400 Bad Request           if domain validation of the [[Mutate$name;format="Camel"$Request]] failed
+    *         HTTP 401 Unauthorized          if JSON Web Token is missing
+    *         HTTP 403 Forbidden             if authorization failure (use 404 if authz failure shouldn't be revealed)
+    *         HTTP 404 Not Found             if requested resource doesn't exist, or so as to not reveal a 401 or 403
+    *         HTTP 413 Payload Too Large     if request size exceeds a defined limit
+    *         HTTP 422 Unprocessable Entity  if the aggregate is not in the proper state to perform this action
+    *
+    * REST PATCH endpoint:
+    *   /api/$plural_name;format="lower,hyphen"$/:id
+    * REST POST endpoints:
+    *   /api/$plural_name;format="lower,hyphen"$/:id/replacement
+    *   /api/$plural_name;format="lower,hyphen"$/:id/replacement/:replacementId
+    *
+    * Example:
+    * CT="Content-Type: application/json"
+    * DATA='[{"op": "replace", "path": "/name", "value": "new name"}]'
+    * curl -H \$CT -X PATCH -d \$DATA http://localhost:9000/api/$plural_name;format="lower,hyphen"$/cjq5au9sr000caqyayo9uktss
+    */
+  def patch$name;format="Camel"$($name;format="camel"$Id: String):                       ServiceCall[Mutate$name;format="Camel"$Request, Either[ErrorResponse, Mutate$name;format="Camel"$Response]]
+  def mutate$name;format="Camel"$1($name;format="camel"$Id: String):                     ServiceCall[Mutate$name;format="Camel"$Request, Either[ErrorResponse, Mutate$name;format="Camel"$Response]]
+  def mutate$name;format="Camel"$2($name;format="camel"$Id: String, mutationId: String): ServiceCall[Mutate$name;format="Camel"$Request, Either[ErrorResponse, Mutate$name;format="Camel"$Response]]
+  // Retrieve status of mutation request
+  def getMutation$name;format="Camel"$($name;format="camel"$Id: String, mutationId: String):    ServiceCall[NotUsed, Either[ErrorResponse, Mutation$name;format="Camel"$Response]]
+  def streamMutation$name;format="Camel"$($name;format="camel"$Id: String, mutationId: String): ServiceCall[NotUsed, Source[Mutation$name;format="Camel"$Response, NotUsed]]
+// }
+
+// $name$ Deactivation Calls {
+  /**
+    * Rest api allowing an authenticated user to deactivate a "$name$".
+    *
+    * @param  $name;format="camel"$Id    The unique identifier of the "$name$"
+    *         deactivationId  Optional unique identifier of the deactivation subordinate resource
+    *
+    * @return HTTP 200 OK                    if the "$name$" was deactivated successfully
+    *         HTTP 202 Accepted              if the request has been accepted, but the processing is not complete
+    *         HTTP 400 Bad Request           if domain validation of the [[Deactivate$name;format="Camel"$Request]] failed
+    *         HTTP 401 Unauthorized          if JSON Web Token is missing
+    *         HTTP 403 Forbidden             if authorization failure (use 404 if authz failure shouldn't be revealed)
+    *         HTTP 404 Not Found             if requested resource doesn't exist, or so as to not reveal a 401 or 403
+    *         HTTP 413 Payload Too Large     if request size exceeds a defined limit
+    *         HTTP 422 Unprocessable Entity  if the aggregate is not in the proper state to perform this action
+    *
+    * REST DELETE endpoint:
+    *   /api/$plural_name;format="lower,hyphen"$/:id
+    * REST POST endpoints:
+    *   /api/$plural_name;format="lower,hyphen"$/:id/deactivation
+    *   /api/$plural_name;format="lower,hyphen"$/:id/deactivation/:deactivationId
+    *
+    * Example:
+    * CT="Content-Type: application/json"
+    * curl -H \$CT -X DELETE http://localhost:9000/api/$plural_name;format="lower,hyphen"$/cjq5au9sr000caqyayo9uktss
+    */
+  def patch$name;format="Camel"$($name;format="camel"$Id: String):                               ServiceCall[Deactivate$name;format="Camel"$Request, Either[ErrorResponse, Deactivate$name;format="Camel"$Response]]
+  def deactivate$name;format="Camel"$1($name;format="camel"$Id: String):                         ServiceCall[Deactivate$name;format="Camel"$Request, Either[ErrorResponse, Deactivate$name;format="Camel"$Response]]
+  def deactivate$name;format="Camel"$2($name;format="camel"$Id: String, deactivationId: String): ServiceCall[Deactivate$name;format="Camel"$Request, Either[ErrorResponse, Deactivate$name;format="Camel"$Response]]
+  // Retrieve status of deactivation request
+  def getDeactivation$name;format="Camel"$($name;format="camel"$Id: String, deactivationId: String):    ServiceCall[NotUsed, Either[ErrorResponse, Deactivation$name;format="Camel"$Response]]
+  def streamDeactivation$name;format="Camel"$($name;format="camel"$Id: String, deactivationId: String): ServiceCall[NotUsed, Source[Deactivation$name;format="Camel"$Response, NotUsed]]
+// }
+
+// $name$ Reactivation Calls {
+  /**
+    * Rest api allowing an authenticated user to reactivate a "$name$".
+    *
+    * @param  $name;format="camel"$Id    The unique identifier of the "$name$"
+    *         reactivationId  Optional unique identifier of the reactivation subordinate resource
+    *
+    * @return HTTP 200 OK                    if the "$name$" was reactivated successfully
+    *         HTTP 202 Accepted              if the request has been accepted, but the processing is not complete
+    *         HTTP 400 Bad Request           if domain validation of the [[Reactivate$name;format="Camel"$Request]] failed
+    *         HTTP 401 Unauthorized          if JSON Web Token is missing
+    *         HTTP 403 Forbidden             if authorization failure (use 404 if authz failure shouldn't be revealed)
+    *         HTTP 404 Not Found             if requested resource doesn't exist, or so as to not reveal a 401 or 403
+    *         HTTP 413 Payload Too Large     if request size exceeds a defined limit
+    *         HTTP 422 Unprocessable Entity  if the aggregate is not in the proper state to perform this action
+    *
+    * REST POST endpoints:
+    *   /api/$plural_name;format="lower,hyphen"$/:id/reactivation
+    *   /api/$plural_name;format="lower,hyphen"$/:id/reactivation/:reactivationId
+    *
+    * Example:
+    * CT="Content-Type: application/json"
+    * curl -H \$CT -X POST http://localhost:9000/api/$plural_name;format="lower,hyphen"$/cjq5au9sr000caqyayo9uktss/reactivation
+    */
+  def patch$name;format="Camel"$($name;format="camel"$Id: String):                               ServiceCall[Reactivate$name;format="Camel"$Request, Either[ErrorResponse, Reactivate$name;format="Camel"$Response]]
+  def reactivate$name;format="Camel"$1($name;format="camel"$Id: String):                         ServiceCall[Reactivate$name;format="Camel"$Request, Either[ErrorResponse, Reactivate$name;format="Camel"$Response]]
+  def reactivate$name;format="Camel"$2($name;format="camel"$Id: String, reactivationId: String): ServiceCall[Reactivate$name;format="Camel"$Request, Either[ErrorResponse, Reactivate$name;format="Camel"$Response]]
+  // Retrieve status of reactivation request
+  def getReactivation$name;format="Camel"$($name;format="camel"$Id: String, reactivationId: String):    ServiceCall[NotUsed, Either[ErrorResponse, Reactivation$name;format="Camel"$Response]]
+  def streamReactivation$name;format="Camel"$($name;format="camel"$Id: String, reactivationId: String): ServiceCall[NotUsed, Source[Reactivation$name;format="Camel"$Response, NotUsed]]
+// }
+
+// $name$ Get Calls {
+  /**
+    * Rest api allowing an authenticated user to get a "$name$" with the given surrogate key.
+    *
+    * @param $name;format="camel"$Id    The unique identifier of the "$name$"
+    *
+    * @return HTTP 200 OK                    if the "$name$" was retrieved successfully
+    *
+    * Example:
+    * CT="Content-Type: application/json"
+    * curl -H \$CT http://localhost:9000/api/$plural_name;format="lower,hyphen"$/cjq5au9sr000caqyayo9uktss
+    */
   def get$name;format="Camel"$($name;format="camel"$Id: String): ServiceCall[NotUsed, Either[ErrorResponse, Get$name;format="Camel"$Response]]
-  //def get$plural_name;format="Camel"$: ServiceCall[NotUsed, Either[ErrorResponse, Get$plural_name;format="Camel"$Response]]
-
-  /**
-    * Rest api allowing an authenticated user to create a "$name$" aggregate.
-    *
-    * @return HTTP 200 status code if the "$name$" was created successfully.
-    *         HTTP 404 status code if one or more items in the [[Create$name;format="Camel"$Request]] failed vaildation.
-    *         HTTP 409 status code if the "$name$" already exists with the same identity.
-    *
-    * Example:
-    * curl -H "Content-Type: application/json" -X POST -d '{"$name;format="camel"$": {"name": "test", "description": "test description"}}' http://localhost:9000/api/$plural_name;format="lower,hyphen"$
-    */
-  //def create$name;format="Camel"$WithSystemGeneratedId
-  //  : ServiceCall[Create$name;format="Camel"$Request, Either[ErrorResponse, Create$name;format="Camel"$Response]]
-
-  /**
-    * Rest api allowing an authenticated user to create a "$name$" aggregate.
-    *
-    * @param $name;format="camel"$Id unique identifier of the "$name$" to be created.
-    * @return HTTP 200 status code if the "$name$" was created successfully.
-    *         HTTP 404 status code if one or more items in the [[Create$name;format="Camel"$Request]] failed vaildation.
-    *
-    * Example:
-    * curl -H "Content-Type: application/json" -X POST -d '{"$name;format="camel"$": {"name": "test", "description": "test description"}}' http://localhost:9000/api/$plural_name;format="lower,hyphen"$/{id}/creation/{creationId}
-    */
-
-  //  restCall(Method.POST,   "/api/$plural_name;format="lower,hyphen"$/creation",                         create$name;format="Camel"$1 _),
-  def create$name;format="Camel"$1
-    : ServiceCall[Create$name;format="Camel"$Request, Either[ErrorResponse, Create$name;format="Camel"$Response]]
-  //  restCall(Method.POST,   "/api/$plural_name;format="lower,hyphen"$/:id/creation",                     create$name;format="Camel"$2 _),
-  def create$name;format="Camel"$2($name;format="camel"$Id: String)
-    : ServiceCall[Create$name;format="Camel"$Request, Either[ErrorResponse, Create$name;format="Camel"$Response]]
-  //  restCall(Method.POST,   "/api/$plural_name;format="lower,hyphen"$/creation/:creationId",             create$name;format="Camel"$3 _),
-  def create$name;format="Camel"$3(creationId: String)
-    : ServiceCall[Create$name;format="Camel"$Request, Either[ErrorResponse, Create$name;format="Camel"$Response]]
-  //  restCall(Method.POST,   "/api/$plural_name;format="lower,hyphen"$/:id/creation/:creationId",         create$name;format="Camel"$4 _),
-  def create$name;format="Camel"$4($name;format="camel"$Id: String, creationId: String)
-    : ServiceCall[Create$name;format="Camel"$Request, Either[ErrorResponse, Create$name;format="Camel"$Response]]
-
-  //def destroy$name;format="Camel"$($name;format="camel"$Id: String)
-  //  : ServiceCall[NotUsed, Done]
-
-//  def improve$name;format="Camel"$Description($name;format="camel"$Id: String)
-//    : ServiceCall[Improve$name;format="Camel"$DescriptionRequest, Improve$name;format="Camel"$DescriptionResponse]
-
-  /**
-    * Get a "$name$" with the given surrogate key ID.
-    *
-    * @param $name;format="camel"$Id The ID of the "$name$" to get.
-    * @return HTTP 200 status code with the current state of the "$name$" resource.
-    *
-    * Example:
-    * curl http://localhost:9000/api/$plural_name;format="lower,hyphen"$/123e4567-e89b-12d3-a456-426655440000
-    */
-  //def get$name;format="Camel"$(
-  //    $name;format="camel"$Id: String): ServiceCall[NotUsed, Get$name;format="Camel"$Response]
 
   /**
     * Get all "$plural_name$".
@@ -165,8 +293,9 @@ trait $name;format="Camel"$Service extends Service {
     * Example:
     * curl http://localhost:9000/api/$plural_name;format="lower,hyphen"$
     */
-//  def getAll$plural_name;format="Camel"$(page: Option[String]): ServiceCall[NotUsed, utils.PagingState[GetAll$plural_name;format="Camel"$Response]]
-  //def getAll$plural_name;format="Camel"$: ServiceCall[NotUsed, GetAll$plural_name;format="Camel"$Response]
+  def getAll$plural_name;format="Camel"$(page: Option[String]): ServiceCall[NotUsed, utils.PagingState[GetAll$plural_name;format="Camel"$Response]]
+  def getAll$plural_name;format="Camel"$:                       ServiceCall[NotUsed, GetAll$plural_name;format="Camel"$Response]
+// }
 
 //  def stream$plural_name;format="Camel"$
 //    : ServiceCall[NotUsed, Source[$name;format="Camel"$Resource, NotUsed]]
@@ -186,6 +315,7 @@ object Matchers {
   val Name = """^[a-zA-Z0-9\-\.\_\~]{1,128}\$"""
   val Description = """^.{1,2048}\$"""
   val Motivation = """^.{1,2048}\$"""
+  val Op = """^add|remove|replace|move|copy|test\$"""
 }
 
 // $name$ algebraic data type {
@@ -221,7 +351,7 @@ object $name;format="Camel"$ {
 // Supporting algebraic data types {
 case class Identity(
   identifier: String,
-  revision: Option[Int],
+  revision: Option[Int],    // a monotonically increasing counter of changes
   hash: Option[String])
 
 object Identity {
@@ -237,7 +367,12 @@ object Identity {
 }
 
 case class HypertextApplicationLanguage(
+  halLinks: Seq[HalLink]
   )
+
+object HypertextApplicationLanguage {
+  implicit val format: Format[HypertextApplicationLanguage] = Jsonx.formatCaseClass
+}
 
 case class HalLink(
   rel: String,
@@ -262,6 +397,22 @@ object HalLink {
   implicit val format: Format[HalLink] = Jsonx.formatCaseClass
 }
 
+case class Mutation(
+  op: String,
+  path: String,
+  value: Option[String]
+  )
+
+object Mutation {
+  implicit val format: Format[Mutation] = Jsonx.formatCaseClass
+
+  val mutationValidator: Validator[Mutation] =
+    validator[Mutation] { mutation =>
+      mutation.op is notEmpty
+      mutation.path is notEmpty
+      mutation.op should matchRegexFully(Matchers.Op)
+    }
+}
 // }
 
 // Resource
@@ -281,56 +432,85 @@ object $name;format="Camel"$Resource {
 
 // Request
 
+//val maxRequestSize = 10485760 // 10M
+
 // TODO: include span ID as the unique identity of a Create$name;format="Camel"$Request
 
-case class Create$name;format="Camel"$Request(
+// Create $name$ Request payload {
+//type Create$name;format="Camel"$Request = String
+//implicit val create$name;format="Camel"$RequestValidator
+//    : Validator[Create$name;format="Camel"$Request] { r =>
+//    r has size > 0
+//    r has size <= maxRequestSize
+//    }
+
+case class ValidCreate$name;format="Camel"$Request(
     $name;format="camel"$: $name;format="Camel"$
 ) {}
 
-case object Create$name;format="Camel"$Request {
-  implicit val format: Format[Create$name;format="Camel"$Request] = Jsonx.formatCaseClass
+case object ValidCreate$name;format="Camel"$Request {
+  implicit val format: Format[ValidCreate$name;format="Camel"$Request] = Jsonx.formatCaseClass
 
-  implicit val create$name;format="Camel"$RequestValidator
-    : Validator[Create$name;format="Camel"$Request] =
-    validator[Create$name;format="Camel"$Request] { create$name;format="Camel"$Request =>
+  implicit val validCreate$name;format="Camel"$RequestValidator
+    : Validator[ValidCreate$name;format="Camel"$Request] =
+    validator[ValidCreate$name;format="Camel"$Request] { create$name;format="Camel"$Request =>
       create$name;format="Camel"$Request.$name;format="camel"$ is valid($name;format="Camel"$.$name;format="camel"$Validator)
     }
 }
+// }
 
-case class Succeed$name;format="Camel"$Request(
-    successor$name;format="Camel"$Resource: $name;format="Camel"$Resource,
+case class Replace$name;format="Camel"$Request(
+    replacement$name;format="Camel"$: $name;format="Camel"$,
     motivation: Option[String]
 ) {}
 
-case object Succeed$name;format="Camel"$Request {
-  implicit val format: Format[Succeed$name;format="Camel"$Request] = Jsonx.formatCaseClass
+case object Replace$name;format="Camel"$Request {
+  implicit val format: Format[Replace$name;format="Camel"$Request] = Jsonx.formatCaseClass
 
-  implicit val succeed$name;format="Camel"$RequestValidator
-    : Validator[Succeed$name;format="Camel"$Request] =
-    validator[Succeed$name;format="Camel"$Request] { succeed$name;format="Camel"$Request =>
-      succeed$name;format="Camel"$Request.successor$name;format="Camel"$Resource is valid($name;format="Camel"$Resource.$name;format="camel"$ResourceValidator)
-      succeed$name;format="Camel"$Request.motivation.each should matchRegexFully(Matchers.Motivation)
+  implicit val replace$name;format="Camel"$RequestValidator
+    : Validator[Replace$name;format="Camel"$Request] =
+    validator[Replace$name;format="Camel"$Request] { replace$name;format="Camel"$Request =>
+      replace$name;format="Camel"$Request.replacement$name;format="Camel"$ is valid($name;format="Camel"$.$name;format="camel"$Validator)
+      replace$name;format="Camel"$Request.motivation.each should matchRegexFully(Matchers.Motivation)
+    }
+}
+
+case class Mutate$name;format="Camel"$Request(
+    mutations: Seq[Mutation],
+    motivation: Option[String]
+) {}
+
+case object Mutate$name;format="Camel"$Request {
+  implicit val format: Format[Mutate$name;format="Camel"$Request] = Jsonx.formatCaseClass
+
+  implicit val mutate$name;format="Camel"$RequestValidator
+    : Validator[Mutate$name;format="Camel"$Request] =
+    validator[Mutate$name;format="Camel"$Request] { mutate$name;format="Camel"$Request =>
+      mutate$name;format="Camel"$Request.mutations.each is valid(Mutation.mutationValidator)
+      mutate$name;format="Camel"$Request.motivation.each should matchRegexFully(Matchers.Motivation)
     }
 }
 
 // Response
 
 case class Create$name;format="Camel"$Response(
-    $name;format="camel"$Id: String,
-    $name;format="camel"$: $name;format="Camel"$
+    $name;format="camel"$Id: Identity,
+    $name;format="camel"$: $name;format="Camel"$,
+    $name;format="camel"$Hal: Option[HypertextApplicationLanguage]
 )
 
 object Create$name;format="Camel"$Response {
-  implicit val format: Format[Create$name;format="Camel"$Response] = Json.format
+  implicit val format: Format[Create$name;format="Camel"$Response] = Jsonx.formatCaseClass
 }
 
-case class Succeed$name;format="Camel"$Response(
-    $name;format="camel"$Id: String,
-    $name;format="camel"$: $name;format="Camel"$
+case class Replace$name;format="Camel"$Response(
+    $name;format="camel"$Id: Identity,
+    $name;format="camel"$: $name;format="Camel"$,
+    $name;format="camel"$Hal: Option[HypertextApplicationLanguage]
 )
 
-object Succeed$name;format="Camel"$Response {
-  implicit val format: Format[Succeed$name;format="Camel"$Response] = Json.format
+object Replace$name;format="Camel"$Response {
+  implicit val format: Format[Replace$name;format="Camel"$Response] = Json.format
 }
 
 case class Get$name;format="Camel"$Response(
