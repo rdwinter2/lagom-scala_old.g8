@@ -495,7 +495,7 @@ final class $name;format="Camel"$Entity extends PersistentEntity {
 
 // $name$ State
 
-case class $name;format="Camel"$State(
+final case class $name;format="Camel"$State(
   $name;format="camel"$Aggregate: $name;format="Camel"$Aggregate,
   status: $name;format="Camel"$Status.Status = $name;format="Camel"$Status.NONEXISTENT
 ) {
@@ -520,7 +520,7 @@ object $name;format="Camel"$Status extends Enumeration {
 
 // $name$ Aggregate
 
-case class $name;format="Camel"$Aggregate(
+final case class $name;format="Camel"$Aggregate(
   $name;format="camel"$Identity: Identity,
   $name;format="camel"$Resource: $name;format="Camel"$Resource
 )
@@ -538,7 +538,7 @@ case object Get$name;format="Camel"$Query
 }
 
 // The create $name$ reply {
-case class Create$name;format="Camel"$Reply(
+final case class Create$name;format="Camel"$Reply(
   $name;format="camel"$Aggregate: $name;format="Camel"$Aggregate)
 
 object Create$name;format="Camel"$Reply {
@@ -547,7 +547,7 @@ object Create$name;format="Camel"$Reply {
 // }
 
 // The create $name$ command {
-case class Create$name;format="Camel"$Command(
+final case class Create$name;format="Camel"$Command(
   $name;format="camel"$Aggregate: $name;format="Camel"$Aggregate)
     extends $name;format="Camel"$Command[Either[ServiceError, Create$name;format="Camel"$Reply]]
 
@@ -562,7 +562,7 @@ object Create$name;format="Camel"$Command {
 //  implicit val format: Format[Destroy$name;format="Camel"$Command.type] = singletonFormat(Destroy$name;format="Camel"$Command)
 //}
 
-case class Replace$name;format="Camel"$Command(Replace$name;format="Camel"$Command: String, replace$name;format="Camel"$Request: Replace$name;format="Camel"$Request)
+final case class Replace$name;format="Camel"$Command(Replace$name;format="Camel"$Command: String, replace$name;format="Camel"$Request: Replace$name;format="Camel"$Request)
     extends $name;format="Camel"$Command[Either[ServiceError, $name;format="Camel"$Aggregate]]
 
 object Replace$name;format="Camel"$Command {
@@ -582,21 +582,21 @@ object $name;format="Camel"$Event {
     derived.flat.oformat((__ \ "type").format[String])
 }
 
-case class $name;format="Camel"$CreatedEvent($name;format="camel"$Aggregate: $name;format="Camel"$Aggregate)
+final case class $name;format="Camel"$CreatedEvent($name;format="camel"$Aggregate: $name;format="Camel"$Aggregate)
     extends $name;format="Camel"$Event
 
 object $name;format="Camel"$CreatedEvent {
   implicit val format: Format[$name;format="Camel"$CreatedEvent] = Json.format
 }
 
-//case class $name;format="Camel"$DestroyedEvent($name;format="camel"$Id: String)
+//final case class $name;format="Camel"$DestroyedEvent($name;format="camel"$Id: String)
 //    extends $name;format="Camel"$Event
 //
 //object $name;format="Camel"$DestroyedEvent {
 //  implicit val format: Format[$name;format="Camel"$DestroyedEvent] = Json.format
 //}
 
-case class $name;format="Camel"$ReplacedEvent(
+final case class $name;format="Camel"$ReplacedEvent(
   $name;format="camel"$Id: String,
   replacement$name;format="Camel"$Resource: $name;format="Camel"$Resource,
   motivation: Option[String])

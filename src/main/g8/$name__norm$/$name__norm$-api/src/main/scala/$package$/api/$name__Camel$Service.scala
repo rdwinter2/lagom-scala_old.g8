@@ -44,6 +44,23 @@ trait $name;format="Camel"$Service extends Service {
     import Service._
     // @formatter:off
     named("$name;format="norm"$").withCalls(
+      // $name$ Queries
+      restCall(Method.GET,    "/api/$plural_name;format="lower,hyphen"$/:id", get$name;format="Camel"$ _),
+      restCall(Method.GET,    "/api/$plural_name;format="lower,hyphen"$",     getAll$plural_name;format="Camel"$ _),
+      // CRUDy Bulk Data Administration
+      restCall(Method.POST,   "/api/$plural_name;format="lower,hyphen"$/data-administration/bulk-creation",        bulkCreate$name;format="Camel"$ _),
+      restCall(Method.POST,   "/api/$plural_name;format="lower,hyphen"$/data-administration/bulk-replacement",     bulkReplace$name;format="Camel"$ _),
+      restCall(Method.POST,   "/api/$plural_name;format="lower,hyphen"$/data-administration/bulk-mutation",        bulkMutate$name;format="Camel"$ _),
+      restCall(Method.POST,   "/api/$plural_name;format="lower,hyphen"$/data-administration/bulk-deactivation",    bulkDeactivate$name;format="Camel"$ _),
+      restCall(Method.POST,   "/api/$plural_name;format="lower,hyphen"$/data-administration/bulk-reactivation",    bulkReactivate$name;format="Camel"$ _),
+      restCall(Method.POST,   "/api/$plural_name;format="lower,hyphen"$/data-administration/bulk-distruction",     bulkDistroy$name;format="Camel"$ _),
+      // CRUDy Bulk Data Administration Queries
+      restCall(Method.GET,    "/api/$plural_name;format="lower,hyphen"$/data-administration/bulk-creation/:id",        get$name;format="Camel"$BulkCreation _),
+      restCall(Method.GET,    "/api/$plural_name;format="lower,hyphen"$/data-administration/bulk-replacement/:id",     get$name;format="Camel"$BulkReplacement _),
+      restCall(Method.GET,    "/api/$plural_name;format="lower,hyphen"$/data-administration/bulk-mutation/:id",        get$name;format="Camel"$BulkMutation _),
+      restCall(Method.GET,    "/api/$plural_name;format="lower,hyphen"$/data-administration/bulk-deactivation/:id",    get$name;format="Camel"$BulkDeactivation _),
+      restCall(Method.GET,    "/api/$plural_name;format="lower,hyphen"$/data-administration/bulk-reactivation/:id",    get$name;format="Camel"$BulkReactivation _),
+      restCall(Method.GET,    "/api/$plural_name;format="lower,hyphen"$/data-administration/bulk-distruction/:id",     get$name;format="Camel"$BulkDistruction _),
       // CRUDy plain REST
       restCall(Method.POST,   "/api/$plural_name;format="lower,hyphen"$",     post$name;format="Camel"$1 _),
       restCall(Method.POST,   "/api/$plural_name;format="lower,hyphen"$/:id", post$name;format="Camel"$2 _),
@@ -52,6 +69,14 @@ trait $name;format="Camel"$Service extends Service {
       restCall(Method.DELETE, "/api/$plural_name;format="lower,hyphen"$/:id", delete$name;format="Camel"$ _),
       restCall(Method.GET,    "/api/$plural_name;format="lower,hyphen"$/:id", get$name;format="Camel"$ _),
       restCall(Method.GET,    "/api/$plural_name;format="lower,hyphen"$",     getAll$plural_name;format="Camel"$ _),
+      // Data Administrator bulk data hammer interface
+      // request body is an array of Create, Update, Delete (CUD) operations each containing an array
+      // Example:
+      // {"dataAdminActions": [{"create":[{"id":..,"name":..,"description":..},{..},..]},{"delete":[..]},..]}
+      // NOTE: for update you just need to supply the id and the changed fields
+      // Service will respond with a 202 Accepted and a link to check the status
+      }
+      restCall(Method.POST,   "/api/$plural_name;format="lower,hyphen"$/data-administration",                   administerCe _),
       // CRUDy DDDified REST without a proper ubiquitious language
       // Create
       restCall(Method.POST, "/api/$plural_name;format="lower,hyphen"$/creation",                                create$name;format="Camel"$1 _),
@@ -328,11 +353,11 @@ object Matchers {
 //
 // Sum types - a disjoint union or variant type (this or that)
 //   sealed trait Pet
-//   case class Cat(name: String) extends Pet
-//   case class Fish(name: String, color: String) extends Pet
-//   case class Squid(name: String, age: Int) extends Pet
+//   final case class Cat(name: String) extends Pet
+//   final case class Fish(name: String, color: String) extends Pet
+//   final case class Squid(name: String, age: Int) extends Pet
 
-case class $name;format="Camel"$(
+final case class $name;format="Camel"$(
   name: String,
   description: Option[String])
 
@@ -349,7 +374,7 @@ object $name;format="Camel"$ {
 // }
 
 // Supporting algebraic data types {
-case class Identity(
+final case class Identity(
   identifier: String,
   revision: Option[Int],    // a monotonically increasing counter of changes
   hash: Option[String])
@@ -366,7 +391,7 @@ object Identity {
     }
 }
 
-case class HypertextApplicationLanguage(
+final case class HypertextApplicationLanguage(
   halLinks: Seq[HalLink]
   )
 
@@ -374,7 +399,7 @@ object HypertextApplicationLanguage {
   implicit val format: Format[HypertextApplicationLanguage] = Jsonx.formatCaseClass
 }
 
-case class HalLink(
+final case class HalLink(
   rel: String,
   href: String,
   deprecation: Option[String] = None,
@@ -397,7 +422,7 @@ object HalLink {
   implicit val format: Format[HalLink] = Jsonx.formatCaseClass
 }
 
-case class Mutation(
+final case class Mutation(
   op: String,
   path: String,
   value: Option[String]
@@ -417,7 +442,7 @@ object Mutation {
 
 // Resource
 
-case class $name;format="Camel"$Resource(
+final case class $name;format="Camel"$Resource(
   $name;format="camel"$: $name;format="Camel"$
 )
 
@@ -444,7 +469,7 @@ object $name;format="Camel"$Resource {
 //    r has size <= maxRequestSize
 //    }
 
-case class ValidCreate$name;format="Camel"$Request(
+final case class ValidCreate$name;format="Camel"$Request(
     $name;format="camel"$: $name;format="Camel"$
 ) {}
 
@@ -459,7 +484,7 @@ case object ValidCreate$name;format="Camel"$Request {
 }
 // }
 
-case class Replace$name;format="Camel"$Request(
+final case class Replace$name;format="Camel"$Request(
     replacement$name;format="Camel"$: $name;format="Camel"$,
     motivation: Option[String]
 ) {}
@@ -475,7 +500,7 @@ case object Replace$name;format="Camel"$Request {
     }
 }
 
-case class Mutate$name;format="Camel"$Request(
+final case class Mutate$name;format="Camel"$Request(
     mutations: Seq[Mutation],
     motivation: Option[String]
 ) {}
@@ -493,7 +518,7 @@ case object Mutate$name;format="Camel"$Request {
 
 // Response
 
-case class Create$name;format="Camel"$Response(
+final case class Create$name;format="Camel"$Response(
     $name;format="camel"$Id: Identity,
     $name;format="camel"$: $name;format="Camel"$,
     $name;format="camel"$Hal: Option[HypertextApplicationLanguage]
@@ -503,7 +528,7 @@ object Create$name;format="Camel"$Response {
   implicit val format: Format[Create$name;format="Camel"$Response] = Jsonx.formatCaseClass
 }
 
-case class Replace$name;format="Camel"$Response(
+final case class Replace$name;format="Camel"$Response(
     $name;format="camel"$Id: Identity,
     $name;format="camel"$: $name;format="Camel"$,
     $name;format="camel"$Hal: Option[HypertextApplicationLanguage]
@@ -513,7 +538,7 @@ object Replace$name;format="Camel"$Response {
   implicit val format: Format[Replace$name;format="Camel"$Response] = Json.format
 }
 
-case class Get$name;format="Camel"$Response(
+final case class Get$name;format="Camel"$Response(
     $name;format="camel"$Id: String,
     $name;format="camel"$: $name;format="Camel"$
 )
@@ -522,7 +547,7 @@ object Get$name;format="Camel"$Response {
   implicit val format: Format[Get$name;format="Camel"$Response] = Json.format
 }
 
-case class GetAll$plural_name;format="Camel"$Response($name;format="camel"$s: Seq[$name;format="Camel"$Resource])
+final case class GetAll$plural_name;format="Camel"$Response($name;format="camel"$s: Seq[$name;format="Camel"$Resource])
 
 object GetAll$plural_name;format="Camel"$Response {
   implicit val format: Format[GetAll$plural_name;format="Camel"$Response] = Json.format
@@ -535,7 +560,7 @@ sealed trait $name;format="Camel"$MessageBrokerEvent {
   val $name;format="camel"$Id: String
 }
 
-case class $name;format="Camel"$Created(
+final case class $name;format="Camel"$Created(
     $name;format="camel"$Id: String,
     $name;format="camel"$: $name;format="Camel"$
 ) extends $name;format="Camel"$MessageBrokerEvent
@@ -544,7 +569,7 @@ object $name;format="Camel"$Created {
   implicit val format: Format[$name;format="Camel"$Created] = Json.format
 }
 
-//case class $name;format="Camel"$BrokerEvent(event: $name;format="Camel"$EventType,
+//final case class $name;format="Camel"$BrokerEvent(event: $name;format="Camel"$EventType,
 //                          id: String,
 //                          data: Map[String, String] = Map.empty[String, String])
 
