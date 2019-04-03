@@ -1,4 +1,5 @@
 ---
+# Note this is a somewhat nonstandard yaml file, YAML lint tools will find erroneous errors
 scalar_types:
   $name;format="Camel"$Id: String @check("[a-zA-Z0-9\-\.\_\~]{1,128}")
   Name: String @check("[a-zA-Z0-9\-\.\_\~]{1,128}")
