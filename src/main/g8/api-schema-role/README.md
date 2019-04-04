@@ -50,7 +50,7 @@ Additional annotations can be added
   * strings are taken to be regular expressions that must full match
   * date formats such as @check(iso-8601)
   * datetime formats such as @check(iso-8601=seconds utc)
-  * the length function can be specified in bytes KMGTPE
+  * the length function can be specified in bytes and optionally a [binary prefix](https://en.wikipedia.org/wiki/Binary_prefix) without the "i" KMGTPE (K vice Ki).
 * UoM to denote the unit of measure
   * DD - decimal degree
   * ft - feet
@@ -117,7 +117,7 @@ Or even:
 contact: Name! * ContactInfo!
 ```
 
-Pointers (a.k.a Links) within and among Entities. Dot (.) notation is used to refer to an element of an entity such as its Id. NOTE: You cannot externally link to an entity that is not the aggregate root without going through the root.
+Pointers (a.k.a Links) within and among Entities. Dot (.) notation is used to refer to an element of an entity such as its Id. NOTE: You cannot externally link to an entity that is not the aggregate root without going through the root. Short links, to another entity in the same aggregate entity, use a single dash and a greater than sign, ->. Long links, to another aggregate entity, use two dashes and a greater than sign, -->.
 
 ```yaml
 """
@@ -126,6 +126,9 @@ A tag is a label attached to someone or something for the purpose of identificat
 tag:
     name: String! @check(".{,64}")
 
+"""
+An article is a written work published in a print or electronic medium. It may be for the purpose of propagating news, research results, academic analysis, or debate.
+"""
 article:
     id: Id!
     title: String @check(len<=2K)
