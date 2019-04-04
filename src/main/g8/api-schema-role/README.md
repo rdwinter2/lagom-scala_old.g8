@@ -50,11 +50,14 @@ Additional annotations can be added
   * strings are taken to be regular expressions that must full match
   * date formats such as @check(iso-8601)
   * datetime formats such as @check(iso-8601=seconds utc)
+  * the length function can be specified in bytes KMGTPE
 * UoM to denote the unit of measure
   * DD - decimal degree
   * ft - feet
   * ft MSL - feet mean sea level
 * @hidden for an attribute that is not normally returned during a query
+* @isUnique for a globally unique identifier
+* @isPartUnique for an identifier that is only unique within its hierarchy
 
 ```yaml
 name: String! @check("[A-Za-z0-9_, \-]{1,255}")
@@ -63,7 +66,7 @@ latitude: String! @check("[-+]?\d+\.\d*", abs<=90) @UoM("DD")
 
 Algebraic data type - An algebraic data type is a kind of composite type. They are built up from Product types and Sum types. They are one of the building blocks for [making illegal states unrepresentable](https://fsharpforfunandprofit.com/posts/designing-with-types-making-illegal-states-unrepresentable/).
 
-Product types - a tuple or record (this and that)
+Product types (*) - a tuple or record (this and that)
 ```yaml
 # Specified as a YAML collection type using indentation.
 geospatialCoordinate: GeospatialCoordinate
@@ -76,16 +79,14 @@ geospatialCoordinate: GeospatialCoordinate
 emailAndPost: EmailContactInfo * PostalContactInfo
 ```
 
-Sum types - a discriminated union, enumeration, or variant type (this or that)
+Sum types (|) - a discriminated union, enumeration, or variant type (this or that)
 
 Here the syntax diverges slightly from YAML and borrows from the F# and Elm languages. 
 
 ```yaml
-direction: 
-    | North
-    | South
-    | East
-    | West
+direction: North | South | East | West
+
+name: String @check(".{,2048}")
 
 emailContactInfo: String! @check("[a-zA-Z0-9\.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*")
 
@@ -96,8 +97,40 @@ contactInfo:
     | postOnly: PostalContactInfo
     | emailAndPost: EmailContactInfo * PostalContactInfo
 
-contact:
-    name: Name
-    contactInfo: ContactInfo
+# Since we don't need to rename fields we can use the product operator
+contact: 
+    name: Name!
+    contactInfo: ContactInfo!
+```
+
+The last part `contract` could also be specified as:
+
+```yaml
+contact: 
+    Name!
+    ContactInfo!
+```
+
+Or even:
+
+```yaml
+contact: Name! * ContactInfo!
+```
+
+Pointers (a.k.a Links) within and among Entities. Dot (.) notation is used to refer to an element of an entity such as its Id. NOTE: You cannot externally link to an entity that is not the aggregate root without going through the root.
+
+```yaml
+"""
+A tag is a label attached to someone or something for the purpose of identification or to give other information. A tag is a value object and its name is its identifier.
+"""
+tag:
+    name: String! @check(".{,64}")
+
+article:
+    id: Id!
+    title: String @check(len<=2K)
+    description: String @check(len<=4K)
+    body: String @check(len<=2M)
+    tags: [--> Tag.name!]
 ```
 
