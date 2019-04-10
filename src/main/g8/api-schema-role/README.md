@@ -18,7 +18,7 @@ Built-in Scalar data types
 * Float
 * String
 * Boolean
-* Id 
+* Id
 
 ```yaml
 # type names are defined in lower camelCase
@@ -42,7 +42,7 @@ The name of the entity.
 name: String
 ```
 
-Additional annotations can be added 
+Additional annotations can be added
 
 * @default to specify a default value
 * @check for defining check constraints
@@ -81,14 +81,14 @@ emailAndPost: EmailContactInfo * PostalContactInfo
 
 Sum types (|) - a discriminated union, enumeration, or variant type (this or that)
 
-Here the syntax diverges slightly from YAML and borrows from the F# and Elm languages. 
+Here the syntax diverges slightly from YAML and borrows from the F# and Elm languages.
 
 ```yaml
 direction: North | South | East | West
 
 name: String @check(".{,2048}")
 
-emailContactInfo: String! @check("[a-zA-Z0-9\.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*")
+emailContactInfo: String! @check("[a-zA-Z0-9\.!#$\%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*")
 
 postalContactInfo: String! @check(".{1,4096}")
 
@@ -98,7 +98,7 @@ contactInfo:
     | emailAndPost: EmailContactInfo * PostalContactInfo
 
 # Since we don't need to rename fields we can use the product operator
-contact: 
+contact:
     name: Name!
     contactInfo: ContactInfo!
 ```
@@ -106,7 +106,7 @@ contact:
 The last part `contract` could also be specified as:
 
 ```yaml
-contact: 
+contact:
     Name!
     ContactInfo!
 ```
