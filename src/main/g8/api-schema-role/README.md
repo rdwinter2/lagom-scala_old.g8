@@ -7,6 +7,8 @@ Specify an API schema definition language (SDL) file written as a JSON schema or
 
 Custom YAML/GraphQL inspired SDL.
 
+In Domain Driven Design (DDD) Aggregate Root (AR) entities have a unique identity and form the only ACID transactional boundary for interacting with the domain. All commands, which express an intent to change system state, must be directed to a specific AR. An AR may be composed of other entities, however these entities have no global identity or lifecycle. If the AR is deleted, the subordinate entities are also deleted. If the AR has a deep hierarchy, you can reference other ARs if 1) the original AR doesn't enforce invariants between those ARs, and 2) you need to link directly to those ARs not subordinate entities.
+
 DDD Value Objects - identified only by their values. Two value objects with identical attributes are identical.
 
 DDD Entity Objects - have a lifecycle, and are identified by a synthetic identifier. Two entities with identical attributes but different identifiers are different entities. My current preference for synthetic identifiers are collision resistant identifiers ([CUID](https://github.com/prismagraphql/cuid-java)). They are relatively short, URL friendly, and horizontally scalable.
@@ -18,7 +20,7 @@ Built-in Scalar data types
 * Float
 * String
 * Boolean
-* Id
+* Id 
 
 ```yaml
 # type names are defined in lower camelCase
@@ -42,7 +44,7 @@ The name of the entity.
 name: String
 ```
 
-Additional annotations can be added
+Additional annotations can be added 
 
 * @default to specify a default value
 * @check for defining check constraints
@@ -58,6 +60,8 @@ Additional annotations can be added
 * @hidden for an attribute that is not normally returned during a query
 * @isUnique for a globally unique identifier
 * @isPartUnique for an identifier that is only unique within its hierarchy
+* @aliases for a list of deprecated aliases
+
 
 ```yaml
 name: String! @check("[A-Za-z0-9_, \-]{1,255}")
@@ -81,14 +85,14 @@ emailAndPost: EmailContactInfo * PostalContactInfo
 
 Sum types (|) - a discriminated union, enumeration, or variant type (this or that)
 
-Here the syntax diverges slightly from YAML and borrows from the F# and Elm languages.
+Here the syntax diverges slightly from YAML and borrows from the F# and Elm languages. 
 
 ```yaml
 direction: North | South | East | West
 
 name: String @check(".{,2048}")
 
-emailContactInfo: String! @check("[a-zA-Z0-9\.!#\$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*")
+emailContactInfo: String! @check("[a-zA-Z0-9\.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*")
 
 postalContactInfo: String! @check(".{1,4096}")
 
@@ -98,7 +102,7 @@ contactInfo:
     | emailAndPost: EmailContactInfo * PostalContactInfo
 
 # Since we don't need to rename fields we can use the product operator
-contact:
+contact: 
     name: Name!
     contactInfo: ContactInfo!
 ```
@@ -106,7 +110,7 @@ contact:
 The last part `contract` could also be specified as:
 
 ```yaml
-contact:
+contact: 
     Name!
     ContactInfo!
 ```
@@ -137,3 +141,82 @@ article:
     tags: [--> Tag.name!]
 ```
 
+Invariants, a.k.a Business Rules, ?
+
+Example from [Real World App](https://github.com/gothinkster/realworld/tree/master/api).
+
+```yaml
+user:
+    email:
+    token:
+    username:
+    bio:
+    image:
+profile:
+    username:
+    bio:
+    image:
+    following:
+article:
+    slug:
+    title:
+    description:
+    body:
+    tags: @aliases("tagList")
+    createdAt:
+    updatedAt:
+    favorited:
+    favoritesCount:
+    author: Profile
+comment:
+    id:
+    createAt:
+    updatedAt:
+    body:
+    author: Profile
+tag:
+    name: String
+error:
+    body: String
+```
+
+Commands
+
+```yaml
+"""
+Allow a user to authenticate themselves and recieve a JWT token for further interaction.
+"""
+login:
+    resource: User
+    method: POST
+    endpoint: /api/users/login
+    body: Email! * Password!
+    response: User | Error
+    events: UserLoggedIn
+    error: 403 | 404 | 422
+
+Example request body:
+
+{
+  "user":{
+    "email": "jake@jake.jake",
+    "password": "jakejake"
+  }
+}
+No authentication required, returns a User
+
+Required fields: email, password
+
+# DDD version
+authentication:
+    resource: User
+    endpoint: /api/users/:email/authentication
+    body: Password!
+    response: User | Error
+    events: UserLoggedIn
+    error: 403 | 404 | 422
+```
+
+```yaml
+
+```
