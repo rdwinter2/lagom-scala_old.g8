@@ -141,6 +141,32 @@ article:
     tags: [--> Tag.name!]
 ```
 
+## YAML anchors
+
+
+Content can be duplicated and included across the document.
+
+From [Learn X in Y minutes](https://learnxinyminutes.com/docs/yaml/)
+```
+# Anchors can be used to duplicate/inherit properties
+base: &base
+  name: Everyone has same name
+
+# The regexp << is called Merge Key Language-Independent Type. It is used to
+# indicate that all the keys of one or more specified maps should be inserted
+# into the current map.
+
+foo: &foo
+  <<: *base
+  age: 10
+
+bar: &bar
+  <<: *base
+  age: 20
+
+# foo and bar would also have name: Everyone has same name
+```
+
 Invariants, a.k.a Business Rules, ?
 
 Example from [Real World App](https://github.com/gothinkster/realworld/tree/master/api).
