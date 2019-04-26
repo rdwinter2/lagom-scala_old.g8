@@ -9,6 +9,8 @@ Giter8 template for creating a Lightbend Lagom project written in Scala and foll
 sbt new rdwinter2/lagom-scala.g8
 ```
 
+To override the sbt resolvers edit [~/.sbt/repositories](https://www.scala-sbt.org/release/docs/Proxy-Repositories.html)
+
 Template license
 ----------------
 Written in 2019 by Robert Winter, rdwinter2@gmail.com
