@@ -3,17 +3,17 @@ sudo: false
 jdk: oraclejdk8
 env:
   matrix:
-  - SCRIPT="sbt new file://$(pwd) --name='Hello World' --plural_name='Hello Worlds'
-    && cd hello-world && sbt test"
-  - SCRIPT="sbt new file://$(pwd) --name='Smello World' --plural_name='Smello Worlds'
-    --organization=org.eggsample && cd smello-world && sbt test"
+  - SCRIPT="sbt new file://$(pwd) --name='Hello World' --plural_name='Hello Worlds' && cd hello-world && sbt test"
+  - SCRIPT="sbt new file://$(pwd) --name='Smello World' --plural_name='Smello Worlds' --organization=org.eggsample && cd smello-world && sbt test"
 script: eval $SCRIPT
 cache:
   directories:
   - "$HOME/.ivy2/cache"
   - "$HOME/.sbt/boot/scala*"
+before_install:
+  - $(git clone git://github.com/ansible/ansible.git ~/ansible && cd ~/ansible && source ./hacking/env-setup && echo "127.0.0.1" > ~/ansible_hosts && export ANSIBLE_HOSTS=~/ansible_hosts)
 before_cache:
-- find $HOME/.ivy2/cache -name "ivydata-*.properties" | xargs rm
+  - find $HOME/.ivy2/cache -name "ivydata-*.properties" | xargs rm
 notifications:
   slack:
     secure: vawUOCeeB3jK7sG9r/vNiuNHQy6X3kuQ1ZnaFuY8P56NPE3qBi08uf3RldF2NwL1RsK2dt/xyP0vVri8fraPiwN1uQJ5x+tZjexs2Bc3ftXmUahMdSiREMoByuDoy1Tpv61yDsLhS2SAz3+PXhcBuijdTQQ2gNtfE1RsKmpGbp1alYa/KLaDw4zSVZ3psxFo/9lZhUwfq9ny4/wqqRkBZRMSXCDw2gFpxbQPKAvbRUPQ/46qnCI/Q0+UE61bFugvC/MmA+N3SDxYe76lXis1Oc83lOTlKIdHuTq4xYGP/a9XOiod2UKKjhTlj1A6a9jGnq3VuhVUG0t6Aiu+hzYFY6CubkXgSG2aNeiYvxMr2vK5N3z7AUmA5L0NbmX6szecWtOECkKHNCFzhlm7jUEtMWZ5ERhubY9viqDwg3v+gMIH4pircULAd1IE/QD24nZYQly7hVPxM6tTWxGOKH00P4yCGtcg57RKe+U0RbUpLdXYhtK7YMUZYbrI6atbetqq21Fb04NNZGP++VxqUqgWqxQlnnquXgynKK/wU2Jko+Qjya4MHeQTu/Hqp/3XP7tm4/5WNWiIxUy2LvVlxSrK5Qg7HZHm/kZqAEzLK+E3J5tFDZmm5H+OR1bue/HnrGbEE4ThaOhG8yb1U6N/UDUlHXOcooJ2hwMZ7NTHHzeDqps=
