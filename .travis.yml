@@ -3,27 +3,17 @@ sudo: false
 jdk: oraclejdk8
 env:
   matrix:
-    # Test with the defaults
-    - SCRIPT="sbt new file://$(pwd) --name='Hello World' --plural_name='Hello Worlds' && cd hello-world && sbt test"
-    # Test with custom name/organization to ensure templating is done correctly
-    - SCRIPT="sbt new file://$(pwd) --name='Smello World' --plural_name='Smello Worlds' --organization=org.eggsample && cd smello-world && sbt test"
+  - SCRIPT="sbt new file://$(pwd) --name='Hello World' --plural_name='Hello Worlds'
+    && cd hello-world && sbt test"
+  - SCRIPT="sbt new file://$(pwd) --name='Smello World' --plural_name='Smello Worlds'
+    --organization=org.eggsample && cd smello-world && sbt test"
 script: eval $SCRIPT
 cache:
   directories:
-    - $HOME/.ivy2/cache
-    - $HOME/.sbt/boot/scala*
+  - "$HOME/.ivy2/cache"
+  - "$HOME/.sbt/boot/scala*"
 before_cache:
-  # Delete all ivydata files since ivy touches them on each build
-  - find $HOME/.ivy2/cache -name "ivydata-*.properties" | xargs rm
+- find $HOME/.ivy2/cache -name "ivydata-*.properties" | xargs rm
 notifications:
-#  webhooks:
-#    urls:
-#    - https://webhooks.gitter.im/e/2aa0aeda88d31fe293d4
-#    on_success: change
-#    on_failure: always
-#    on_start: never
   slack:
-    rooms:
-      - "secure": "U9nBhHY9bE3/ftUg5EgmCSiEOWW4c5HiXYPuKibUMnv2FxPxjSkUWl+NqXwPSK83kuexltxpAa7idhQplNBx558x7/PZ8zyAOIHhCJ3sle3GSNzT5uUQnySLi+iR0OIb6Tomt9zAj6xcwbjZGZcaH52c9UnOSYJB197URTaDCIQ4CtakrNeeMIXZLKq7A86XMMykpdxYzA/Qf8FKk/N9HTgdhc/a+2eFvMZ+WpUN1PM3M09mT8JPca7+itchBn/Nwx5AO1Forgzm8y9DnqcIk3n5IoP43Gn7NTS0Gwk/HNuVP2gyXJkUo+lBveC6+Hdpyz4xryC7L0h3ivDfvSYZ3fJVbcBrhVgcb4+rMr4PM5WRO2K41jAVVvHatkXDi309guYu6NKKqTXIUzvHJ4CCUwBQTCMSpN5UT+R6/lj6n/EXGXEDEMpQWA2oG0R2W9DEp9xLUAd88tSz1pCe7CtewzgsS53dNm7stB5UDqDeQ0KIjiAz1Enqo7HuUDxzVyMrvAaanmt0Ub1o4efcxhAfHlC+QWu35xeb4HnBXJeiK4fDGnoBoJwyd9NPusngHwehSao+tJOekvspIcnZg4kquE/j8z2todPySnHd7YzdbSUy7i6H74N0yBJxZ0AyM/5r45OMzPXQZcwNYpYveJpuhfbeIAOV99omgl/lNygj090="
-    on_success: change # default: always
-    on_failure: always # default: always
+    secure: vawUOCeeB3jK7sG9r/vNiuNHQy6X3kuQ1ZnaFuY8P56NPE3qBi08uf3RldF2NwL1RsK2dt/xyP0vVri8fraPiwN1uQJ5x+tZjexs2Bc3ftXmUahMdSiREMoByuDoy1Tpv61yDsLhS2SAz3+PXhcBuijdTQQ2gNtfE1RsKmpGbp1alYa/KLaDw4zSVZ3psxFo/9lZhUwfq9ny4/wqqRkBZRMSXCDw2gFpxbQPKAvbRUPQ/46qnCI/Q0+UE61bFugvC/MmA+N3SDxYe76lXis1Oc83lOTlKIdHuTq4xYGP/a9XOiod2UKKjhTlj1A6a9jGnq3VuhVUG0t6Aiu+hzYFY6CubkXgSG2aNeiYvxMr2vK5N3z7AUmA5L0NbmX6szecWtOECkKHNCFzhlm7jUEtMWZ5ERhubY9viqDwg3v+gMIH4pircULAd1IE/QD24nZYQly7hVPxM6tTWxGOKH00P4yCGtcg57RKe+U0RbUpLdXYhtK7YMUZYbrI6atbetqq21Fb04NNZGP++VxqUqgWqxQlnnquXgynKK/wU2Jko+Qjya4MHeQTu/Hqp/3XP7tm4/5WNWiIxUy2LvVlxSrK5Qg7HZHm/kZqAEzLK+E3J5tFDZmm5H+OR1bue/HnrGbEE4ThaOhG8yb1U6N/UDUlHXOcooJ2hwMZ7NTHHzeDqps=
