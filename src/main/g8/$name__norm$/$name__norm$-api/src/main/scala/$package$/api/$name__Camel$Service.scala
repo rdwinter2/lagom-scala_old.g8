@@ -288,12 +288,12 @@ trait $name;format="Camel"$Service extends Service {
     * CT="Content-Type: application/json"
     * curl -H \$CT -X POST http://localhost:9000/api/$plural_name;format="lower,hyphen"$/cjq5au9sr000caqyayo9uktss/reactivation
     */
-  def patch$name;format="Camel"$($name;format="camel"$Id: String):                               ServiceCall[Reactivate$name;format="Camel"$Request, Either[ErrorResponse, Reactivate$name;format="Camel"$Response]]
-  def reactivate$name;format="Camel"$1($name;format="camel"$Id: String):                         ServiceCall[Reactivate$name;format="Camel"$Request, Either[ErrorResponse, Reactivate$name;format="Camel"$Response]]
-  def reactivate$name;format="Camel"$2($name;format="camel"$Id: String, reactivationId: String): ServiceCall[Reactivate$name;format="Camel"$Request, Either[ErrorResponse, Reactivate$name;format="Camel"$Response]]
+  //def patch$name;format="Camel"$($name;format="camel"$Id: String):                               ServiceCall[Reactivate$name;format="Camel"$Request, Either[ErrorResponse, Reactivate$name;format="Camel"$Response]]
+  //def reactivate$name;format="Camel"$1($name;format="camel"$Id: String):                         ServiceCall[Reactivate$name;format="Camel"$Request, Either[ErrorResponse, Reactivate$name;format="Camel"$Response]]
+  //def reactivate$name;format="Camel"$2($name;format="camel"$Id: String, reactivationId: String): ServiceCall[Reactivate$name;format="Camel"$Request, Either[ErrorResponse, Reactivate$name;format="Camel"$Response]]
   // Retrieve status of reactivation request
-  def getReactivation$name;format="Camel"$($name;format="camel"$Id: String, reactivationId: String):    ServiceCall[NotUsed, Either[ErrorResponse, Reactivation$name;format="Camel"$Response]]
-  def streamReactivation$name;format="Camel"$($name;format="camel"$Id: String, reactivationId: String): ServiceCall[NotUsed, Source[Reactivation$name;format="Camel"$Response, NotUsed]]
+  //def getReactivation$name;format="Camel"$($name;format="camel"$Id: String, reactivationId: String):    ServiceCall[NotUsed, Either[ErrorResponse, Reactivation$name;format="Camel"$Response]]
+  //def streamReactivation$name;format="Camel"$($name;format="camel"$Id: String, reactivationId: String): ServiceCall[NotUsed, Source[Reactivation$name;format="Camel"$Response, NotUsed]]
 // }
 
 // $name$ Get Calls {
@@ -318,7 +318,7 @@ trait $name;format="Camel"$Service extends Service {
     * Example:
     * curl http://localhost:9000/api/$plural_name;format="lower,hyphen"$
     */
-  def getAll$plural_name;format="Camel"$(page: Option[String]): ServiceCall[NotUsed, utils.PagingState[GetAll$plural_name;format="Camel"$Response]]
+  //def getAll$plural_name;format="Camel"$(page: Option[String]): ServiceCall[NotUsed, utils.PagingState[GetAll$plural_name;format="Camel"$Response]]
   def getAll$plural_name;format="Camel"$:                       ServiceCall[NotUsed, GetAll$plural_name;format="Camel"$Response]
 // }
 
@@ -440,7 +440,7 @@ object Mutation {
 }
 // }
 
-// Resource
+// $name$ Resource
 
 final case class $name;format="Camel"$Resource(
   $name;format="camel"$: $name;format="Camel"$
@@ -455,7 +455,7 @@ object $name;format="Camel"$Resource {
     }
 }
 
-// Request
+// $name$ Request
 
 //val maxRequestSize = 10485760 // 10M
 

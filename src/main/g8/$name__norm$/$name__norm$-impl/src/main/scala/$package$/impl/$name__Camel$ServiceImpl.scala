@@ -9,7 +9,8 @@ import $organization$.common.response.{
 }
 import $organization$.common.utils.Marshaller
 //import $organization$.common.validation.ValidationUtil._
-import $package$.api._
+import $package$.api
+import $package$.api.$name;format="Camel"$Service
 import $package$.impl.ServiceErrors._
 import $package$.impl.ServiceErrors.ServiceError
 
@@ -829,17 +830,17 @@ object $name;format="Camel"$SerializerRegistry extends JsonSerializerRegistry {
     JsonSerializer[$name;format="Camel"$Resource],
     JsonSerializer[$name;format="Camel"$Aggregate],
     // Create
-    JsonSerializer[Create$name;format="Camel"$Request],
+    //JsonSerializer[Create$name;format="Camel"$Request],
     JsonSerializer[Create$name;format="Camel"$Command],
     JsonSerializer[Create$name;format="Camel"$Reply],
     JsonSerializer[$name;format="Camel"$CreatedEvent],
-    JsonSerializer[Create$name;format="Camel"$Response],
+    //JsonSerializer[Create$name;format="Camel"$Response],
     // Replace
-    JsonSerializer[Replace$name;format="Camel"$Request],
-    JsonSerializer[Replace$name;format="Camel"$Command],
-    JsonSerializer[Replace$name;format="Camel"$Reply],
-    JsonSerializer[$name;format="Camel"$ReplacedEvent],
-    JsonSerializer[Replace$name;format="Camel"$Response],
+    //JsonSerializer[Replace$name;format="Camel"$Request],
+    //JsonSerializer[Replace$name;format="Camel"$Command],
+    //JsonSerializer[Replace$name;format="Camel"$Reply],
+    //JsonSerializer[$name;format="Camel"$ReplacedEvent],
+    //JsonSerializer[Replace$name;format="Camel"$Response],
     // Mutate
     // Deactivate
     // Reactivate
@@ -847,11 +848,11 @@ object $name;format="Camel"$SerializerRegistry extends JsonSerializerRegistry {
 
 //    JsonSerializer[$name;format="Camel"$Status],
     // Get One
-    JsonSerializer[$name;format="Camel"$Created],
+    //JsonSerializer[$name;format="Camel"$Created],
     JsonSerializer[Get$name;format="Camel"$Query.type],
-    JsonSerializer[Get$name;format="Camel"$Response],
+    //JsonSerializer[Get$name;format="Camel"$Response],
     // Get All
-    JsonSerializer[GetAll$plural_name;format="Camel"$Response]
+    //JsonSerializer[GetAll$plural_name;format="Camel"$Response]
   )
 }
 
