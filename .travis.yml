@@ -3,16 +3,18 @@ sudo: false
 jdk: oraclejdk8
 env:
   matrix:
-  - SCRIPT="sbt new file://$(pwd) --name=hello && cd hello && sbt test"
-  - SCRIPT="sbt new file://$(pwd) --name=smello --organization=org.eggsample && cd
-    smello && sbt test"
+    # Test with the defaults
+    - SCRIPT="sbt new file://$(pwd) --name='Hello World' --plural_name='Hello Worlds' && cd hello-world && sbt test"
+    # Test with custom name/organization to ensure templating is done correctly
+    - SCRIPT="sbt new file://$(pwd) --name='Smello World' --plural_name='Smello Worlds' --organization=org.eggsample && cd smello-world && sbt test"
 script: eval $SCRIPT
 cache:
   directories:
-  - $HOME/.ivy2/cache
-  - $HOME/.sbt/boot/scala*
+    - $HOME/.ivy2/cache
+    - $HOME/.sbt/boot/scala*
 before_cache:
-- find $HOME/.ivy2/cache -name "ivydata-*.properties" | xargs rm
+  # Delete all ivydata files since ivy touches them on each build
+  - find $HOME/.ivy2/cache -name "ivydata-*.properties" | xargs rm
 notifications:
 #  webhooks:
 #    urls:
