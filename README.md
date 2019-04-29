@@ -1,4 +1,4 @@
-A [Giter8][g8] template for a DDD lagom scala project
+A [Giter8][g8] template for a DDD lagom scala project [![Build Status](https://travis-ci.org/rdwinter2/lagom-scala.g8.svg?branch=master)](https://travis-ci.org/rdwinter2/lagom-scala.g8)
 =====================================================
 
 ## Description
