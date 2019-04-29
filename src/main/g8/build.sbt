@@ -2,6 +2,9 @@ import com.lightbend.lagom.sbt.LagomImport.lagomScaladslApi
 import org.ensime.EnsimeKeys._
 import org.ensime.EnsimePlugin
 
+resolvers += "Nexus maven" at "http://yum:8081/repository/maven/"
+resolvers += "Nexus ivy" at "http://yum:8081/repository/ivy/"
+
 lazy val root = (project in file("."))
   .settings(name := "$name;format="norm"$")
   .aggregate(

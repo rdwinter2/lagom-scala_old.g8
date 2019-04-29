@@ -3,3 +3,4 @@
 -J-Xss2M
 -J-XX:MaxMetaspaceSize=1024M
 -Dsbt.override.build.repos=true
+-Dsbt.repository.config=project/repositories
