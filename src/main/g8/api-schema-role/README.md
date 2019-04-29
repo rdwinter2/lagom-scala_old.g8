@@ -22,9 +22,9 @@ Built-in Scalar data types
 * Boolean
 * Id 
 
-$$ Boolean = \{ true, false \} $$
-$$ Int = \{ n | n \in \mathbb{Z} \} $$
-$$ String = \{ c_0c_1 ... | c_0c_1 \in unicode \} $$
+\$\$ Boolean = \{ true, false \} \$\$
+\$\$ Int = \{ n | n \in \mathbb{Z} \} \$\$
+\$\$ String = \{ c_0c_1 ... | c_0c_1 \in unicode \} \$\$
 
 ```yaml
 # type names are defined in lower camelCase

@@ -11,7 +11,11 @@ cache:
   - "$HOME/.ivy2/cache"
   - "$HOME/.sbt/boot/scala*"
 before_install:
-  - $(git clone git://github.com/ansible/ansible.git ~/ansible && cd ~/ansible && source ./hacking/env-setup && echo "127.0.0.1" > ~/ansible_hosts && export ANSIBLE_HOSTS=~/ansible_hosts)
+  - git clone git://github.com/ansible/ansible.git ~/ansible
+  - cd ~/ansible
+  - source ./hacking/env-setup
+  - echo "127.0.0.1" > ~/ansible_hosts 
+  - export ANSIBLE_HOSTS=~/ansible_hosts
 before_cache:
   - find $HOME/.ivy2/cache -name "ivydata-*.properties" | xargs rm
 notifications:
