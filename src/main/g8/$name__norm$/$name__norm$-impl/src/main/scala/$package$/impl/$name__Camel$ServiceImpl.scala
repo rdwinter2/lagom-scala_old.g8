@@ -9,7 +9,7 @@ import $organization$.common.response.{
 }
 import $organization$.common.utils.Marshaller
 //import $organization$.common.validation.ValidationUtil._
-import $package$.api
+import $package$.api._by_name
 import $package$.api.$name;format="Camel"$Service
 import $package$.impl.ServiceErrors._
 import $package$.impl.ServiceErrors.ServiceError

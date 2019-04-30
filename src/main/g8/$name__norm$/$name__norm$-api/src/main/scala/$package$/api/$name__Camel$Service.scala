@@ -156,8 +156,8 @@ trait $name;format="Camel"$Service extends Service {
   def create$name;format="Camel"$3(creationId: String):                       ServiceCall[Create$name;format="Camel"$Request, Either[ErrorResponse, Create$name;format="Camel"$Response]]
   def create$name;format="Camel"$4($name;format="camel"$Id: String, creationId: String): ServiceCall[Create$name;format="Camel"$Request, Either[ErrorResponse, Create$name;format="Camel"$Response]]
   // Retrieve status of creation request
-  def getCreation$name;format="Camel"$($name;format="camel"$Id: String, creationId: String):    ServiceCall[NotUsed, Either[ErrorResponse, Creation$name;format="Camel"$Response]]
-  def streamCreation$name;format="Camel"$($name;format="camel"$Id: String, creationId: String): ServiceCall[NotUsed, Source[Creation$name;format="Camel"$Response, NotUsed]]
+  //def getCreation$name;format="Camel"$($name;format="camel"$Id: String, creationId: String):    ServiceCall[NotUsed, Either[ErrorResponse, Creation$name;format="Camel"$Response]]
+  //def streamCreation$name;format="Camel"$($name;format="camel"$Id: String, creationId: String): ServiceCall[NotUsed, Source[Creation$name;format="Camel"$Response, NotUsed]]
 // }
 
 // $name$ Replacement Calls {
@@ -189,10 +189,10 @@ trait $name;format="Camel"$Service extends Service {
     */
   def put$name;format="Camel"$($name;format="camel"$Id: String):                             ServiceCall[Replace$name;format="Camel"$Request, Either[ErrorResponse, Replace$name;format="Camel"$Response]]
   def replace$name;format="Camel"$1($name;format="camel"$Id: String):                        ServiceCall[Replace$name;format="Camel"$Request, Either[ErrorResponse, Replace$name;format="Camel"$Response]]
-  def replace$name;format="Camel"$2($name;format="camel"$Id: String, replacementId: String): ServiceCall[Replace$name;format="Camel"$Request, Either[ErrorResponse, Replace$name;format="Camel"$Response]]
+  //def replace$name;format="Camel"$2($name;format="camel"$Id: String, replacementId: String): ServiceCall[Replace$name;format="Camel"$Request, Either[ErrorResponse, Replace$name;format="Camel"$Response]]
   // Retrieve status of replacement request
-  def getReplacement$name;format="Camel"$($name;format="camel"$Id: String, replacementId: String):    ServiceCall[NotUsed, Either[ErrorResponse, Replacement$name;format="Camel"$Response]]
-  def streamReplacement$name;format="Camel"$($name;format="camel"$Id: String, replacementId: String): ServiceCall[NotUsed, Source[Replacement$name;format="Camel"$Response, NotUsed]]
+  //def getReplacement$name;format="Camel"$($name;format="camel"$Id: String, replacementId: String):    ServiceCall[NotUsed, Either[ErrorResponse, Replacement$name;format="Camel"$Response]]
+  //def streamReplacement$name;format="Camel"$($name;format="camel"$Id: String, replacementId: String): ServiceCall[NotUsed, Source[Replacement$name;format="Camel"$Response, NotUsed]]
 // }
 
 // $name$ Mutation Calls {
@@ -222,12 +222,12 @@ trait $name;format="Camel"$Service extends Service {
     * DATA='[{"op": "replace", "path": "/name", "value": "new name"}]'
     * curl -H \$CT -X PATCH -d \$DATA http://localhost:9000/api/$plural_name;format="lower,hyphen"$/cjq5au9sr000caqyayo9uktss
     */
-  def patch$name;format="Camel"$($name;format="camel"$Id: String):                       ServiceCall[Mutate$name;format="Camel"$Request, Either[ErrorResponse, Mutate$name;format="Camel"$Response]]
-  def mutate$name;format="Camel"$1($name;format="camel"$Id: String):                     ServiceCall[Mutate$name;format="Camel"$Request, Either[ErrorResponse, Mutate$name;format="Camel"$Response]]
-  def mutate$name;format="Camel"$2($name;format="camel"$Id: String, mutationId: String): ServiceCall[Mutate$name;format="Camel"$Request, Either[ErrorResponse, Mutate$name;format="Camel"$Response]]
+  //def patch$name;format="Camel"$($name;format="camel"$Id: String):                       ServiceCall[Mutate$name;format="Camel"$Request, Either[ErrorResponse, Mutate$name;format="Camel"$Response]]
+  //def mutate$name;format="Camel"$1($name;format="camel"$Id: String):                     ServiceCall[Mutate$name;format="Camel"$Request, Either[ErrorResponse, Mutate$name;format="Camel"$Response]]
+  //def mutate$name;format="Camel"$2($name;format="camel"$Id: String, mutationId: String): ServiceCall[Mutate$name;format="Camel"$Request, Either[ErrorResponse, Mutate$name;format="Camel"$Response]]
   // Retrieve status of mutation request
-  def getMutation$name;format="Camel"$($name;format="camel"$Id: String, mutationId: String):    ServiceCall[NotUsed, Either[ErrorResponse, Mutation$name;format="Camel"$Response]]
-  def streamMutation$name;format="Camel"$($name;format="camel"$Id: String, mutationId: String): ServiceCall[NotUsed, Source[Mutation$name;format="Camel"$Response, NotUsed]]
+  //def getMutation$name;format="Camel"$($name;format="camel"$Id: String, mutationId: String):    ServiceCall[NotUsed, Either[ErrorResponse, Mutation$name;format="Camel"$Response]]
+  //def streamMutation$name;format="Camel"$($name;format="camel"$Id: String, mutationId: String): ServiceCall[NotUsed, Source[Mutation$name;format="Camel"$Response, NotUsed]]
 // }
 
 // $name$ Deactivation Calls {
@@ -256,12 +256,12 @@ trait $name;format="Camel"$Service extends Service {
     * CT="Content-Type: application/json"
     * curl -H \$CT -X DELETE http://localhost:9000/api/$plural_name;format="lower,hyphen"$/cjq5au9sr000caqyayo9uktss
     */
-  def patch$name;format="Camel"$($name;format="camel"$Id: String):                               ServiceCall[Deactivate$name;format="Camel"$Request, Either[ErrorResponse, Deactivate$name;format="Camel"$Response]]
-  def deactivate$name;format="Camel"$1($name;format="camel"$Id: String):                         ServiceCall[Deactivate$name;format="Camel"$Request, Either[ErrorResponse, Deactivate$name;format="Camel"$Response]]
-  def deactivate$name;format="Camel"$2($name;format="camel"$Id: String, deactivationId: String): ServiceCall[Deactivate$name;format="Camel"$Request, Either[ErrorResponse, Deactivate$name;format="Camel"$Response]]
+  //def patch$name;format="Camel"$($name;format="camel"$Id: String):                               ServiceCall[Deactivate$name;format="Camel"$Request, Either[ErrorResponse, Deactivate$name;format="Camel"$Response]]
+  //def deactivate$name;format="Camel"$1($name;format="camel"$Id: String):                         ServiceCall[Deactivate$name;format="Camel"$Request, Either[ErrorResponse, Deactivate$name;format="Camel"$Response]]
+  //def deactivate$name;format="Camel"$2($name;format="camel"$Id: String, deactivationId: String): ServiceCall[Deactivate$name;format="Camel"$Request, Either[ErrorResponse, Deactivate$name;format="Camel"$Response]]
   // Retrieve status of deactivation request
-  def getDeactivation$name;format="Camel"$($name;format="camel"$Id: String, deactivationId: String):    ServiceCall[NotUsed, Either[ErrorResponse, Deactivation$name;format="Camel"$Response]]
-  def streamDeactivation$name;format="Camel"$($name;format="camel"$Id: String, deactivationId: String): ServiceCall[NotUsed, Source[Deactivation$name;format="Camel"$Response, NotUsed]]
+  //def getDeactivation$name;format="Camel"$($name;format="camel"$Id: String, deactivationId: String):    ServiceCall[NotUsed, Either[ErrorResponse, Deactivation$name;format="Camel"$Response]]
+  //def streamDeactivation$name;format="Camel"$($name;format="camel"$Id: String, deactivationId: String): ServiceCall[NotUsed, Source[Deactivation$name;format="Camel"$Response, NotUsed]]
 // }
 
 // $name$ Reactivation Calls {
@@ -457,29 +457,20 @@ object $name;format="Camel"$Resource {
 
 // $name$ Request
 
-//val maxRequestSize = 10485760 // 10M
-
 // TODO: include span ID as the unique identity of a Create$name;format="Camel"$Request
 
 // Create $name$ Request payload {
-//type Create$name;format="Camel"$Request = String
-//implicit val create$name;format="Camel"$RequestValidator
-//    : Validator[Create$name;format="Camel"$Request] { r =>
-//    r has size > 0
-//    r has size <= maxRequestSize
-//    }
-
-final case class ValidCreate$name;format="Camel"$Request(
+final case class Create$name;format="Camel"$Request(
     $name;format="camel"$: $name;format="Camel"$
 ) {}
 
-case object ValidCreate$name;format="Camel"$Request {
-  implicit val format: Format[ValidCreate$name;format="Camel"$Request] = Jsonx.formatCaseClass
+case object Create$name;format="Camel"$Request {
+  implicit val format: Format[Create$name;format="Camel"$Request] = Jsonx.formatCaseClass
 
-  implicit val validCreate$name;format="Camel"$RequestValidator
-    : Validator[ValidCreate$name;format="Camel"$Request] =
-    validator[ValidCreate$name;format="Camel"$Request] { create$name;format="Camel"$Request =>
-      create$name;format="Camel"$Request.$name;format="camel"$ is valid($name;format="Camel"$.$name;format="camel"$Validator)
+  implicit val create$name;format="Camel"$RequestValidator
+    : Validator[Create$name;format="Camel"$Request] =
+    validator[Create$name;format="Camel"$Request] { r =>
+      r.$name;format="camel"$ is valid($name;format="Camel"$.$name;format="camel"$Validator)
     }
 }
 // }
