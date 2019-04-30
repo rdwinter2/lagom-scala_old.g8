@@ -3,7 +3,7 @@ A [Giter8][g8] template for a DDD lagom scala project [![Build Status](https://t
 
 ## Description
 
-Giter8 template for creating a Lightbend Lagom project written in Scala and following Domain Driven Design (DDD) practices.
+Giter8 template for creating a Lightbend Lagom project written in Scala and following Domain Driven Design (DDD) practices. Forked from [lagom/lagom-scala.g8](https://github.com/lagom/lagom-scala.g8).
 
 ```bash
 sbt new rdwinter2/lagom-scala.g8
