@@ -2,8 +2,8 @@ import com.lightbend.lagom.sbt.LagomImport.lagomScaladslApi
 import org.ensime.EnsimeKeys._
 import org.ensime.EnsimePlugin
 
-resolvers += "Nexus maven" at "http://yum:8081/repository/maven/"
-resolvers += "Nexus ivy" at "http://yum:8081/repository/ivy/"
+//resolvers += "Nexus maven" at "http://yum:8081/repository/maven/"
+//resolvers += "Nexus ivy" at "http://yum:8081/repository/ivy/"
 
 lazy val root = (project in file("."))
   .settings(name := "$name;format="norm"$")
@@ -21,7 +21,7 @@ organization in ThisBuild := "$organization$"
 version in ThisBuild := "$version$"
 
 // the Scala version that will be used for cross-compiled libraries
-scalaVersion in ThisBuild := "2.12.7"
+scalaVersion in ThisBuild := "2.12.8"
 
 val macwire = "com.softwaremill.macwire" %% "macros" % "2.3.0" % "provided"
 val scalaTest = "org.scalatest" %% "scalatest" % "3.0.4" % Test
