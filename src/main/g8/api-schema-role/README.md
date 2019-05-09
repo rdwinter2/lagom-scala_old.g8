@@ -1,7 +1,7 @@
 API Schema First ansible role
 =============================
 
-This ansible role takes an API schema definition file and generates algebraic datatypes and  Serialization/Deserialization (SerDes) code for various protocols.
+This ansible role takes an API schema definition file and generates algebraic datatypes and Serialization/Deserialization ([SerDes](https://en.wikipedia.org/wiki/SerDes)) code for various protocols.
 
 Specify an API schema definition language (SDL) file written as a JSON schema or as a YAML/GraphQL inspired formation as described below.
 
@@ -11,7 +11,7 @@ In Domain Driven Design (DDD) Aggregate Root (AR) entities have a unique identit
 
 DDD Value Objects - identified only by their values. Two value objects with identical attributes are identical.
 
-DDD Entity Objects - have a lifecycle, and are identified by a synthetic identifier. Two entities with identical attributes but different identifiers are different entities. My current preference for synthetic identifiers are collision resistant identifiers ([CUID](https://github.com/prismagraphql/cuid-java)). They are relatively short, URL friendly, and horizontally scalable.
+DDD Entity Objects - have a lifecycle, and are identified by a synthetic identifier, also called a [surrogate key](https://en.wikipedia.org/wiki/Surrogate_key). Two entities with identical attributes but different identifiers are different entities. This identifier is assigned when the entity is create and remains constain throughout its lifecycle. My current preference for synthetic identifiers are collision resistant identifiers ([CUID](https://github.com/prismagraphql/cuid-java)). They are relatively short, URL friendly, and horizontally scalable. Additional data is available to refer to a particular version of an entity. This data may include the [availability zone](https://searchaws.techtarget.com/definition/availability-zones), transaction ID, transaction time, transaction hash, [global consensus](#global-consensus) ordering, etc. To uniquely identify a version of an entity one or more pieces of data are required from the above depending on the circumstance.
 
 Built-in Scalar data types
 * Date
@@ -65,7 +65,6 @@ Additional annotations can be added
 * @isUnique for a globally unique identifier
 * @isPartUnique for an identifier that is only unique within its hierarchy
 * @aliases for a list of deprecated aliases
-
 
 ```yaml
 name: String! @check("[A-Za-z0-9_, \-]{1,255}")
@@ -250,3 +249,8 @@ authentication:
 ```yaml
 
 ```
+
+### <a name="global-consensus"></a> Global Consensus
+
+Use an asynchronous Byzantine-fault tolerant mechansim for determining global consensus ordering of transactions.
+[Tendermint Core](https://www.tendermint.com/) or [Hydra Hashgraph](https://www.hedera.com/).
