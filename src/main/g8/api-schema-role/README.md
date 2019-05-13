@@ -11,7 +11,7 @@ In Domain Driven Design (DDD) Aggregate Root (AR) entities have a unique identit
 
 DDD Value Objects - identified only by their values. Two value objects with identical attributes are identical.
 
-DDD Entity Objects - have a lifecycle, and are identified by a synthetic identifier, also called a [surrogate key](https://en.wikipedia.org/wiki/Surrogate_key). Two entities with identical attributes but different identifiers are different entities. This identifier is assigned when the entity is create and remains constain throughout its lifecycle. My current preference for synthetic identifiers are collision resistant identifiers ([CUID](https://github.com/prismagraphql/cuid-java)). They are relatively short, URL friendly, and horizontally scalable. Additional data is available to refer to a particular version of an entity. This data may include the [availability zone](https://searchaws.techtarget.com/definition/availability-zones), transaction ID, transaction time, transaction hash, [global consensus](#global-consensus) ordering, etc. To uniquely identify a version of an entity one or more pieces of data are required from the above depending on the circumstance.
+DDD Entity Objects - have a lifecycle, and are identified by a synthetic identifier, also called a [surrogate key](https://en.wikipedia.org/wiki/Surrogate_key). Two entities with identical attributes but different identifiers are different entities. This identifier is assigned when the entity is create and remains constain throughout its lifecycle. My current preference for synthetic identifiers are collision resistant identifiers ([CUID](https://github.com/prismagraphql/cuid-java)). They are relatively short, URL friendly, and horizontally scalable. Additional data is available to refer to a particular version of an entity. This data may include the [Fault Containment Region](#fault-containment-region), transaction ID, transaction time, transaction hash, [global consensus](#global-consensus) ordering, etc. To uniquely identify a version of an entity one or more pieces of data are required from the above depending on the circumstance.
 
 Built-in Scalar data types
 * Date
@@ -254,3 +254,18 @@ authentication:
 
 Use an asynchronous Byzantine-fault tolerant mechansim for determining global consensus ordering of transactions.
 [Tendermint Core](https://www.tendermint.com/) or [Hydra Hashgraph](https://www.hedera.com/).
+
+### <a name="fault-containment-region"></a> Fault Containment Region (FCR)
+
+> A fault-containment region is defined as the set of subsystems that share one or more common resources and may be affected by a single fault.
+[Fault containment and error detection in the time-triggered architecture](https://ieeexplore.ieee.org/document/1193942)
+
+A FCR may be as small as a single laptop or mobile device. Or it may be many compute and storage nodes that all share a common dependency. One FCR is distinct from another FCR if and only if there exists no single fault, including network, power, cooling, fire, etc., that would impact both simultaniously. A loss of connectivity to a WAN need not be considered a fault for this definition if the system can still perform its mission under those conditions. 
+
+[availability zone](https://searchaws.techtarget.com/definition/availability-zones)
+
+[NASA Fault Management Handbook](https://www.nasa.gov/pdf/636372main_NASA-HDBK-1002_Draft.pdf)
+
+[Reliability and Fault Tolerance](https://www.uio.no/studier/emner/matnat/fys/FYS4220/h11/undervisningsmateriale/forelesninger-rt/2011-9_Reliability_and_Fault_Tolerance.pdf)
+
+Note: Within a single FCR each entity has a [single writer](https://mechanical-sympathy.blogspot.com/2011/09/single-writer-principle.html). Between FCRs, an entity may accept conflicting commands that must be resolved via [global consensus](#global-consensus).
