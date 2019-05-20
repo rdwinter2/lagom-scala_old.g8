@@ -97,7 +97,7 @@ class $name;format="Camel"$ServiceImpl(
         logger.info(
           s"Posting '$name$' with identifier \$$name;format="camel"$Id...")
         this
-          .create$name;format="Camel"$Internal($name;format="camel"$Id, creationId)
+          .create$name;format="Camel"$Internal($name;format="camel"$Identity, creationId)
           .handleRequestHeader(requestHeader => requestHeader)
           .invokeWithHeaders(requestHeader, create$name;format="Camel"$Request).map {
             case (responseHeader, response) => (Ok, Right(response))
@@ -112,20 +112,20 @@ class $name;format="Camel"$ServiceImpl(
         val $name;format="camel"$Id = Cuid.createCuid()
         val creationId = Cuid.createCuid()
         this
-          .create$name;format="Camel"$Internal($name;format="camel"$Id, creationId)
+          .create$name;format="Camel"$Internal($name;format="camel"$Identity, creationId)
           .handleRequestHeader(requestHeader => requestHeader)
           .invokeWithHeaders(requestHeader, create$name;format="Camel"$Request).map {
             case (responseHeader, response) => (Ok, Right(response))
           }
       }
     }
-  override def create$name;format="Camel"$2($name;format="camel"$Id: String)
+  override def create$name;format="Camel"$2($name;format="camel"$Identity: String)
     : ServiceCall[Create$name;format="Camel"$Request, Either[ErrorResponse, Create$name;format="Camel"$Response]] =
     authenticated { (tokenContent, _) =>
       ServerServiceCall { (requestHeader, create$name;format="Camel"$Request) =>
         val creationId = Cuid.createCuid()
         this
-          .create$name;format="Camel"$Internal($name;format="camel"$Id, creationId)
+          .create$name;format="Camel"$Internal($name;format="camel"$Identity, creationId)
           .handleRequestHeader(requestHeader => requestHeader)
           .invokeWithHeaders(requestHeader, create$name;format="Camel"$Request).map {
             case (responseHeader, response) => (Ok, Right(response))
@@ -139,7 +139,7 @@ class $name;format="Camel"$ServiceImpl(
       ServerServiceCall { (requestHeader, create$name;format="Camel"$Request) =>
         val $name;format="camel"$Id = Cuid.createCuid()
         this
-          .create$name;format="Camel"$Internal($name;format="camel"$Id, creationId)
+          .create$name;format="Camel"$Internal($name;format="camel"$Identity, creationId)
           .handleRequestHeader(requestHeader => requestHeader)
           .invokeWithHeaders(requestHeader, create$name;format="Camel"$Request).map {
             case (responseHeader, response) => (Ok, Right(response))
@@ -147,12 +147,12 @@ class $name;format="Camel"$ServiceImpl(
       }
     }
 
-  override def create$name;format="Camel"$4($name;format="camel"$Id: String, creationId: String)
+  override def create$name;format="Camel"$4($name;format="camel"$Identity: String, creationId: String)
     : ServiceCall[Create$name;format="Camel"$Request, Either[ErrorResponse, Create$name;format="Camel"$Response]] =
     authenticated { (tokenContent, _) =>
       ServerServiceCall { (requestHeader, create$name;format="Camel"$Request) =>
         this
-          .create$name;format="Camel"$Internal($name;format="camel"$Id, creationId)
+          .create$name;format="Camel"$Internal($name;format="camel"$Identity, creationId)
           .handleRequestHeader(requestHeader => requestHeader)
           .invokeWithHeaders(requestHeader, create$name;format="Camel"$Request).map {
             case (responseHeader, response) => (Ok, Right(response))
@@ -176,7 +176,7 @@ class $name;format="Camel"$ServiceImpl(
           case _ =>
         }
         val $name;format="camel"$Aggregate =
-          $name;format="Camel"$Aggregate($name;format="camel"$Id, $name;format="Camel"$Resource(create$name;format="Camel"$Request.$name;format="camel"$))
+          $name;format="Camel"$Aggregate($name;format="camel"$Identity, 0, $name;format="Camel"$Resource(create$name;format="Camel"$Request.$name;format="camel"$))
         val $name;format="camel"$Resource =
           $name;format="Camel"$Resource(create$name;format="Camel"$Request.$name;format="camel"$)
         val $name;format="camel"$EntityRef =
@@ -187,15 +187,15 @@ class $name;format="Camel"$ServiceImpl(
         $name;format="camel"$EntityRef
           .ask(Create$name;format="Camel"$Command($name;format="camel"$Aggregate))
           .map { _ =>
-            mapToCreate$name;format="Camel"$Response($name;format="camel"$Id, $name;format="camel"$Resource)
+            mapToCreate$name;format="Camel"$Response($name;format="camel"$Identity, $name;format="camel"$Resource)
           }
       }
     }
 
   private def mapToCreate$name;format="Camel"$Response(
-      $name;format="camel"$Id: String,
+      $name;format="camel"$Identity: String,
       $name;format="camel"$Resource: $name;format="Camel"$Resource): Create$name;format="Camel"$Response = {
-    Create$name;format="Camel"$Response($name;format="camel"$Id,
+    Create$name;format="Camel"$Response($name;format="camel"$Identity,
                              $name;format="camel"$Resource.$name;format="camel"$,
                              None)
   }
@@ -211,14 +211,14 @@ class $name;format="Camel"$ServiceImpl(
   val Ok: ResponseHeader =  ResponseHeader.Ok
         .withHeader("Server", "$name$ service")
 
-  override def put$name;format="Camel"$($name;format="camel"$Id: String): ServiceCall[Replace$name;format="Camel"$Request, Either[ErrorResponse, Replace$name;format="Camel"$Response]] =
+  override def put$name;format="Camel"$($name;format="camel"$Identity: String): ServiceCall[Replace$name;format="Camel"$Request, Either[ErrorResponse, Replace$name;format="Camel"$Response]] =
     authenticated { (tokenContent, _) =>
       ServerServiceCall { (requestHeader, replace$name;format="Camel"$Request) =>
         val replacementId = Cuid.createCuid()
         logger.info(
           s"Putting '$name$' with identifier \$$name;format="camel"$Id...")
         this
-          .replace$name;format="Camel"$Internal($name;format="camel"$Id, replacementId)
+          .replace$name;format="Camel"$Internal($name;format="camel"$Identity, replacementId)
           .handleRequestHeader(requestHeader => requestHeader)
           .invokeWithHeaders(requestHeader, replace$name;format="Camel"$Request).map {
             case (responseHeader, Right(response)) => (Ok, Right(response))
@@ -226,7 +226,7 @@ class $name;format="Camel"$ServiceImpl(
       }
     }
 
-  def replace$name;format="Camel"$Internal($name;format="camel"$Id: String, replacementId: String)
+  def replace$name;format="Camel"$Internal($name;format="camel"$Identity: String, replacementId: String)
     : ServerServiceCall[Replace$name;format="Camel"$Request, Either[ErrorResponse, Replace$name;format="Camel"$Response]] =
     authenticated { (tokenContent, _) =>
       ServerServiceCall { replace$name;format="Camel"$Request =>
@@ -242,14 +242,14 @@ class $name;format="Camel"$ServiceImpl(
           case _ =>
         }
 //        val $name;format="camel"$Aggregate =
-//          $name;format="Camel"$Aggregate($name;format="camel"$Id, replace$name;format="Camel"$Request.$name;format="camel"$)
+//          $name;format="Camel"$Aggregate($name;format="camel"$Identity, replace$name;format="Camel"$Request.$name;format="camel"$)
 //        val $name;format="camel"$Resource =
 //          $name;format="Camel"$Resource(replace$name;format="Camel"$Request.$name;format="camel"$)
       val $name;format="camel"$EntityRef =
-          registry.refFor[$name;format="Camel"$Entity]($name;format="camel"$Id.toString)
+          registry.refFor[$name;format="Camel"$Entity]($name;format="camel"$Identity.toString)
 //        logger.info(s"Publishing event \$$name;format="camel"$Aggregate")
         $name;format="camel"$EntityRef
-          .ask(Replace$name;format="Camel"$Command($name;format="camel"$Id, replace$name;format="Camel"$Request))
+          .ask(Replace$name;format="Camel"$Command($name;format="camel"$Identity, replace$name;format="Camel"$Request))
           .map {
             case Right(replace$name;format="Camel"$Request) =>
               mapToReplace$name;format="Camel"$Response(replace$name;format="Camel"$Request)
@@ -259,10 +259,10 @@ class $name;format="Camel"$ServiceImpl(
 //        topic.publish($name;format="camel"$Resource)
       }
     }
-//  override def improve$name;format="Camel"$Description($name;format="camel"$Id: String)
+//  override def improve$name;format="Camel"$Description($name;format="camel"$Identity: String)
 //    : ServiceCall[Improve$name;format="Camel"$DescriptionRequest, Improve$name;format="Camel"$DescriptionResponse]
 //    authenticated { (tokenContent, _) =>
-//      ServerServiceCall { ($name;format="camel"$Id, improve$name;format="Camel"$DescriptionRequest: Improve$name;format="Camel"$DescriptionRequest) =>
+//      ServerServiceCall { ($name;format="camel"$Identity, improve$name;format="Camel"$DescriptionRequest: Improve$name;format="Camel"$DescriptionRequest) =>
 //      logger.info(
 //        s"Improving the description of '$name$' with id \$$name;format="camel"$Id by setting it to \$improve$name;format="Camel"$DescriptionRequest.description...")
 //      val validationResult = validate(improve$name;format="Camel"$DescriptionRequest)
@@ -289,13 +289,13 @@ class $name;format="Camel"$ServiceImpl(
         val $name;format="camel"$EntityRef =
           registry.refFor[$name;format="Camel"$Entity]($name;format="camel"$Id.toString)
         $name;format="camel"$EntityRef.ask(Get$name;format="Camel"$Query).map {
-          case $name;format="Camel"$State(_, $name;format="Camel"$Status.NONEXISTENT, _) =>
+          case $name;format="Camel"$State(_, $name;format="Camel"$Status.NONEXISTENT) =>
             throw NotFound(s"$name$ \$$name;format="camel"$Id not found")
-          case $name;format="Camel"$State(Some($name;format="camel"$Aggregate), $name;format="Camel"$Status.ACTIVE, _) =>
+          case $name;format="Camel"$State(Some($name;format="camel"$Aggregate), $name;format="Camel"$Status.ACTIVE) =>
             Right(mapToGet$name;format="Camel"$Response($name;format="camel"$Aggregate))
-          case $name;format="Camel"$State(_, $name;format="Camel"$Status.ARCHIVED, _) =>
+          case $name;format="Camel"$State(_, $name;format="Camel"$Status.ARCHIVED) =>
             throw NotFound(s"$name$ \$$name;format="camel"$Id archived")
-          case $name;format="Camel"$State(_, _, _) =>
+          case $name;format="Camel"$State(_, _) =>
             throw NotFound(s"$name$ \$$name;format="camel"$Id in unknown state")
         }
       }
@@ -303,7 +303,7 @@ class $name;format="Camel"$ServiceImpl(
 
   private def mapToGet$name;format="Camel"$Response(
       $name;format="camel"$Aggregate: $name;format="Camel"$Aggregate): Get$name;format="Camel"$Response = {
-    Get$name;format="Camel"$Response($name;format="camel"$Aggregate.$name;format="camel"$Id,
+    Get$name;format="Camel"$Response($name;format="camel"$Aggregate.$name;format="camel"$Identity,
                           $name;format="camel"$Aggregate.$name;format="camel"$Resource.$name;format="camel"$)
   }
 
@@ -320,7 +320,7 @@ class $name;format="Camel"$ServiceImpl(
   }
 
   private def mapToReplace$name;format="Camel"$Response(replace$name;format="Camel"$Request: Replace$name;format="Camel"$Request): Replace$name;format="Camel"$Response = {
-    Replace$name;format="Camel"$Response($name;format="camel"$Aggregate.$name;format="camel"$Id,
+    Replace$name;format="Camel"$Response($name;format="camel"$Aggregate.$name;format="camel"$Identity,
                               $name;format="camel"$Aggregate.$name;format="camel"$Resource.$name;format="camel"$)
   }
 
@@ -347,7 +347,7 @@ class $name;format="Camel"$ServiceImpl(
       case EventStreamElement(id, $name;format="Camel"$CreatedEvent($name;format="camel"$Aggregate), offset) =>
         Future.successful {
           ($name;format="Camel"$Created(
-             $name;format="camel"$Aggregate.$name;format="camel"$Id,
+             $name;format="camel"$Aggregate.$name;format="camel"$Identity,
              $name;format="camel"$Aggregate.$name;format="camel"$Resource.$name;format="camel"$
            ),
            offset)
@@ -404,8 +404,8 @@ final class $name;format="Camel"$Entity extends PersistentEntity {
         .onCommand[Create$name;format="Camel"$Command, Either[ServiceError, $name;format="Camel"$Aggregate]] { replyConflict }
         .onCommand[Replace$name;format="Camel"$Command, Either[ServiceError, $name;format="Camel"$Aggregate]] { replace$name;format="Camel"$Command }
         .onEvent {
-          case ($name;format="Camel"$ReplacedEvent($name;format="camel"$Id, replacement$name;format="Camel"$Resource, motivation), state) =>
-            $name;format="Camel"$State(Some($name;format="Camel"$Aggregate($name;format="camel"$Id, replacement$name;format="Camel"$Resource)), $name;format="Camel"$Status.ACTIVE, 1)
+          case ($name;format="Camel"$ReplacedEvent($name;format="camel"$Identity, replacement$name;format="Camel"$Resource, motivation), state) =>
+            $name;format="Camel"$State(Some($name;format="Camel"$Aggregate($name;format="camel"$Identity, replacement$name;format="Camel"$Resource)), $name;format="Camel"$Status.ACTIVE, 1)
           case (_, state) => state
         }
     }
@@ -506,7 +506,7 @@ final case class $name;format="Camel"$State(
 
 object $name;format="Camel"$State {
   implicit val format: Format[$name;format="Camel"$State] = Json.format
-  val nonexistent = $name;format="Camel"$State(None, $name;format="Camel"$Status.NONEXISTENT, 0)
+  val nonexistent = $name;format="Camel"$State(None, $name;format="Camel"$Status.NONEXISTENT)
 }
 
 // $name$ Status
@@ -521,7 +521,8 @@ object $name;format="Camel"$Status extends Enumeration {
 
 // $name$ Aggregate
 final case class $name;format="Camel"$Aggregate(
-  $name;format="camel"$Identity: Identity,
+  $name;format="camel"$Identity: $name;format="Camel"$Identity,
+  $name;format="camel"$Metadata: $name;format="Camel"$Metadata,
   $name;format="camel"$Resource: $name;format="Camel"$Resource
 )
 
@@ -681,7 +682,11 @@ private[impl] class $name;format="Camel"$Repository(session: CassandraSession)(
   private def convertTo$name;format="Camel"$Aggregate(
       $name;format="camel"$Row: Row): $name;format="Camel"$Aggregate = {
     $name;format="Camel"$Aggregate(
-      $name;format="camel"$Row.getString("id"),
+      $name;format="Camel"$Identity(helloWorldRow.getString("object_identifier")),
+      $name;format="Camel"$Metadata(Json
+      .fromJson[$name;format="Camel"$Metadata](
+        Json.parse($name;format="camel"$Row.getString("$name;format="lower,snake,word"$Metadata")))
+      .get),
       $name;format="Camel"$Resource(
       Json
         .fromJson[$name;format="Camel"$](
@@ -733,6 +738,7 @@ private[impl] class $name;format="Camel"$EventProcessor(
       _ <- session.executeCreateTable("""
           |CREATE TABLE IF NOT EXISTS $name;format="lower,snake,word"$_current (
           | object_identifier text PRIMARY KEY,
+          | object_revision int,
           | $name;format="lower,snake,word"$ text
           |);
         """.stripMargin)
@@ -766,6 +772,7 @@ private[impl] class $name;format="Camel"$EventProcessor(
       insert$name;format="Camel"$ <- session.prepare("""
           |INSERT INTO $name;format="lower,snake,word"$_current(
           | object_identifier,
+          | revision int,
           | $name;format="lower,snake,word"$
           | ) VALUES (
           | ?, ?);
@@ -812,14 +819,15 @@ private[impl] class $name;format="Camel"$EventProcessor(
     logger.info(s"Inserting \$$name;format="camel"$Aggregate...")
     Future.successful(
       List(
-        insert$name;format="Camel"$Statement.bind($name;format="camel"$Aggregate.$name;format="camel"$Identity.identifier,
+        insert$name;format="Camel"$Statement.bind($name;format="camel"$Aggregate.$name;format="camel"$Identity.identifier, 
+                                       $name;format="camel"$Aggregate.$name;format="camel"$Metadata.revision,
                                        implicitly[Format[$name;format="Camel"$]]
                                          .writes($name;format="camel"$Aggregate.$name;format="camel"$Resource.$name;format="camel"$)
                                          .toString)
         //insert$name;format="Camel"$SummaryStatement
-        //  .bind($name;format="camel"$Aggregate.id, $name;format="camel"$Aggregate.$name;format="camel"$.name),
+        //  .bind($name;format="camel"$Aggregate.Identity, $name;format="camel"$Aggregate.$name;format="camel"$.name),
         //insert$name;format="Camel"$ByNameStatement
-        //  .bind($name;format="camel"$Aggregate.id, $name;format="camel"$Aggregate.$name;format="camel"$.name)
+        //  .bind($name;format="camel"$Aggregate.Identity, $name;format="camel"$Aggregate.$name;format="camel"$.name)
       ))
   }
 
@@ -829,9 +837,9 @@ private[impl] class $name;format="Camel"$EventProcessor(
       List(
         destroy$name;format="Camel"$Statement.bind($name;format="camel"$IdentityIdentifier)
         //insert$name;format="Camel"$SummaryStatement
-        //  .bind($name;format="camel"$Aggregate.id, $name;format="camel"$Aggregate.$name;format="camel"$.name),
+        //  .bind($name;format="camel"$Aggregate.Identity, $name;format="camel"$Aggregate.$name;format="camel"$.name),
         //insert$name;format="Camel"$ByNameStatement
-        //  .bind($name;format="camel"$Aggregate.id, $name;format="camel"$Aggregate.$name;format="camel"$.name)
+        //  .bind($name;format="camel"$Aggregate.Identity, $name;format="camel"$Aggregate.$name;format="camel"$.name)
       ))
   }
 
@@ -845,6 +853,8 @@ object $name;format="Camel"$SerializerRegistry extends JsonSerializerRegistry {
     JsonSerializer[$name;format="Camel"$],
     JsonSerializer[$name;format="Camel"$Resource],
     JsonSerializer[$name;format="Camel"$Aggregate],
+    JsonSerializer[$name;format="Camel"$Identity],
+    JsonSerializer[$name;format="Camel"$Metadata],
     // Create
     //JsonSerializer[Create$name;format="Camel"$Request],
     JsonSerializer[Create$name;format="Camel"$Command],

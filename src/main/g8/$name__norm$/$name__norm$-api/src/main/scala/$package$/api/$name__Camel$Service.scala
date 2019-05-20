@@ -377,16 +377,15 @@ object $name;format="Camel"$ {
 // Supporting algebraic data types {
 
 // Identity.identifier and Identity.revision uniquely identify a particular version of an entity
-final case class Identity(
-  identifier: String,       // a collision resistant unique identifier for the entity which remains constant throughout its lifecycle
-  revision: Int             // a monotonically increasing counter of changes perisited by this entity
+final case class $name;format="Camel"$Identity(
+  identifier: String       // a collision resistant unique identifier for the entity which remains constant throughout its lifecycle
 )
 
-object Identity {
-  implicit val format: Format[Identity] = Jsonx.formatCaseClass
+object $name;format="Camel"$Identity {
+  implicit val format: Format[$name;format="Camel"$Identity] = Jsonx.formatCaseClass
 
-  val identityValidator: Validator[Identity] =
-    validator[Identity] { identity =>
+  val identityValidator: Validator[$name;format="Camel"$Identity] =
+    validator[$name;format="Camel"$Identity] { identity =>
       identity.identifier is notEmpty
       identity.identifier should matchRegexFully(Matchers.Id)
       // need Option[Int]
@@ -395,24 +394,24 @@ object Identity {
 }
 
 // Not so sure if object level metadata is needed or just event level metadata
-final case class Metadata(
-
-  created: Instant,      // When the 
-  lastModified: Option[Instant], // Last Change Transaction Time: the time assigned by the persistent entity
-                            // it will be different from the time it was persisted in Cassandra or Kafka or other datastore
-                            // the persistent entity is where the real transaction occurs, however it still need to be written to the log to become durable 
-  hash: Option[String],     // SHA256 hash of json representation of  the persistent entity's data
-                            // import java.security.MessageDigest import java.math.BigInteger MessageDigest.getInstance("SHA-256").digest("some string".getBytes("UTF-8")).map("%02x".format(_)).mkString
-  previousHash: Option[String], // SHA256 hash of the prior state of the  persistent entity's data
-  validTimeBegin: Option[Instant],    // "valid time (VT) is the time period during which a database fact is valid in the modeled reality." https://en.wikipedia.org/wiki/Valid_time
-  validTimeEnd: Option[Instant],
-  decisionTimeBegin: Option[Instant],  // "Decision time is the time period during which a fact stored in the database was decided to be valid.'' https://en.wikipedia.org/wiki/Temporal_database
-  decisionTimeEnd: Option[Instant]
+final case class $name;format="Camel"$Metadata(
+  revision: Int             // a monotonically increasing count of changes perisited by this entity
+//  created: Instant,      // When the 
+//  lastModified: Option[Instant], // Last Change Transaction Time: the time assigned by the persistent entity
+//                            // it will be different from the time it was persisted in Cassandra or Kafka or other datastore
+//                            // the persistent entity is where the real transaction occurs, however it still need to be written to the log to become durable 
+//  hash: Option[String],     // SHA256 hash of json representation of  the persistent entity's data
+//                            // import java.security.MessageDigest import java.math.BigInteger MessageDigest.getInstance("SHA-256").digest("some string".getBytes("UTF-8")).map("%02x".format(_)).mkString
+//  previousHash: Option[String], // SHA256 hash of the prior state of the  persistent entity's data
+//  validTimeBegin: Option[Instant],    // "valid time (VT) is the time period during which a database fact is valid in the modeled reality." https://en.wikipedia.org/wiki/Valid_time
+//  validTimeEnd: Option[Instant],
+//  decisionTimeBegin: Option[Instant],  // "Decision time is the time period during which a fact stored in the database was decided to be valid.'' https://en.wikipedia.org/wiki/Temporal_database
+//  decisionTimeEnd: Option[Instant]
   
 )
 
-object Metadata {
-  implicit val format: Format[Metadata] = Jsonx.formatCaseClass
+object $name;format="Camel"$Metadata {
+  implicit val format: Format[$name;format="Camel"$Metadata] = Jsonx.formatCaseClass
 }
 
 final case class HypertextApplicationLanguage(
@@ -533,7 +532,7 @@ case object Mutate$name;format="Camel"$Request {
 // Response
 
 final case class Create$name;format="Camel"$Response(
-    $name;format="camel"$Id: Identity,
+    $name;format="camel"$Identity: $name;format="Camel"$Identity,
     $name;format="camel"$: $name;format="Camel"$,
     $name;format="camel"$Hal: Option[HypertextApplicationLanguage]
 )
@@ -543,7 +542,7 @@ object Create$name;format="Camel"$Response {
 }
 
 final case class Replace$name;format="Camel"$Response(
-    $name;format="camel"$Id: Identity,
+    $name;format="camel"$Identity: $name;format="Camel"$Identity,
     $name;format="camel"$: $name;format="Camel"$,
     $name;format="camel"$Hal: Option[HypertextApplicationLanguage]
 )
