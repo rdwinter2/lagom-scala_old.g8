@@ -358,18 +358,18 @@ object Matchers {
 //   final case class Squid(name: String, age: Int) extends Pet
 
 // $name$ object
-final case class $name;format="Camel"$(
+final case class $name;format="Camel"$Object(
   name: String,
   description: Option[String])
 
-object $name;format="Camel"$ {
-  implicit val format: Format[$name;format="Camel"$] = Jsonx.formatCaseClass
+object $name;format="Camel"$Object {
+  implicit val format: Format[$name;format="Camel"$Object] = Jsonx.formatCaseClass
 
-  val $name;format="camel"$Validator: Validator[$name;format="Camel"$] =
-    validator[$name;format="Camel"$] { $name;format="camel"$ =>
-      $name;format="camel"$.name is notEmpty
-      $name;format="camel"$.name should matchRegexFully(Matchers.Name)
-      $name;format="camel"$.description.each should matchRegexFully(Matchers.Description)
+  val $name;format="camel"$Validator: Validator[$name;format="Camel"$Object] =
+    validator[$name;format="Camel"$Object] { o =>
+      o.name is notEmpty
+      o.name should matchRegexFully(Matchers.Name)
+      o.description.each should matchRegexFully(Matchers.Description)
     }
 }
 // }
@@ -385,9 +385,9 @@ object $name;format="Camel"$Identity {
   implicit val format: Format[$name;format="Camel"$Identity] = Jsonx.formatCaseClass
 
   val identityValidator: Validator[$name;format="Camel"$Identity] =
-    validator[$name;format="Camel"$Identity] { identity =>
-      identity.identifier is notEmpty
-      identity.identifier should matchRegexFully(Matchers.Id)
+    validator[$name;format="Camel"$Identity] { i =>
+      i.identifier is notEmpty
+      i.identifier should matchRegexFully(Matchers.Id)
       // need Option[Int]
       //identity.revision should be >= 0
     }
@@ -465,15 +465,15 @@ object Mutation {
 
 // $name$ Resource
 final case class $name;format="Camel"$Resource(
-  $name;format="camel"$: $name;format="Camel"$
+  $name;format="camel"$Object: $name;format="Camel"$Object
 )
 
 object $name;format="Camel"$Resource {
   implicit val format: Format[$name;format="Camel"$Resource] = Jsonx.formatCaseClass
 
   val $name;format="camel"$ResourceValidator: Validator[$name;format="Camel"$Resource] =
-    validator[$name;format="Camel"$Resource] { $name;format="camel"$Resource =>
-      $name;format="camel"$Resource.$name;format="camel"$ is valid($name;format="Camel"$.$name;format="camel"$Validator)
+    validator[$name;format="Camel"$Resource] { r =>
+      r.$name;format="camel"$ is valid($name;format="Camel"$Object.$name;format="camel"$Validator)
     }
 }
 
@@ -483,7 +483,7 @@ object $name;format="Camel"$Resource {
 
 // Create $name$ Request payload {
 final case class Create$name;format="Camel"$Request(
-    $name;format="camel"$: $name;format="Camel"$
+    $name;format="camel"$Object: $name;format="Camel"$Object
 ) {}
 
 case object Create$name;format="Camel"$Request {
@@ -492,13 +492,13 @@ case object Create$name;format="Camel"$Request {
   implicit val create$name;format="Camel"$RequestValidator
     : Validator[Create$name;format="Camel"$Request] =
     validator[Create$name;format="Camel"$Request] { r =>
-      r.$name;format="camel"$ is valid($name;format="Camel"$.$name;format="camel"$Validator)
+      r.$name;format="camel"$Object is valid($name;format="Camel"$Object.$name;format="camel"$Validator)
     }
 }
 // }
 
 final case class Replace$name;format="Camel"$Request(
-    replacement$name;format="Camel"$: $name;format="Camel"$,
+    replacement$name;format="Camel"$: $name;format="Camel"$Object,
     motivation: Option[String]
 ) {}
 
@@ -507,9 +507,9 @@ case object Replace$name;format="Camel"$Request {
 
   implicit val replace$name;format="Camel"$RequestValidator
     : Validator[Replace$name;format="Camel"$Request] =
-    validator[Replace$name;format="Camel"$Request] { replace$name;format="Camel"$Request =>
-      replace$name;format="Camel"$Request.replacement$name;format="Camel"$ is valid($name;format="Camel"$.$name;format="camel"$Validator)
-      replace$name;format="Camel"$Request.motivation.each should matchRegexFully(Matchers.Motivation)
+    validator[Replace$name;format="Camel"$Request] { r =>
+      r.replacement$name;format="Camel"$ is valid($name;format="Camel"$Object.$name;format="camel"$Validator)
+      r.motivation.each should matchRegexFully(Matchers.Motivation)
     }
 }
 
@@ -533,7 +533,7 @@ case object Mutate$name;format="Camel"$Request {
 
 final case class Create$name;format="Camel"$Response(
     $name;format="camel"$Identity: $name;format="Camel"$Identity,
-    $name;format="camel"$: $name;format="Camel"$,
+    $name;format="camel"$Object: $name;format="Camel"$Object,
     $name;format="camel"$Hal: Option[HypertextApplicationLanguage]
 )
 
@@ -543,7 +543,7 @@ object Create$name;format="Camel"$Response {
 
 final case class Replace$name;format="Camel"$Response(
     $name;format="camel"$Identity: $name;format="Camel"$Identity,
-    $name;format="camel"$: $name;format="Camel"$,
+    $name;format="camel"$Object: $name;format="Camel"$Object,
     $name;format="camel"$Hal: Option[HypertextApplicationLanguage]
 )
 
@@ -552,8 +552,8 @@ object Replace$name;format="Camel"$Response {
 }
 
 final case class Get$name;format="Camel"$Response(
-    $name;format="camel"$Id: String,
-    $name;format="camel"$: $name;format="Camel"$
+  $name;format="camel"$Identity: $name;format="Camel"$Identity,
+    $name;format="camel"$Object: $name;format="Camel"$Object
 )
 
 object Get$name;format="Camel"$Response {
@@ -574,8 +574,8 @@ sealed trait $name;format="Camel"$MessageBrokerEvent {
 }
 
 final case class $name;format="Camel"$Created(
-    $name;format="camel"$Id: String,
-    $name;format="camel"$: $name;format="Camel"$
+  $name;format="camel"$Identity: $name;format="Camel"$Identity,
+    $name;format="camel"$Object: $name;format="Camel"$Object
 ) extends $name;format="Camel"$MessageBrokerEvent
 
 object $name;format="Camel"$Created {
