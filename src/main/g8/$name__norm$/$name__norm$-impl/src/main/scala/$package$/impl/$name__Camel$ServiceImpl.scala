@@ -9,7 +9,7 @@ import $organization$.common.response.{
 }
 import $organization$.common.utils.Marshaller
 //import $organization$.common.validation.ValidationUtil._
-import $package$.api._by_name
+import $package$.api._
 import $package$.api.$name;format="Camel"$Service
 import $package$.impl.ServiceErrors._
 import $package$.impl.ServiceErrors.ServiceError
@@ -196,13 +196,15 @@ class $name;format="Camel"$ServiceImpl(
       $name;format="camel"$Id: String,
       $name;format="camel"$Resource: $name;format="Camel"$Resource): Create$name;format="Camel"$Response = {
     Create$name;format="Camel"$Response($name;format="camel"$Id,
-                             $name;format="camel"$Resource.$name;format="camel"$)
+                             $name;format="camel"$Resource.$name;format="camel"$,
+                             None)
   }
 
   private def mapToCreate$name;format="Camel"$Response(
       $name;format="camel"$State: $name;format="Camel"$State): Create$name;format="Camel"$Response = {
     Create$name;format="Camel"$Response($name;format="camel"$State.$name;format="camel"$Aggregate map { _.$name;format="camel"$Id } getOrElse "No identifier",
-                             $name;format="camel"$State.$name;format="camel"$Aggregate map { _.$name;format="camel"$Resource.$name;format="camel"$} getOrElse $name;format="Camel"$("No name", Some("No description")))
+                             $name;format="camel"$State.$name;format="camel"$Aggregate map { _.$name;format="camel"$Resource.$name;format="camel"$} getOrElse $name;format="Camel"$("No name", Some("No description")),
+                             None)
   }
 // }
 
@@ -495,7 +497,6 @@ final class $name;format="Camel"$Entity extends PersistentEntity {
 }
 
 // $name$ State
-
 final case class $name;format="Camel"$State(
   $name;format="camel"$Aggregate: $name;format="Camel"$Aggregate,
   status: $name;format="Camel"$Status.Status = $name;format="Camel"$Status.NONEXISTENT
@@ -509,7 +510,6 @@ object $name;format="Camel"$State {
 }
 
 // $name$ Status
-
 object $name;format="Camel"$Status extends Enumeration {
   val NONEXISTENT, ACTIVE, ARCHIVED, UNKNOWN = Value
   type Status = Value
@@ -520,7 +520,6 @@ object $name;format="Camel"$Status extends Enumeration {
 }
 
 // $name$ Aggregate
-
 final case class $name;format="Camel"$Aggregate(
   $name;format="camel"$Identity: Identity,
   $name;format="camel"$Resource: $name;format="Camel"$Resource
@@ -708,6 +707,7 @@ private[impl] class $name;format="Camel"$EventProcessor(
   private var destroy$name;format="Camel"$Statement: PreparedStatement = _
   private var insert$name;format="Camel"$ByNameStatement: PreparedStatement = _
   private var insert$name;format="Camel"$SummaryStatement: PreparedStatement = _
+  private var insert$name;format="Camel"$HistoryStatement: PreparedStatement = _
 
   override def buildHandler
     : ReadSideProcessor.ReadSideHandler[$name;format="Camel"$Event] = {
@@ -731,25 +731,32 @@ private[impl] class $name;format="Camel"$EventProcessor(
     logger.info("Creating tables...")
     for {
       _ <- session.executeCreateTable("""
-          |CREATE TABLE IF NOT EXISTS $name;format="lower,snake,word"$ (
-          | id text PRIMARY KEY,
+          |CREATE TABLE IF NOT EXISTS $name;format="lower,snake,word"$_current (
+          | object_identifier text PRIMARY KEY,
           | $name;format="lower,snake,word"$ text
           |);
         """.stripMargin)
       _ <- session.executeCreateTable(
         """
           |CREATE TABLE IF NOT EXISTS $name;format="lower,snake,word"$_summary (
-          | id text PRIMARY KEY,
+          | object_identifier text PRIMARY KEY,
           | name text
           |);
         """.stripMargin)
       _ <- session.executeCreateTable(
         """
           |CREATE TABLE IF NOT EXISTS $name;format="lower,snake,word"$_by_name (
-          | id text,
+          | object_identifier text,
           | name text PRIMARY KEY
           |);
         """.stripMargin)
+        _ <- session.executeCreateTable(
+          """
+            |CREATE TABLE IF NOT EXISTS $name;format="lower,snake,word"$_history (
+              | identity text PRIMARY KEY,
+              | $name;format="lower,snake,word"$ text
+            |);
+          """.stripMargin)
     } yield Done
   }
 
@@ -757,20 +764,20 @@ private[impl] class $name;format="Camel"$EventProcessor(
     logger.info("Preparing statements...")
     for {
       insert$name;format="Camel"$ <- session.prepare("""
-          |INSERT INTO $name;format="lower,snake,word"$(
-          | id,
+          |INSERT INTO $name;format="lower,snake,word"$_current(
+          | object_identifier,
           | $name;format="lower,snake,word"$
           | ) VALUES (
           | ?, ?);
         """.stripMargin)
       destroy$name;format="Camel"$ <- session.prepare("""
-          |DELETE FROM $name;format="lower,snake,word"$
-          |WHERE id = ?;
+          |DELETE FROM $name;format="lower,snake,word"$_current
+          |WHERE object_identifier = ?;
         """.stripMargin)
       insert$name;format="Camel"$Summary <- session.prepare(
         """
           |INSERT INTO $name;format="lower,snake,word"$_summary(
-          | id,
+          | object_identifier,
           | name
           | ) VALUES (
           | ?, ?);
@@ -778,16 +785,25 @@ private[impl] class $name;format="Camel"$EventProcessor(
       insert$name;format="Camel"$ByName <- session.prepare(
         """
           |INSERT INTO $name;format="lower,snake,word"$_by_name(
-          | id,
+          | object_identifier,
           | name
           | ) VALUES (
           | ?, ?);
         """.stripMargin)
+        insert$name;format="Camel"$History <- session.prepare(
+          """
+            |INSERT INTO $name;format="lower,snake,word"$_history(
+            | identity,
+            | $name;format="lower,snake,word"$
+            | ) VALUES (
+            | ?, ?);
+          """.stripMargin)
     } yield {
       insert$name;format="Camel"$Statement = insert$name;format="Camel"$
       destroy$name;format="Camel"$Statement = destroy$name;format="Camel"$
       insert$name;format="Camel"$SummaryStatement = insert$name;format="Camel"$Summary
       insert$name;format="Camel"$ByNameStatement = insert$name;format="Camel"$ByName
+      insert$name;format="Camel"$HistoryStatement = insert$name;format="Camel"$History
       Done
     }
   }
@@ -796,7 +812,7 @@ private[impl] class $name;format="Camel"$EventProcessor(
     logger.info(s"Inserting \$$name;format="camel"$Aggregate...")
     Future.successful(
       List(
-        insert$name;format="Camel"$Statement.bind($name;format="camel"$Aggregate.$name;format="camel"$Id,
+        insert$name;format="Camel"$Statement.bind($name;format="camel"$Aggregate.$name;format="camel"$Identity.identifier,
                                        implicitly[Format[$name;format="Camel"$]]
                                          .writes($name;format="camel"$Aggregate.$name;format="camel"$Resource.$name;format="camel"$)
                                          .toString)
@@ -807,11 +823,11 @@ private[impl] class $name;format="Camel"$EventProcessor(
       ))
   }
 
-  private def destroy$name;format="Camel"$($name;format="camel"$Id: String) = {
+  private def destroy$name;format="Camel"$($name;format="camel"$IdentityIdentifier: String) = {
     logger.info(s"Deleting \$$name;format="camel"$Id...")
     Future.successful(
       List(
-        destroy$name;format="Camel"$Statement.bind($name;format="camel"$Id)
+        destroy$name;format="Camel"$Statement.bind($name;format="camel"$IdentityIdentifier)
         //insert$name;format="Camel"$SummaryStatement
         //  .bind($name;format="camel"$Aggregate.id, $name;format="camel"$Aggregate.$name;format="camel"$.name),
         //insert$name;format="Camel"$ByNameStatement

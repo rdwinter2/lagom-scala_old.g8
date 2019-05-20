@@ -357,6 +357,7 @@ object Matchers {
 //   final case class Fish(name: String, color: String) extends Pet
 //   final case class Squid(name: String, age: Int) extends Pet
 
+// $name$ object
 final case class $name;format="Camel"$(
   name: String,
   description: Option[String])
@@ -374,10 +375,12 @@ object $name;format="Camel"$ {
 // }
 
 // Supporting algebraic data types {
+
+// Identity.identifier and Identity.revision uniquely identify a particular version of an entity
 final case class Identity(
-  identifier: String,
-  revision: Option[Int],    // a monotonically increasing counter of changes
-  hash: Option[String])
+  identifier: String,       // a collision resistant unique identifier for the entity which remains constant throughout its lifecycle
+  revision: Int             // a monotonically increasing counter of changes perisited by this entity
+)
 
 object Identity {
   implicit val format: Format[Identity] = Jsonx.formatCaseClass
@@ -389,6 +392,27 @@ object Identity {
       // need Option[Int]
       //identity.revision should be >= 0
     }
+}
+
+// Not so sure if object level metadata is needed or just event level metadata
+final case class Metadata(
+
+  created: Instant,      // When the 
+  lastModified: Option[Instant], // Last Change Transaction Time: the time assigned by the persistent entity
+                            // it will be different from the time it was persisted in Cassandra or Kafka or other datastore
+                            // the persistent entity is where the real transaction occurs, however it still need to be written to the log to become durable 
+  hash: Option[String],     // SHA256 hash of json representation of  the persistent entity's data
+                            // import java.security.MessageDigest import java.math.BigInteger MessageDigest.getInstance("SHA-256").digest("some string".getBytes("UTF-8")).map("%02x".format(_)).mkString
+  previousHash: Option[String], // SHA256 hash of the prior state of the  persistent entity's data
+  validTimeBegin: Option[Instant],    // "valid time (VT) is the time period during which a database fact is valid in the modeled reality." https://en.wikipedia.org/wiki/Valid_time
+  validTimeEnd: Option[Instant],
+  decisionTimeBegin: Option[Instant],  // "Decision time is the time period during which a fact stored in the database was decided to be valid.'' https://en.wikipedia.org/wiki/Temporal_database
+  decisionTimeEnd: Option[Instant]
+  
+)
+
+object Metadata {
+  implicit val format: Format[Metadata] = Jsonx.formatCaseClass
 }
 
 final case class HypertextApplicationLanguage(
@@ -441,7 +465,6 @@ object Mutation {
 // }
 
 // $name$ Resource
-
 final case class $name;format="Camel"$Resource(
   $name;format="camel"$: $name;format="Camel"$
 )
