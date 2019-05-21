@@ -316,7 +316,9 @@ class $name;format="Camel"$ServiceImpl(
 
   private def mapTo$name;format="Camel"$Resource(
       $name;format="camel"$Aggregate: $name;format="Camel"$Aggregate): $name;format="Camel"$Resource = {
-    $name;format="Camel"$Resource($name;format="camel"$Aggregate.$name;format="camel"$Adt)
+    $name;format="Camel"$Resource(
+      $name;format="camel"$Aggregate.$name;format="camel"$Adt,
+      $name;format="camel"$Aggregate.$name;format="camel"$Metadata)
   }
 
   //private def mapToReplace$name;format="Camel"$Response(replace$name;format="Camel"$Request: Replace$name;format="Camel"$Request): Replace$name;format="Camel"$Response = {
@@ -524,7 +526,7 @@ object $name;format="Camel"$Status extends Enumeration {
 final case class $name;format="Camel"$Aggregate(
   $name;format="camel"$Identity: $name;format="Camel"$Identity,
   $name;format="camel"$Metadata: $name;format="Camel"$Metadata,
-  $name;format="camel"$Resource: $name;format="Camel"$Resource
+  $name;format="camel"$Adt: $name;format="Camel"$Adt
 )
 
 object $name;format="Camel"$Aggregate {

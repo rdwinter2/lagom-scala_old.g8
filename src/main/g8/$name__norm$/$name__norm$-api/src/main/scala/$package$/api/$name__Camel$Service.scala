@@ -458,17 +458,17 @@ object Mutation {
   implicit val format: Format[Mutation] = Jsonx.formatCaseClass
 
   val $name;format="camel"$MutationValidator: Validator[Mutation] =
-    validator[Mutation] { mutation =>
-      mutation.op is notEmpty
-      mutation.path is notEmpty
-      mutation.op should matchRegexFully(Matchers.Op)
+    validator[Mutation] { m =>
+      m.op is notEmpty
+      m.path is notEmpty
+      m.op should matchRegexFully(Matchers.Op)
     }
 }
 // }
 
 // $name$ Resource
 final case class $name;format="Camel"$Resource(
-  $name;format="camel"$Adt: $name;format="Camel"$Adt
+  $name;format="camel"$Adt: $name;format="Camel"$Adt,
   $name;format="camel"$Metadata: $name;format="Camel"$Metadata
 )
 
@@ -529,7 +529,7 @@ case object Mutate$name;format="Camel"$Request {
   implicit val mutate$name;format="Camel"$RequestValidator
     : Validator[Mutate$name;format="Camel"$Request] =
     validator[Mutate$name;format="Camel"$Request] { m =>
-      m.mutations.each is valid(Mutation.mutationValidator)
+      m.mutations.each is valid(Mutation.$name;format="camel"$MutationValidator)
       m.motivation.each should matchRegexFully(Matchers.Motivation)
     }
 }
@@ -538,7 +538,7 @@ case object Mutate$name;format="Camel"$Request {
 
 final case class Create$name;format="Camel"$Response(
     $name;format="camel"$Identity: $name;format="Camel"$Identity,
-    $name;format="camel"$Adt: $name;format="Camel"$Adt,
+    $name;format="camel"$Resource: $name;format="Camel"$Resource,
     $name;format="camel"$Hal: Option[HypertextApplicationLanguage]
 )
 
@@ -548,7 +548,7 @@ object Create$name;format="Camel"$Response {
 
 final case class Replace$name;format="Camel"$Response(
     $name;format="camel"$Identity: $name;format="Camel"$Identity,
-    $name;format="camel"$Adt: $name;format="Camel"$Adt,
+    $name;format="camel"$Resource: $name;format="Camel"$Resource,
     $name;format="camel"$Hal: Option[HypertextApplicationLanguage]
 )
 
@@ -558,7 +558,8 @@ object Replace$name;format="Camel"$Response {
 
 final case class Get$name;format="Camel"$Response(
   $name;format="camel"$Identity: $name;format="Camel"$Identity,
-  $name;format="camel"$Adt: $name;format="Camel"$Adt
+  $name;format="camel"$Resource: $name;format="Camel"$Resource,
+  $name;format="camel"$Hal: Option[HypertextApplicationLanguage]
 )
 
 object Get$name;format="Camel"$Response {
@@ -580,7 +581,7 @@ sealed trait $name;format="Camel"$MessageBrokerEvent {
 
 final case class $name;format="Camel"$Created(
   $name;format="camel"$Identity: $name;format="Camel"$Identity,
-  $name;format="camel"$Adt: $name;format="Camel"$Adt
+  $name;format="camel"$Resource: $name;format="Camel"$Resource
 ) extends $name;format="Camel"$MessageBrokerEvent
 
 object $name;format="Camel"$Created {
