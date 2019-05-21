@@ -176,7 +176,7 @@ class $name;format="Camel"$ServiceImpl(
   //        case _ =>
   //      }
   //      val $name;format="camel"$Aggregate =
-  //        $name;format="Camel"$Aggregate($name;format="Camel"$Identity($name;format="camel"$Id), $name;format="Camel"$Metadata(0), r.$name;format="camel"$Type)
+  //        $name;format="Camel"$Aggregate($name;format="Camel"$Identity($name;format="camel"$Id), $name;format="Camel"$Metadata(0), r.$name;format="camel"$Adt)
   //      val $name;format="camel"$Resource =
   //        $name;format="Camel"$Resource(r.$name;format="camel"$)
   //      val $name;format="camel"$EntityRef =
@@ -196,14 +196,14 @@ class $name;format="Camel"$ServiceImpl(
   //    $name;format="camel"$Id: String,
   //    $name;format="camel"$Resource: $name;format="Camel"$Resource): Create$name;format="Camel"$Response = {
   //  Create$name;format="Camel"$Response($name;format="Camel"$Identity($name;format="camel"$Id),
-  //                           $name;format="camel"$Resource.$name;format="camel"$Type,
+  //                           $name;format="camel"$Resource.$name;format="camel"$Adt,
   //                           None)
   //}
 
   //private def mapToCreate$name;format="Camel"$Response(
   //    $name;format="camel"$State: $name;format="Camel"$State): Create$name;format="Camel"$Response = {
   //  Create$name;format="Camel"$Response($name;format="camel"$State.$name;format="camel"$Aggregate map { _.$name;format="camel"$Identity } getOrElse $name;format="Camel"$Identity("No identifier"),
-  //                           $name;format="camel"$State.$name;format="camel"$Aggregate map { _.$name;format="camel"$Type} getOrElse $name;format="Camel"$Type("No name", Some("No description")),
+  //                           $name;format="camel"$State.$name;format="camel"$Aggregate map { _.$name;format="camel"$Adt} getOrElse $name;format="Camel"$Adt("No name", Some("No description")),
   //                           None)
   //}
 // }
@@ -316,13 +316,13 @@ class $name;format="Camel"$ServiceImpl(
 
   private def mapTo$name;format="Camel"$Resource(
       $name;format="camel"$Aggregate: $name;format="Camel"$Aggregate): $name;format="Camel"$Resource = {
-    $name;format="Camel"$Resource($name;format="camel"$Aggregate.$name;format="camel"$Type)
+    $name;format="Camel"$Resource($name;format="camel"$Aggregate.$name;format="camel"$Adt)
   }
 
   //private def mapToReplace$name;format="Camel"$Response(replace$name;format="Camel"$Request: Replace$name;format="Camel"$Request): Replace$name;format="Camel"$Response = {
   //  Replace$name;format="Camel"$Response($name;format="camel"$Aggregate.$name;format="camel"$Identity,
   //                            $name;format="camel"$Aggregate.$name;format="camel"$Metadata,
-  //                            $name;format="camel"$Aggregate.$name;format="camel"$Type)
+  //                            $name;format="camel"$Aggregate.$name;format="camel"$Adt)
   //}
 
   override def $name;format="camel"$MessageBrokerEvents
@@ -499,7 +499,7 @@ final class $name;format="Camel"$Entity extends PersistentEntity {
 
 // $name$ State
 final case class $name;format="Camel"$State(
-  $name;format="camel"$Aggregate: $name;format="Camel"$Aggregate,
+  $name;format="camel"$Aggregate: Option[$name;format="Camel"$Aggregate],
   status: $name;format="Camel"$Status.Status = $name;format="Camel"$Status.NONEXISTENT
 ) {
   def withStatus (status: $name;format="Camel"$Status.Status) = copy(status = status)
@@ -670,14 +670,22 @@ private[impl] class $name;format="Camel"$Repository(session: CassandraSession)(
   def selectAll$plural_name;format="Camel"$: Future[Seq[$name;format="Camel"$Aggregate]] = {
     logger.info("Querying all '$plural_name$'...")
     session.selectAll("""
-      SELECT id, $name;format="lower,snake,word"$ FROM $name;format="lower,snake,word"$
+      SELECT $name;format="lower,snake,word"$_identity, 
+             $name;format="lower,snake,word"$_metadata, 
+             $name;format="lower,snake,word"$_adt
+        FROM $name;format="lower,snake,word"$_current
     """).map(rows => rows.map(row => convertTo$name;format="Camel"$Aggregate(row)))
   }
 
   def select$name;format="Camel"$(id: String) = {
     logger.info(s"Querying '$name$' with ID \$id...")
-    session.selectOne("SELECT id, $name;format="lower,snake,word"$ FROM $name;format="lower,snake,word"$ WHERE id = ?",
-                      id)
+    session.selectOne("""
+      SELECT $name;format="lower,snake,word"$_identity, 
+             $name;format="lower,snake,word"$_metadata, 
+             $name;format="lower,snake,word"$_adt
+        FROM $name;format="lower,snake,word"$_current
+       WHERE $name;format="lower,snake,word"$_identity = ?
+    """, id)
   }
 
   private def convertTo$name;format="Camel"$Aggregate(
@@ -685,10 +693,10 @@ private[impl] class $name;format="Camel"$Repository(session: CassandraSession)(
     $name;format="Camel"$Aggregate(
       $name;format="Camel"$Identity(helloWorldRow.getString("object_identifier")),
       $name;format="Camel"$Metadata($name;format="camel"$Row.getInt("object_revision")),
-      $name;format="Camel"$Type(
+      $name;format="Camel"$Adt(
       Json
-        .fromJson[$name;format="Camel"$Type](
-          Json.parse($name;format="camel"$Row.getString("$name;format="lower,snake,word"$")))
+        .fromJson[$name;format="Camel"$Adt](
+          Json.parse($name;format="camel"$Row.getString("$name;format="lower,snake,word"$_adt")))
         .get
       )
 //      implicitly[Format[$name;format="Camel"$]].reads(Json.parse($name;format="camel"$Row.getString("$name;format="norm"$")))
@@ -735,32 +743,29 @@ private[impl] class $name;format="Camel"$EventProcessor(
     for {
       _ <- session.executeCreateTable("""
           |CREATE TABLE IF NOT EXISTS $name;format="lower,snake,word"$_current (
-          | $name;format="lower,snake,word"$_identity text PRIMARY KEY,
+          | id text PRIMARY KEY,
           | $name;format="lower,snake,word"$_metadata text,
-          | $name;format="lower,snake,word"$_object text
+          | $name;format="lower,snake,word"$_adt text
           |);
         """.stripMargin)
-      _ <- session.executeCreateTable(
-        """
+      _ <- session.executeCreateTable("""
           |CREATE TABLE IF NOT EXISTS $name;format="lower,snake,word"$_summary (
-          | object_identifier text PRIMARY KEY,
+          | id text PRIMARY KEY,
           | name text
           |);
         """.stripMargin)
-      _ <- session.executeCreateTable(
-        """
+      _ <- session.executeCreateTable("""
           |CREATE TABLE IF NOT EXISTS $name;format="lower,snake,word"$_by_name (
-          | object_identifier text,
-          | name text PRIMARY KEY
+          | name text PRIMARY KEY,
+          | id text
           |);
         """.stripMargin)
-        _ <- session.executeCreateTable(
-          """
-            |CREATE TABLE IF NOT EXISTS $name;format="lower,snake,word"$_history (
-              | identity text PRIMARY KEY,
-              | $name;format="lower,snake,word"$ text
-            |);
-          """.stripMargin)
+        _ <- session.executeCreateTable("""
+          |CREATE TABLE IF NOT EXISTS $name;format="lower,snake,word"$_history (
+          | id text PRIMARY KEY,
+          | $name;format="lower,snake,word"$ text
+          |);
+        """.stripMargin)
     } yield Done
   }
 
@@ -771,7 +776,7 @@ private[impl] class $name;format="Camel"$EventProcessor(
           |INSERT INTO $name;format="lower,snake,word"$_current(
           | $name;format="lower,snake,word"$_identity,
           | $name;format="lower,snake,word"$_metadata,
-          | $name;format="lower,snake,word"$_object
+          | $name;format="lower,snake,word"$_adt
           | ) VALUES (
           | ?, ?, ?);
         """.stripMargin)
@@ -820,7 +825,7 @@ private[impl] class $name;format="Camel"$EventProcessor(
         insert$name;format="Camel"$Statement.bind(
           implicitly[Format[$name;format="Camel"$Identity]].writes($name;format="camel"$Aggregate.$name;format="camel"$Identity).toString, 
           implicitly[Format[$name;format="Camel"$Metadata]].writes($name;format="camel"$Aggregate.$name;format="camel"$Metadata).toString,
-          implicitly[Format[$name;format="Camel"$Type]].writes($name;format="camel"$Aggregate.$name;format="camel"$Type).toString)
+          implicitly[Format[$name;format="Camel"$Adt]].writes($name;format="camel"$Aggregate.$name;format="camel"$Adt).toString)
         //insert$name;format="Camel"$SummaryStatement
         //  .bind($name;format="camel"$Aggregate.Identity, $name;format="camel"$Aggregate.$name;format="camel"$.name),
         //insert$name;format="Camel"$ByNameStatement
@@ -848,7 +853,7 @@ private[impl] class $name;format="Camel"$EventProcessor(
 object $name;format="Camel"$SerializerRegistry extends JsonSerializerRegistry {
   override def serializers = List(
     // Data structures
-    JsonSerializer[$name;format="Camel"$Type],
+    JsonSerializer[$name;format="Camel"$Adt],
     JsonSerializer[$name;format="Camel"$Resource],
     JsonSerializer[$name;format="Camel"$Aggregate],
     JsonSerializer[$name;format="Camel"$Identity],
