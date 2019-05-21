@@ -145,3 +145,5 @@ ensimeUnmanagedJavadocArchives in kafkaProject := Nil
 ensimeScalacTransformer in kafkaProject := identity
 ensimeScalacOptions in kafkaProject := EnsimePlugin.ensimeSuggestedScalacOptions(scalaVersion.value)
 ensimeJavacOptions in kafkaProject := Nil
+
+libraryDependencies += "org.scalameta" %% "scalameta" % "4.1.0"
