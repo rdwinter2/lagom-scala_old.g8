@@ -149,12 +149,12 @@ trait $name;format="Camel"$Service extends Service {
     * DATA='{"$name;format="camel"$": {"name": "test", "description": "test description"}}'
     * curl -H \$CT -X POST -d \$DATA http://localhost:9000/api/$plural_name;format="lower,hyphen"$
     */
-  def post$name;format="Camel"$1:                                             ServiceCall[Create$name;format="Camel"$Request, Either[ErrorResponse, Create$name;format="Camel"$Response]]
-  def post$name;format="Camel"$2($name;format="camel"$Id: String):                       ServiceCall[Create$name;format="Camel"$Request, Either[ErrorResponse, Create$name;format="Camel"$Response]]
-  def create$name;format="Camel"$1:                                           ServiceCall[Create$name;format="Camel"$Request, Either[ErrorResponse, Create$name;format="Camel"$Response]]
-  def create$name;format="Camel"$2($name;format="camel"$Id: String):                     ServiceCall[Create$name;format="Camel"$Request, Either[ErrorResponse, Create$name;format="Camel"$Response]]
-  def create$name;format="Camel"$3(creationId: String):                       ServiceCall[Create$name;format="Camel"$Request, Either[ErrorResponse, Create$name;format="Camel"$Response]]
-  def create$name;format="Camel"$4($name;format="camel"$Id: String, creationId: String): ServiceCall[Create$name;format="Camel"$Request, Either[ErrorResponse, Create$name;format="Camel"$Response]]
+  //def post$name;format="Camel"$1:                                             ServiceCall[Create$name;format="Camel"$Request, Either[ErrorResponse, Create$name;format="Camel"$Response]]
+  //def post$name;format="Camel"$2($name;format="camel"$Id: String):                       ServiceCall[Create$name;format="Camel"$Request, Either[ErrorResponse, Create$name;format="Camel"$Response]]
+  //def create$name;format="Camel"$1:                                           ServiceCall[Create$name;format="Camel"$Request, Either[ErrorResponse, Create$name;format="Camel"$Response]]
+  //def create$name;format="Camel"$2($name;format="camel"$Id: String):                     ServiceCall[Create$name;format="Camel"$Request, Either[ErrorResponse, Create$name;format="Camel"$Response]]
+  //def create$name;format="Camel"$3(creationId: String):                       ServiceCall[Create$name;format="Camel"$Request, Either[ErrorResponse, Create$name;format="Camel"$Response]]
+  //def create$name;format="Camel"$4($name;format="camel"$Id: String, creationId: String): ServiceCall[Create$name;format="Camel"$Request, Either[ErrorResponse, Create$name;format="Camel"$Response]]
   // Retrieve status of creation request
   //def getCreation$name;format="Camel"$($name;format="camel"$Id: String, creationId: String):    ServiceCall[NotUsed, Either[ErrorResponse, Creation$name;format="Camel"$Response]]
   //def streamCreation$name;format="Camel"$($name;format="camel"$Id: String, creationId: String): ServiceCall[NotUsed, Source[Creation$name;format="Camel"$Response, NotUsed]]
@@ -187,8 +187,8 @@ trait $name;format="Camel"$Service extends Service {
     * DATA='{"$name;format="camel"$": {"name": "test", "description": "different description"}}'
     * curl -H \$CT -X PUT -d \$DATA http://localhost:9000/api/$plural_name;format="lower,hyphen"$/cjq5au9sr000caqyayo9uktss
     */
-  def put$name;format="Camel"$($name;format="camel"$Id: String):                             ServiceCall[Replace$name;format="Camel"$Request, Either[ErrorResponse, Replace$name;format="Camel"$Response]]
-  def replace$name;format="Camel"$1($name;format="camel"$Id: String):                        ServiceCall[Replace$name;format="Camel"$Request, Either[ErrorResponse, Replace$name;format="Camel"$Response]]
+  //def put$name;format="Camel"$($name;format="camel"$Id: String):                             ServiceCall[Replace$name;format="Camel"$Request, Either[ErrorResponse, Replace$name;format="Camel"$Response]]
+  //def replace$name;format="Camel"$1($name;format="camel"$Id: String):                        ServiceCall[Replace$name;format="Camel"$Request, Either[ErrorResponse, Replace$name;format="Camel"$Response]]
   //def replace$name;format="Camel"$2($name;format="camel"$Id: String, replacementId: String): ServiceCall[Replace$name;format="Camel"$Request, Either[ErrorResponse, Replace$name;format="Camel"$Response]]
   // Retrieve status of replacement request
   //def getReplacement$name;format="Camel"$($name;format="camel"$Id: String, replacementId: String):    ServiceCall[NotUsed, Either[ErrorResponse, Replacement$name;format="Camel"$Response]]
@@ -319,7 +319,7 @@ trait $name;format="Camel"$Service extends Service {
     * curl http://localhost:9000/api/$plural_name;format="lower,hyphen"$
     */
   //def getAll$plural_name;format="Camel"$(page: Option[String]): ServiceCall[NotUsed, utils.PagingState[GetAll$plural_name;format="Camel"$Response]]
-  def getAll$plural_name;format="Camel"$:                       ServiceCall[NotUsed, GetAll$plural_name;format="Camel"$Response]
+  //def getAll$plural_name;format="Camel"$:                       ServiceCall[NotUsed, GetAll$plural_name;format="Camel"$Response]
 // }
 
 //  def stream$plural_name;format="Camel"$
@@ -336,7 +336,7 @@ trait $name;format="Camel"$Service extends Service {
 object Matchers {
   val Email =
     """^[a-zA-Z0-9\.!#\$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*\$"""
-  val Id = """^[a-zA-Z0-9\-\.\_\~]{1,64}\$"""
+  val Identifier = """^[a-zA-Z0-9\-\.\_\~]{1,64}\$"""
   val Name = """^[a-zA-Z0-9\-\.\_\~]{1,128}\$"""
   val Description = """^.{1,2048}\$"""
   val Motivation = """^.{1,2048}\$"""
@@ -358,15 +358,15 @@ object Matchers {
 //   final case class Squid(name: String, age: Int) extends Pet
 
 // $name$ object
-final case class $name;format="Camel"$Object(
+final case class $name;format="Camel"$Type(
   name: String,
   description: Option[String])
 
-object $name;format="Camel"$Object {
-  implicit val format: Format[$name;format="Camel"$Object] = Jsonx.formatCaseClass
+object $name;format="Camel"$Type {
+  implicit val format: Format[$name;format="Camel"$Type] = Jsonx.formatCaseClass
 
-  val $name;format="camel"$Validator: Validator[$name;format="Camel"$Object] =
-    validator[$name;format="Camel"$Object] { o =>
+  val $name;format="camel"$Validator: Validator[$name;format="Camel"$Type] =
+    validator[$name;format="Camel"$Type] { o =>
       o.name is notEmpty
       o.name should matchRegexFully(Matchers.Name)
       o.description.each should matchRegexFully(Matchers.Description)
@@ -387,7 +387,7 @@ object $name;format="Camel"$Identity {
   val identityValidator: Validator[$name;format="Camel"$Identity] =
     validator[$name;format="Camel"$Identity] { i =>
       i.identifier is notEmpty
-      i.identifier should matchRegexFully(Matchers.Id)
+      i.identifier should matchRegexFully(Matchers.Identifier)
       // need Option[Int]
       //identity.revision should be >= 0
     }
@@ -465,7 +465,7 @@ object Mutation {
 
 // $name$ Resource
 final case class $name;format="Camel"$Resource(
-  $name;format="camel"$Object: $name;format="Camel"$Object
+  $name;format="camel"$Type: $name;format="Camel"$Type
 )
 
 object $name;format="Camel"$Resource {
@@ -473,7 +473,7 @@ object $name;format="Camel"$Resource {
 
   val $name;format="camel"$ResourceValidator: Validator[$name;format="Camel"$Resource] =
     validator[$name;format="Camel"$Resource] { r =>
-      r.$name;format="camel"$ is valid($name;format="Camel"$Object.$name;format="camel"$Validator)
+      r.$name;format="camel"$Type is valid($name;format="Camel"$Type.$name;format="camel"$Validator)
     }
 }
 
@@ -483,7 +483,7 @@ object $name;format="Camel"$Resource {
 
 // Create $name$ Request payload {
 final case class Create$name;format="Camel"$Request(
-    $name;format="camel"$Object: $name;format="Camel"$Object
+    $name;format="camel"$Type: $name;format="Camel"$Type
 ) {}
 
 case object Create$name;format="Camel"$Request {
@@ -492,13 +492,13 @@ case object Create$name;format="Camel"$Request {
   implicit val create$name;format="Camel"$RequestValidator
     : Validator[Create$name;format="Camel"$Request] =
     validator[Create$name;format="Camel"$Request] { r =>
-      r.$name;format="camel"$Object is valid($name;format="Camel"$Object.$name;format="camel"$Validator)
+      r.$name;format="camel"$Type is valid($name;format="Camel"$Type.$name;format="camel"$Validator)
     }
 }
 // }
 
 final case class Replace$name;format="Camel"$Request(
-    replacement$name;format="Camel"$: $name;format="Camel"$Object,
+    replacement$name;format="Camel"$: $name;format="Camel"$Type,
     motivation: Option[String]
 ) {}
 
@@ -508,7 +508,7 @@ case object Replace$name;format="Camel"$Request {
   implicit val replace$name;format="Camel"$RequestValidator
     : Validator[Replace$name;format="Camel"$Request] =
     validator[Replace$name;format="Camel"$Request] { r =>
-      r.replacement$name;format="Camel"$ is valid($name;format="Camel"$Object.$name;format="camel"$Validator)
+      r.replacement$name;format="Camel"$ is valid($name;format="Camel"$Type.$name;format="camel"$Validator)
       r.motivation.each should matchRegexFully(Matchers.Motivation)
     }
 }
@@ -533,7 +533,7 @@ case object Mutate$name;format="Camel"$Request {
 
 final case class Create$name;format="Camel"$Response(
     $name;format="camel"$Identity: $name;format="Camel"$Identity,
-    $name;format="camel"$Object: $name;format="Camel"$Object,
+    $name;format="camel"$Type: $name;format="Camel"$Type,
     $name;format="camel"$Hal: Option[HypertextApplicationLanguage]
 )
 
@@ -543,7 +543,7 @@ object Create$name;format="Camel"$Response {
 
 final case class Replace$name;format="Camel"$Response(
     $name;format="camel"$Identity: $name;format="Camel"$Identity,
-    $name;format="camel"$Object: $name;format="Camel"$Object,
+    $name;format="camel"$Type: $name;format="Camel"$Type,
     $name;format="camel"$Hal: Option[HypertextApplicationLanguage]
 )
 
@@ -553,7 +553,7 @@ object Replace$name;format="Camel"$Response {
 
 final case class Get$name;format="Camel"$Response(
   $name;format="camel"$Identity: $name;format="Camel"$Identity,
-    $name;format="camel"$Object: $name;format="Camel"$Object
+    $name;format="camel"$Type: $name;format="Camel"$Type
 )
 
 object Get$name;format="Camel"$Response {
@@ -570,12 +570,12 @@ object GetAll$plural_name;format="Camel"$Response {
 // One service to many other services
 
 sealed trait $name;format="Camel"$MessageBrokerEvent {
-  val $name;format="camel"$Id: String
+  val $name;format="camel"$Identity: $name;format="Camel"$Identity
 }
 
 final case class $name;format="Camel"$Created(
   $name;format="camel"$Identity: $name;format="Camel"$Identity,
-    $name;format="camel"$Object: $name;format="Camel"$Object
+  $name;format="camel"$Type: $name;format="Camel"$Type
 ) extends $name;format="Camel"$MessageBrokerEvent
 
 object $name;format="Camel"$Created {
